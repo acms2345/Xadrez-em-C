@@ -16,7 +16,7 @@ char tabuleiro[8][8] = {
 
 int jogadorDaVez = 0; // 0 para o Jogador 1 (maiúsculas), 1 para o Jogador 2 (minúsculas)
 
-char jogador[2] [20];
+char jogador[2] [20]; //Armazena os nomes dos jogadores
 
 int movimentosFeitos = 0;
 
@@ -33,7 +33,7 @@ void ExibirTabuleiro() {
     }
 }
 
-int ObterCoordenada(const char* eixo) {
+int ObterCoordenada(const char* eixo) {//Verifica se a entrada do usuario é valida, e a ajusta para o indice do array
     int coordenada;
     bool entradaValida = false;
 
@@ -123,7 +123,7 @@ int main() {
             tabuleiro[linhaOrigem][colunaOrigem] = ' ';
 
 
-            jogadorDaVez = 1 - jogadorDaVez; // Alterna entre 0 e 1
+            jogadorDaVez = 1 - jogadorDaVez; // Alterna entre 0 e 1, trocando o jogador da vez
         } else {
             printf("Jogada invalida! Tente novamente.\n");
         }
