@@ -33,7 +33,7 @@ void ExibirTabuleiro() {
     }
 }
 
-int ObterCoordenada(const char* eixo) {//Verifica se a entrada do usuario é valida, e a ajusta para o indice do array
+int ObterCoordenada(const char* eixo) {//Verifica se a entrada do usuario é válida, e a ajusta para o indice do array
     int coordenada;
     bool entradaValida = false;
 
@@ -41,11 +41,11 @@ int ObterCoordenada(const char* eixo) {//Verifica se a entrada do usuario é val
         printf("\n%s, digite a coordenada %s (1-8): ", jogador[jogadorDaVez], eixo);
 
         int c;
-        while ((c = getchar()) != '\n' && c != EOF);
+        while ((c = getchar()) != '\n' && c != EOF);// Limpa o buffer de entrada
 
         if(scanf("%d", &coordenada) != 1 || (coordenada > 8 || coordenada < 1)){
             int c;
-            while ((c = getchar()) != '\n' && c != EOF);
+            while ((c = getchar()) != '\n' && c != EOF);// Limpa o buffer de entrada
             printf("ERRO: Entrada invalida. Por favor, digite um numero entre 1 e 8.\n");
             
             continue;

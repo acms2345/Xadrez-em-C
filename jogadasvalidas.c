@@ -27,7 +27,7 @@ bool JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem, int l
                     return true; // Movimento diagonal para capturar
                 } else if (linhaDestino == linhaOrigem - 1 && colunaDestino == colunaOrigem && tabuleiro[linhaDestino][colunaDestino] == ' '){
                     return true; // Movimento para frente
-                } else if (linhaOrigem == 6 && linhaDestino == linhaOrigem - 2 && tabuleiro[linhaDestino][colunaDestino] == ' ') {
+                } else if (linhaOrigem == 6 && linhaDestino == linhaOrigem - 2 && tabuleiro[linhaDestino - 1][colunaDestino] == ' ' && tabuleiro[linhaDestino][colunaDestino] == ' ') {
                     return true; // Movimento de início para frente (duas casas)
                 } else {
                     return false; // Movimento inválido para o peão
@@ -53,9 +53,8 @@ bool JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem, int l
             for(int i = 1; i + linhaOrigem < 8; i++){ //verifica se é movimento para baixo
                 if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem){
                     return true;
-                    if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
+                } else if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
                     break;
-                    }
                 } 
             }
             for(int i = -1; i + linhaOrigem >= 0; i--){ //verifica se é movimento para cima
