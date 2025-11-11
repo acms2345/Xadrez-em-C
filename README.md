@@ -7,3 +7,4 @@ Ao invés das pecas brancas e pretas, o código diferencia as peças por caracte
 Para não colocar VÁRIAS linhas de código em um único arquivo, resolvi separar em dois arquivos:
 - **xadrez.c**: é o código principal, com a exibição para o usuário.
 - **jogadasvalidas.c**: faz a verificação principal das jogadas válidas (ou inválidas), por meio de uma função booleana.
+Para conseguir usar a função booleana no xadrez.c, precisei usar o cabeçalho **jogadasvalidas.h** para ter as definições da função e conseguir interligar os dois arquivos.
