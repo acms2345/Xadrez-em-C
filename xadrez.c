@@ -18,7 +18,7 @@ int jogadorDaVez = 0; // 0 para o Jogador 1 (maiúsculas), 1 para o Jogador 2 (m
 
 typedef struct {
     char nome[20];
-    int pontos = 0;
+    int pontos;
 } Jogador;
 
 Jogador jogadores[2];
@@ -40,31 +40,34 @@ void ExibirTabuleiro() {
     }
 }
 
-int ObterCoordenada(const char* eixo) {//Verifica se a entrada do usuario é válida, e a ajusta para o indice do array
-    int coordenada;
-    bool entradaValida = false;
+/**
+ * Solicita ao jogador atual que digite uma coordenada (linha ou coluna) entre 1 e 8.
+ * Valida a entrada, garantindo que seja um número inteiro dentro do intervalo permitido.
+ * Retorna o valor da coordenada ajustado para índice de array (0-7).
+ */
+int ObterCoordenada(const char* eixo) {
+    int coordenada, ch;
 
-    while (!entradaValida) {
+    for (;;) {
         printf("\n%s, digite a coordenada %s (1-8): ", jogadores[jogadorDaVez].nome, eixo);
 
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF);// Limpa o buffer de entrada
-
-        if(scanf("%d", &coordenada) != 1 || (coordenada > 8 || coordenada < 1)){
-            int c;
-            while ((c = getchar()) != '\n' && c != EOF);// Limpa o buffer de entrada
+        if (scanf("%d", &coordenada) != 1) {
+            while ((ch = getchar()) != '\n' && ch != EOF) {} // descarta linha
             printf("ERRO: Entrada invalida. Por favor, digite um numero entre 1 e 8.\n");
-            
             continue;
         }
 
-        entradaValida = true;
-        
-        
-    }
-    return coordenada - 1; // Ajusta para índice de array (0-7)
-}
+        // sempre descarta o restante da linha (inclui "lixo" como abc)
+        while ((ch = getchar()) != '\n' && ch != EOF) {}
 
+        if (coordenada < 1 || coordenada > 8) {
+            printf("ERRO: Entrada invalida. Por favor, digite um numero entre 1 e 8.\n");
+            continue;
+        }
+
+        return coordenada - 1;
+    }
+}
 
 int main() {
     
@@ -77,6 +80,7 @@ int main() {
     for(int i = 0; i < 2; i++){
         printf("Digite o nome do %d jogador: ", i + 1);
         scanf("%19s", jogadores[i].nome);
+        jogadores[i].pontos = 0;
     }
 
 
