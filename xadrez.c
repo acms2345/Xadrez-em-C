@@ -16,6 +16,13 @@ char tabuleiro[8][8] = {
 
 int jogadorDaVez = 0; // 0 para o Jogador 1 (maiúsculas), 1 para o Jogador 2 (minúsculas)
 
+typedef struct {
+    char nome[20];
+    int pontos = 0;
+} Jogador;
+
+Jogador jogadores[2];
+
 char jogador[2] [20]; //Armazena os nomes dos jogadores
 
 int movimentosFeitos = 0;
@@ -38,7 +45,7 @@ int ObterCoordenada(const char* eixo) {//Verifica se a entrada do usuario é vá
     bool entradaValida = false;
 
     while (!entradaValida) {
-        printf("\n%s, digite a coordenada %s (1-8): ", jogador[jogadorDaVez], eixo);
+        printf("\n%s, digite a coordenada %s (1-8): ", jogadores[jogadorDaVez].nome, eixo);
 
         int c;
         while ((c = getchar()) != '\n' && c != EOF);// Limpa o buffer de entrada
@@ -62,14 +69,14 @@ int ObterCoordenada(const char* eixo) {//Verifica se a entrada do usuario é vá
 int main() {
     
 
-    
+
     int pontos[2] = {0, 0};
     
     printf("----------------------XADREZ----------------------\n\n");
 
     for(int i = 0; i < 2; i++){
         printf("Digite o nome do %d jogador: ", i + 1);
-        scanf("%19s", jogador[i]);
+        scanf("%19s", jogadores[i].nome);
     }
 
 
@@ -78,7 +85,7 @@ int main() {
         printf("\n");
         ExibirTabuleiro();
 
-        printf("E a vez de %s!\n", jogador[jogadorDaVez]);
+        printf("E a vez de %s!\n", jogadores[jogadorDaVez].nome);
 
         int linhaOrigem = ObterCoordenada("da linha da peca que queres mover");
         int colunaOrigem = ObterCoordenada("da coluna da peca que queres mover");
@@ -100,21 +107,21 @@ int main() {
             //Verifica a captura de peças e atualiza a pontuação
             if (tabuleiro[linhaDestino][colunaDestino] == 'p' || tabuleiro[linhaDestino][colunaDestino] == 'P'){
                 // Captura de peão
-                pontos[jogadorDaVez] += 1; // Incrementa o ponto do jogador que capturou
+                jogadores[jogadorDaVez].pontos += 1; // Incrementa o ponto do jogador que capturou
             } else if(tabuleiro[linhaDestino][colunaDestino] == 'c' || tabuleiro[linhaDestino][colunaDestino] == 'C' || tabuleiro[linhaDestino][colunaDestino] == 'b' || tabuleiro[linhaDestino][colunaDestino] == 'B'){
                 // Captura de cavalo ou bispo
-                pontos[jogadorDaVez] += 3; // Incrementa 3 pontos para cavalo ou bispo
+                jogadores[jogadorDaVez].pontos += 3; // Incrementa 3 pontos para cavalo ou bispo
             } else if(tabuleiro[linhaDestino][colunaDestino] == 't' || tabuleiro[linhaDestino][colunaDestino] == 'T'){
                 // Captura de torre
-                pontos[jogadorDaVez] += 5; // Incrementa 5 pontos para torre
+                jogadores[jogadorDaVez].pontos += 5; // Incrementa 5 pontos para torre
             } else if(tabuleiro[linhaDestino][colunaDestino] == 'q' || tabuleiro[linhaDestino][colunaDestino] == 'Q'){
                 // Captura de rainha
-                pontos[jogadorDaVez] += 9; // Incrementa 9 pontos para rainha
+                jogadores[jogadorDaVez].pontos += 9; // Incrementa 9 pontos para rainha
             } else if(tabuleiro[linhaDestino][colunaDestino] == 'k' || tabuleiro[linhaDestino][colunaDestino] == 'K'){
                 // Captura de rei
                 ganhou = true;
-                printf("O jogador %s ganhou o jogo!\n", jogador[jogadorDaVez]);
-                printf("Placar final: %s: %d pontos, %s: %d pontos\n", jogador[0], pontos[0], jogador[1], pontos[1]);
+                printf("O jogador %s ganhou o jogo!\n", jogadores[jogadorDaVez].nome);
+                printf("Placar final: %s: %d pontos, %s: %d pontos\n", jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
                 printf("Total de movimentos feitos: %d\n", movimentosFeitos);
                 break; // Sai do loop principal do jogo
             }
