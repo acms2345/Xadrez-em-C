@@ -7,7 +7,10 @@
 bool JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino, int jogadorDaVez) {
     char peca = tabuleiro[linhaOrigem][colunaOrigem];
 
-    if((jogadorDaVez == 0 && isupper(tabuleiro[linhaDestino][colunaDestino])) || ((jogadorDaVez == 1 && islower(tabuleiro[linhaDestino][colunaDestino])))) {
+    if(linhaOrigem == linhaDestino && colunaOrigem == colunaDestino) {
+        return false; // Movimento para a mesma posição
+
+    } else if((jogadorDaVez == 0 && isupper(tabuleiro[linhaDestino][colunaDestino])) || ((jogadorDaVez == 1 && islower(tabuleiro[linhaDestino][colunaDestino])))) {
         return false; // Tentativa de capturar uma peça do mesmo jogador
 
     } else if ((jogadorDaVez == 0 && islower(tabuleiro[linhaOrigem][colunaOrigem])) || (jogadorDaVez == 1 && isupper(tabuleiro[linhaOrigem][colunaOrigem]))) {

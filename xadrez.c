@@ -23,8 +23,6 @@ typedef struct {
 
 Jogador jogadores[2];
 
-char jogador[2] [20]; //Armazena os nomes dos jogadores
-
 int movimentosFeitos = 0;
 
 bool ganhou = false;
@@ -71,9 +69,6 @@ int ObterCoordenada(const char* eixo) {
 
 int main() {
     
-
-
-    int pontos[2] = {0, 0};
     
     printf("----------------------XADREZ----------------------\n\n");
 
@@ -109,26 +104,31 @@ int main() {
             movimentosFeitos++;
 
             //Verifica a captura de peças e atualiza a pontuação
-            if (tabuleiro[linhaDestino][colunaDestino] == 'p' || tabuleiro[linhaDestino][colunaDestino] == 'P'){
-                // Captura de peão
-                jogadores[jogadorDaVez].pontos += 1; // Incrementa o ponto do jogador que capturou
-            } else if(tabuleiro[linhaDestino][colunaDestino] == 'c' || tabuleiro[linhaDestino][colunaDestino] == 'C' || tabuleiro[linhaDestino][colunaDestino] == 'b' || tabuleiro[linhaDestino][colunaDestino] == 'B'){
-                // Captura de cavalo ou bispo
-                jogadores[jogadorDaVez].pontos += 3; // Incrementa 3 pontos para cavalo ou bispo
-            } else if(tabuleiro[linhaDestino][colunaDestino] == 't' || tabuleiro[linhaDestino][colunaDestino] == 'T'){
-                // Captura de torre
-                jogadores[jogadorDaVez].pontos += 5; // Incrementa 5 pontos para torre
-            } else if(tabuleiro[linhaDestino][colunaDestino] == 'q' || tabuleiro[linhaDestino][colunaDestino] == 'Q'){
-                // Captura de rainha
-                jogadores[jogadorDaVez].pontos += 9; // Incrementa 9 pontos para rainha
-            } else if(tabuleiro[linhaDestino][colunaDestino] == 'k' || tabuleiro[linhaDestino][colunaDestino] == 'K'){
-                // Captura de rei
-                ganhou = true;
-                printf("O jogador %s ganhou o jogo!\n", jogadores[jogadorDaVez].nome);
-                printf("Placar final: %s: %d pontos, %s: %d pontos\n", jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
-                printf("Total de movimentos feitos: %d\n", movimentosFeitos);
-                break; // Sai do loop principal do jogo
+            switch(toupper(tabuleiro[linhaDestino][colunaDestino])){
+                case 'P':
+                    jogadores[jogadorDaVez].pontos += 1; // Incrementa o ponto do jogador que capturou
+                    break;
+                case 'C':
+                case 'B':
+                    jogadores[jogadorDaVez].pontos += 3; // Incrementa 3 pontos para cavalo ou bispo
+                    break;
+                case 'T':
+                    jogadores[jogadorDaVez].pontos += 5; // Incrementa 5 pontos para torre
+                    break;
+                case 'Q':
+                    jogadores[jogadorDaVez].pontos += 9; // Incrementa 9 pontos para rainha
+                    break;
+                case 'K':
+                    ganhou = true;
+                    printf("O jogador %s ganhou o jogo!\n", jogadores[jogadorDaVez].nome);
+                    printf("Placar final: %s: %d pontos, %s: %d pontos\n", jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                    printf("Total de movimentos feitos: %d\n", movimentosFeitos);
+                    break; // Sai do loop principal do jogo
+                
+                default:
+                    break; // Nenhuma peça capturada
             }
+            
             
             tabuleiro[linhaDestino][colunaDestino] = tabuleiro[linhaOrigem][colunaOrigem];
             tabuleiro[linhaOrigem][colunaOrigem] = ' ';
