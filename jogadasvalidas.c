@@ -42,7 +42,7 @@ bool JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem, int l
                     return true; // Movimento diagonal para capturar
                 } else if (linhaDestino == linhaOrigem + 1 && colunaDestino == colunaOrigem && tabuleiro[linhaDestino][colunaDestino] == ' '){
                     return true; // Movimento para frente
-                } else if (linhaOrigem == 1 && linhaDestino == linhaOrigem + 2 && tabuleiro[linhaDestino][colunaDestino] == ' ') {
+                } else if (linhaOrigem == 1 && linhaDestino == linhaOrigem + 2 && tabuleiro[linhaDestino + 1][colunaDestino] == ' ' && tabuleiro[linhaDestino][colunaDestino] == ' ') {
                     return true; // Movimento de início para frente (duas casas)
                 } else {
                     return false; // Movimento inválido para o peão
