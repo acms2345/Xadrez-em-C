@@ -3,6 +3,8 @@ Tal código corresponde a um jogo de dois jogadores local, inspirado nas regras 
 
 ## Sobre o funcionamento do código
 Ao invés das pecas brancas e pretas, o código diferencia as peças por caracteres maiúsculos e minúsculos. 
+
+Por enquanto, o código também conta com um sistema de pontuação para cada jogadorcom base no valor de cada peça.
 ### Organização dos arquivos
 Para não colocar VÁRIAS linhas de código em um único arquivo, resolvi separar em dois arquivos:
 - `xadrez.c`: é o código principal, com a exibição para o usuário.
