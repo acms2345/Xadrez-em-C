@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <ctype.h>
+#include <string.h>
 
 #include "jogadasvalidas.h"
 
@@ -84,7 +86,7 @@ int main() {
         printf("\n");
         ExibirTabuleiro();
 
-        printf("E a vez de %s!\n", jogadores[jogadorDaVez].nome);
+        printf("E a vez de %s!\n (%s)", jogadores[jogadorDaVez].nome, (jogadorDaVez == 0) ? "MAIUSCULAS" : "minusculas");
 
         int linhaOrigem = ObterCoordenada("da linha da peca que queres mover");
         int colunaOrigem = ObterCoordenada("da coluna da peca que queres mover");
@@ -99,7 +101,7 @@ int main() {
         int linhaDestino = ObterCoordenada("da linha da posicao para a qual queres mover");
         int colunaDestino = ObterCoordenada("da coluna da posicao para a qual queres mover");
 
-        if(JogadaValida(tabuleiro, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, jogadorDaVez)){
+        if(strcmp(JogadaValida(tabuleiro, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, jogadorDaVez), "OK") == 0){
             
             movimentosFeitos++;
 
@@ -136,7 +138,7 @@ int main() {
 
             jogadorDaVez = 1 - jogadorDaVez; // Alterna entre 0 e 1, trocando o jogador da vez
         } else {
-            printf("Jogada invalida! Tente novamente.\n");
+            printf("Jogada invalida! %s.\n", JogadaValida(tabuleiro, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, jogadorDaVez));
         }
 
     }
