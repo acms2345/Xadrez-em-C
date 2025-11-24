@@ -1,22 +1,57 @@
 # Documentação do projeto de Xadrez em C
 Tal código corresponde a um jogo de dois jogadores local, inspirado nas regras oficiais do xadrez.
 
+> **Nota**: Este é um projeto educacional. Algumas regras avançadas ainda não estão implementadas.
+
 ## Sobre o funcionamento do código
-Ao invés das pecas brancas e pretas, o código diferencia as peças por caracteres maiúsculos e minúsculos. 
+Ao invés das pecas brancas e pretas, o código diferencia as peças por caracteres maiúsculos e minúsculos:
+- **Peças brancas**: letras MAIÚSCULAS (P, T, C, B, Q, K)
+- **Peças pretas**: letras minúsculas (p, t, c, b, q, k)
 
 Por enquanto, o código também conta com um sistema de pontuação para cada jogador com base no valor de cada peça.
-### Organização dos arquivos
-Para não colocar VÁRIAS linhas de código em um único arquivo, resolvi separar em dois arquivos:
-- `xadrez.c`: é o código principal, com a exibição para o usuário.
-- `jogadasvalidas.c`: faz a verificação principal das jogadas válidas (ou inválidas), por meio de uma função char que retorna "OK" para jogadas válidas e retorna outros textos de erros para exibição ao usuário caso seja uma jogada inválida.
+## 📁 Estrutura do projeto
 
-Para conseguir usar a função de char no xadrez.c, precisei usar o cabeçalho `jogadasvalidas.h` para ter as definições da função e conseguir interligar os dois arquivos.
-Por isso, _o sistema de compilação dos codigos é um pouco diferente do convencional_. Mas a compilação depende do sistema operacional que você usa. Recomendo uma pesquisa sobre _"compilação com mais de um arquivo em C"_.
-### Como jogar
-- O nome dos dois jogadores são informados ao sistema.
-- O tabuleiro funciona com uma tabela de 8 linhas e 8 colunas.
-- Para o usuário mover, é necessário:
+```
+Xadrez-em-C/
+├── xadrez.c           # Código principal (interface, loop do jogo)
+├── jogadasvalidas.c   # Lógica de validação de movimentos
+├── jogadasvalidas.h   # Header com protótipos
+└── README.md          # Este arquivo
+```
+
+## Como jogar 🎮
+1. O nome dos dois jogadores são informados ao sistema.
+2. O tabuleiro funciona com uma tabela de 8 linhas e 8 colunas.
+3. Para o usuário mover, é necessário:
   - Inserir a linha de origem;
   - Inserir a coluna de origem;
   - Inserir a linha do destino;
   - E inserir a coluna do destino.
+
+### Exemplo de jogada
+
+```
+  1 2 3 4 5 6 7 8
+1 t c b k q b c t
+2 p p p p p p p p
+3                
+4                
+5                
+6                
+7 P P P P P P P P
+8 T C B K Q B C T
+
+Jogador1, digite a coordenada da linha de origem (1-8): 7
+Jogador1, digite a coordenada da coluna de origem (1-8): 1
+Jogador1, digite a coordenada da linha de destino (1-8): 6
+Jogador1, digite a coordenada da coluna de destino (1-8): 1
+```
+
+## ⚠️ Limitações conhecidas
+
+1. **Não verifica xeque**: O rei pode se mover para casa atacada
+2. **Não detecta xeque-mate**: Jogo termina apenas com captura do rei
+3. **Sem roque**: Movimento especial não implementado
+4. **Sem en passant**: Captura especial de peão não implementada
+5. **Entrada numérica apenas**: Não aceita notação algébrica (e4, Nf3)
+6. **Sem detecção de empate**: Por afogamento, repetição ou 50 movimentos
