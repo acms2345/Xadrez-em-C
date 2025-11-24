@@ -69,6 +69,25 @@ int ObterCoordenada(const char* eixo) {
     }
 }
 
+char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) {
+    char escolha;
+    printf("Seu peao chegou na ultima linha! Escolha a peca para promover (Q, C, B, T): ");
+    while (1) {
+        scanf(" %c", &escolha);
+        if(jogadorDaVez == 0) {
+            escolha = toupper(escolha);
+        } else {
+            escolha = tolower(escolha);
+        }
+        if (((escolha == 'Q' || escolha == 'C' || escolha == 'B' || escolha == 'T') && jogadorDaVez == 0) ||
+            ((escolha == 'q' || escolha == 'c' || escolha == 'b' || escolha == 't') && jogadorDaVez == 1)) {
+            return escolha;
+        } else {
+            printf("Escolha invalida. Por favor, escolha entre Q, C, B, T: ");
+        }
+    }
+}
+
 int main() {
     
     
@@ -101,7 +120,9 @@ int main() {
         int linhaDestino = ObterCoordenada("da linha da posicao para a qual queres mover");
         int colunaDestino = ObterCoordenada("da coluna da posicao para a qual queres mover");
 
-        if(strcmp(JogadaValida(tabuleiro, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, jogadorDaVez), "OK") == 0){
+        const char* resultadoJogadaValida = JogadaValida(tabuleiro, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, jogadorDaVez);
+
+        if(strcmp(resultadoJogadaValida, "OK") == 0){
             
             movimentosFeitos++;
 
@@ -130,15 +151,24 @@ int main() {
                 default:
                     break; // Nenhuma peça capturada
             }
+            if(ganhou){
+                break; // Sai do loop principal do jogo se alguém ganhou
+            }
             
-            
+
+
             tabuleiro[linhaDestino][colunaDestino] = tabuleiro[linhaOrigem][colunaOrigem];
             tabuleiro[linhaOrigem][colunaOrigem] = ' ';
+
+            if((tabuleiro[linhaDestino][colunaDestino] == 'p' && linhaDestino == 7) || (tabuleiro[linhaDestino][colunaDestino] == 'P' && linhaDestino == 0)){
+                tabuleiro[linhaDestino][colunaDestino] = PromocaoPeao(linhaDestino, colunaDestino, jogadorDaVez);
+
+            }
 
 
             jogadorDaVez = 1 - jogadorDaVez; // Alterna entre 0 e 1, trocando o jogador da vez
         } else {
-            printf("Jogada invalida! %s.\n", JogadaValida(tabuleiro, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, jogadorDaVez));
+            printf("Jogada invalida! %s.\n", resultadoJogadaValida);
         }
 
     }
