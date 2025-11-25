@@ -19,7 +19,14 @@ Xadrez-em-C/
 └── README.md          # Este arquivo
 ```
 
-## Como jogar 🎮
+### Principais funções
+
+- `ExibirTabuleiro()`: Imprime o estado atual do tabuleiro
+- `ObterCoordenada()`: Lê e valida entrada do usuário
+- `JogadaValida()`: Verifica se o movimento é válido
+- `PromocaoPeao()`: Permite escolher peça na promoção
+
+## 🎮 Como jogar 
 1. O nome dos dois jogadores são informados ao sistema.
 2. O tabuleiro funciona com uma tabela de 8 linhas e 8 colunas.
 3. Para o usuário mover, é necessário:

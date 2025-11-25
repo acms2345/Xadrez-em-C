@@ -172,8 +172,9 @@ int main() {
         }
 
     }
-    system("pause");
-
+    printf("Pressione Enter para sair...");
+    while(getchar() != '\n'); // Limpa o buffer de entrada
+    getchar();
 
     return 0;
 }
