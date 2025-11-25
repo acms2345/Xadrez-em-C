@@ -38,7 +38,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                 } else if (linhaOrigem == 6 && linhaDestino == linhaOrigem - 2 && colunaDestino == colunaOrigem && tabuleiro[linhaDestino - 1][colunaDestino] == ' ' && tabuleiro[linhaDestino][colunaDestino] == ' ') {
                     return "OK"; // Movimento de início para frente (duas casas)
                 } else {
-                    return "Movimento invalido para o peão"; // Movimento inválido para o peão
+                    return "Movimento invalido para o peao"; // Movimento inválido para o peão
                 }
             } else {
                 if ((linhaDestino == linhaOrigem + 1 && colunaDestino == colunaOrigem - 1 && tabuleiro[linhaDestino][colunaDestino] != ' ')) {
@@ -50,7 +50,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                 } else if (linhaOrigem == 1 && linhaDestino == linhaOrigem + 2 && tabuleiro[linhaDestino + 1][colunaDestino] == ' ' && tabuleiro[linhaDestino][colunaDestino] == ' ') {
                     return "OK"; // Movimento de início para frente (duas casas)
                 } else {
-                    return "Movimento invalido para o peão"; // Movimento inválido para o peão
+                    return "Movimento invalido para o peao"; // Movimento inválido para o peão
                 }
             }
             break;
