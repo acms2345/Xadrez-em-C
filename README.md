@@ -26,6 +26,17 @@ Xadrez-em-C/
 - `JogadaValida()`: Verifica se o movimento é válido
 - `PromocaoPeao()`: Permite escolher peça na promoção
 
+## 📊 Sistema de pontuação
+
+| Peça | Valor |
+|------|-------|
+| Peão (P/p) | 1 |
+| Cavalo (C/c) | 3 |
+| Bispo (B/b) | 3 |
+| Torre (T/t) | 5 |
+| Rainha (Q/q) | 9 |
+| Rei (K/k) | Vitória |
+
 ## 🎮 Como jogar 
 1. O nome dos dois jogadores são informados ao sistema.
 2. O tabuleiro funciona com uma tabela de 8 linhas e 8 colunas.
@@ -62,3 +73,7 @@ Jogador1, digite a coordenada da coluna de destino (1-8): 1
 4. **Sem en passant**: Captura especial de peão não implementada
 5. **Entrada numérica apenas**: Não aceita notação algébrica (e4, Nf3)
 6. **Sem detecção de empate**: Por afogamento, repetição ou 50 movimentos
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
