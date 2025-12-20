@@ -67,12 +67,11 @@ Jogador1, digite a coordenada da coluna de destino (1-8): 1
 
 ## ⚠️ Limitações conhecidas
 
-1. **Não verifica xeque**: O rei pode se mover para casa atacada
-2. **Não detecta xeque-mate**: Jogo termina apenas com captura do rei
-3. **Sem roque**: Movimento especial não implementado
-4. **Sem en passant**: Captura especial de peão não implementada
-5. **Entrada numérica apenas**: Não aceita notação algébrica (e4, Nf3)
-6. **Sem detecção de empate**: Por afogamento, repetição ou 50 movimentos
+1. **Não detecta xeque-mate**: Jogo termina apenas com captura do rei
+2. **Sem roque**: Movimento especial não implementado
+3. **Sem en passant**: Captura especial de peão não implementada
+4. **Entrada numérica apenas**: Não aceita notação algébrica (e4, Nf3)
+5. **Sem detecção de empate**: Por afogamento, repetição ou 50 movimentos
 
 ## 📄 Licença
 

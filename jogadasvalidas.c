@@ -3,13 +3,137 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+
+bool CasaAtacada(char tabuleiro[8][8], int linha, int coluna, int oponente){
+    //Verificação de ataque de peões
+    if(oponente == 0){
+        if(linha + 1 < 8 && coluna - 1 >= 0 && tabuleiro[linha + 1][coluna - 1] == 'P') return true;
+        if(linha + 1 < 8 && coluna + 1 < 8 && tabuleiro[linha + 1][coluna + 1] == 'P') return true;
+    } else{
+        if(linha - 1 >= 0 && coluna - 1 >= 0 && tabuleiro[linha - 1][coluna - 1] == 'p') return true;
+        if(linha - 1 >= 0 && coluna + 1 < 8 && tabuleiro[linha - 1][coluna + 1] == 'p') return true;
+    }
+
+    char torre = (oponente == 0) ? 'T': 't';
+    char rainha = (oponente == 0) ? 'Q' : 'q';
+
+    //Verificação de ataques verticais (Torre ou rainha)
+    for(int i = linha + 1; i < 8; i++){// Ataque de cima
+        char peca = tabuleiro[i][coluna];
+        if(peca != ' '){
+            if (peca == torre || peca == rainha) return true;
+            break;
+        }
+    }
+    for(int i = linha - 1; i >= 0; i--){// Ataque de baixo
+        char peca = tabuleiro[i][coluna];
+        if(peca != ' '){
+            if (peca == torre || peca == rainha) return true;
+            break;
+        }
+    }
+    //Verificação de ataques horizontais (Torre ou rainha)
+    for(int i = coluna + 1; i < 8; i++){// Ataque da direita
+        char peca = tabuleiro[linha][i];
+        if(peca != ' '){
+            if (peca == torre || peca == rainha) return true;
+            break;
+        }
+    }
+    for(int i = coluna - 1; i >= 0; i--){// Ataque da esquerda
+        char peca = tabuleiro[linha][i];
+        if(peca != ' '){
+            if (peca == torre || peca == rainha) return true;
+            break;
+        }
+    }
+
+    //Verifica se há ataque de cavalo
+    int movimentosCavalo[8][2] = {
+    {-2, -1}, {-2, 1}, {-1, -2}, {-1, 2},
+    {1, -2}, {1, 2}, {2, -1}, {2, 1}
+    };
+
+    char cavalo = (oponente == 0) ? 'C' : 'c';
+
+    /*Verifica as 8 possíveis posições de um cavalo,
+    com base em movimentosCavalo[8][2]*/
+    for(int i = 0; i < 8; i++){
+        int linhaNova = linha + movimentosCavalo[i][0];
+        int colunaNova = coluna + movimentosCavalo[i][1];
+
+        if(linhaNova >= 0 && linhaNova < 8 && colunaNova >= 0 && colunaNova < 8){
+            if (tabuleiro[linhaNova][colunaNova] == cavalo){
+                return true;
+            }
+        }
+    }
+
+    //Verificação de ataques na diagonal (Bispo ou rainha)
+
+    char bispo = (oponente == 0) ? 'B' : 'b';
+
+    for(int i = 1; linha + i < 8 && coluna + i < 8; i++){//Para ver ataque a sudeste
+        char peca = tabuleiro[linha + i][coluna + i];
+        if(peca != ' '){
+            if(peca == bispo || peca == rainha) return true;
+            break;
+        }
+    }
+    for(int i = 1; linha - i >= 0 && coluna + i < 8; i++){//Para ver ataque a nordeste
+        char peca = tabuleiro[linha - i][coluna + i];
+        if(peca != ' '){
+            if(peca == bispo || peca == rainha) return true;
+            break;
+        }
+    }
+    for(int i = 1; linha + i < 8 && coluna - i >= 0; i++){//Para ver movimento para sudoeste
+        char peca = tabuleiro[linha + i][coluna - i];
+        if(peca != ' '){
+            if(peca == bispo || peca == rainha) return true;
+            break;
+        }
+    }
+    for(int i = 1; linha - i >= 0 && coluna - i >= 0; i++){//Para ver movimento para noroeste
+        char peca = tabuleiro[linha - i][coluna - i];
+        if(peca != ' '){
+            if(peca == bispo || peca == rainha) return true;
+            break;
+        }
+    }
+
+    //Verifica ataques do rei inimigo
+    char reiInimigo = (oponente == 0) ? 'K' : 'k';
+
+    int movimentosRei[8][2] = {
+        {-1, -1}, {-1, 0}, {-1, 1},  // Noroeste, Norte, Nordeste
+        {0, -1},           {0, 1},    // Oeste, Leste
+        {1, -1},  {1, 0},  {1, 1}     // Sudoeste, Sul, Sudeste
+    };
+
+    /*Verifica as 8 possíveis posições de um rei,
+    com base em movimentosRei[8][2]*/
+    for(int i = 0; i < 8; i++){
+        int linhaNova = linha + movimentosRei[i][0];
+        int colunaNova = coluna + movimentosRei[i][1];
+
+        if(linhaNova >= 0 && linhaNova < 8 && colunaNova >= 0 && colunaNova < 8){
+            if (tabuleiro[linhaNova][colunaNova] == reiInimigo){
+                return true;
+            }
+        }
+    }
+
+
+    //Caso nenhuma das condições acima se aplicarem...
+    return false; 
+}
 /*A função retorna alguns valores de acordo com o seu resultado:
     - "OK" para jogadas válidas;
     - Outros textos para jogadas inválidas, para mostrar ao usuário o erro dele
         (Por exemplo, "Peça do mesmo jogador" quando ocorre tentativa de capturar uma peça do mesmo jogador)
         
 */
-
 const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino, int jogadorDaVez) {
     char peca = tabuleiro[linhaOrigem][colunaOrigem];
 
@@ -219,7 +343,12 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
 
             if((linhaDestino == linhaOrigem + 1 || linhaDestino == linhaOrigem - 1 || linhaDestino == linhaOrigem) &&
                (colunaDestino == colunaOrigem + 1 || colunaDestino == colunaOrigem - 1 || colunaDestino == colunaOrigem)) {
-                return "OK"; // Movimento válido para o rei (uma casa em qualquer direção)
+                if(!CasaAtacada(tabuleiro, linhaDestino, colunaDestino, 1 - jogadorDaVez)){
+                    return "OK"; // Movimento válido para o rei (uma casa em qualquer direção)
+                } else{
+                    return "Casa de destino em xeque";
+                }
+                    
             } else {
                 return "Movimento invalido para o rei"; // Movimento inválido para o rei
             }
