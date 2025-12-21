@@ -13,6 +13,7 @@ Por enquanto, o código também conta com um sistema de pontuação para cada jo
 
 ```
 Xadrez-em-C/
+├── menu.c             # Menu principal e ponto de entrada
 ├── xadrez.c           # Código principal (interface, loop do jogo)
 ├── jogadasvalidas.c   # Lógica de validação de movimentos
 ├── jogadasvalidas.h   # Header com protótipos
@@ -21,10 +22,13 @@ Xadrez-em-C/
 
 ### Principais funções
 
-- `ExibirTabuleiro()`: Imprime o estado atual do tabuleiro
-- `ObterCoordenada()`: Lê e valida entrada do usuário
-- `JogadaValida()`: Verifica se o movimento é válido
-- `PromocaoPeao()`: Permite escolher peça na promoção
+- `ExibirTabuleiro()`: Imprime o estado atual do tabuleiro.
+- `SalvarJogo()`: Salva as informações da partida para serem acessados depois em um arquivo chamado `salvamento.dat`.
+- `CarregarJogo()`: Acessa as informações salvas pela função `SalvarJogo()`.
+- `obterCoordenada()`: Lê e valida entrada de notação algébrica do usuário.
+- `JogadaValida()`: Verifica se o movimento é válido.
+  - `CasaAtacada()`: Verifica se a casa para que o rei está se movendo não está em xeque.
+- `PromocaoPeao()`: Permite escolher peça na promoção.
 
 ## 📊 Sistema de pontuação
 
@@ -39,17 +43,18 @@ Xadrez-em-C/
 
 ## 🎮 Como jogar 
 1. O nome dos dois jogadores são informados ao sistema.
-2. O tabuleiro funciona com uma tabela de 8 linhas e 8 colunas.
-3. Para o usuário mover, é necessário:
-  - Inserir a linha de origem;
-  - Inserir a coluna de origem;
-  - Inserir a linha do destino;
-  - E inserir a coluna do destino.
+2. O tabuleiro funciona com uma tabela de 8 linhas e 8 colunas (com a ordem de linhas sendo o contrário ao convencional do xadrez).
+3. Para o usuário mover, é necessário inserir a jogada em notação algébrica (ex: e2e4):
+  - Primeira letra: coluna de origem (a-h);
+  - Primeiro número: linha de origem (1-8);
+  - Segunda letra: coluna de destino (a-h);
+  - Segundo número: linha de destino (1-8);
+  - Digite "salvar" para salvar o jogo.
 
 ### Exemplo de jogada
 
 ```
-  1 2 3 4 5 6 7 8
+  a b c d e f g h
 1 t c b k q b c t
 2 p p p p p p p p
 3                
@@ -59,10 +64,7 @@ Xadrez-em-C/
 7 P P P P P P P P
 8 T C B K Q B C T
 
-Jogador1, digite a coordenada da linha de origem (1-8): 7
-Jogador1, digite a coordenada da coluna de origem (1-8): 1
-Jogador1, digite a coordenada da linha de destino (1-8): 6
-Jogador1, digite a coordenada da coluna de destino (1-8): 1
+Jogador1, digite a jogada em notacao algebrica (ex: e2e4):  e7e5
 ```
 
 ## ⚠️ Limitações conhecidas
@@ -70,7 +72,7 @@ Jogador1, digite a coordenada da coluna de destino (1-8): 1
 1. **Não detecta xeque-mate**: Jogo termina apenas com captura do rei
 2. **Sem roque**: Movimento especial não implementado
 3. **Sem en passant**: Captura especial de peão não implementada
-4. **Entrada numérica apenas**: Não aceita notação algébrica (e4, Nf3)
+4. **Entrada estendida apenas**: Não aceita notação algébrica completa (e4, Nf3), apenas formato estendido (e2e4)
 5. **Sem detecção de empate**: Por afogamento, repetição ou 50 movimentos
 
 ## 📄 Licença

@@ -29,8 +29,11 @@ int movimentosFeitos = 0;
 
 bool ganhou = false;
 
+bool SalvarJogo();
+bool CarregarJogo();
+
 void ExibirTabuleiro() {
-    printf("\n  1 2 3 4 5 6 7 8\n");
+    printf("\n  a b c d e f g h\n");
     for (int i = 0; i < 8; i++) {
         printf("%d ", i + 1);
         for (int j = 0; j < 8; j++) {
@@ -41,31 +44,61 @@ void ExibirTabuleiro() {
 }
 
 /**
- * Solicita ao jogador atual que digite uma coordenada (linha ou coluna) entre 1 e 8.
- * Valida a entrada, garantindo que seja um número inteiro dentro do intervalo permitido.
- * Retorna o valor da coordenada ajustado para índice de array (0-7).
+ * Solicita ao jogador que insira uma jogada no formato de notação algébrica.
+ * Parâmetros:
+ *   linhaOrigem, colunaOrigem: ponteiros para armazenar a linha e coluna de origem.
+ *   linhaDestino, colunaDestino: ponteiros para armazenar a linha e coluna de destino.
+ * O jogador pode digitar "salvar" para salvar o jogo atual.
  */
-int ObterCoordenada(const char* eixo) {
-    int coordenada, ch;
+void obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDestino, int *colunaDestino){
+    char input[10];
+    int ch;
 
-    for (;;) {
-        printf("\n%s, digite a coordenada %s (1-8): ", jogadores[jogadorDaVez].nome, eixo);
+    while(1){
+        printf("\n%s, digite a jogada em notacao algebrica (ex: e2e4): ", jogadores[jogadorDaVez].nome);
+        scanf("%9s", input);
 
-        if (scanf("%d", &coordenada) != 1) {
-            while ((ch = getchar()) != '\n' && ch != EOF) {} // descarta linha
-            printf("ERRO: Entrada invalida. Por favor, digite um numero entre 1 e 8.\n");
+        while ((ch = getchar()) != '\n' && ch != EOF);
+
+        if(strcmp(input, "salvar") == 0 || strcmp(input, "SALVAR") == 0){
+            if(SalvarJogo()){
+                printf("Jogo salvo com sucesso!\n");
+            } else {
+                printf("Erro ao salvar o jogo.\n");
+            }
             continue;
         }
 
-        // sempre descarta o restante da linha (inclui "lixo" como abc)
-        while ((ch = getchar()) != '\n' && ch != EOF) {}
-
-        if (coordenada < 1 || coordenada > 8) {
-            printf("ERRO: Entrada invalida. Por favor, digite um numero entre 1 e 8.\n");
+        if(strlen(input) != 4){
+            printf("ERRO: Formato invalido. Use 4 caracteres (ex: e2e4)\n");
             continue;
         }
+        if(tolower(input[0]) < 'a' || tolower(input[0]) > 'h'){
+            printf("ERRO: Coluna origem invalida. Use letras de a-h.\n");
+            continue;
+        }
+        *colunaOrigem = tolower(input[0]) - 'a';
+        
+        if(input[1] < '1' || input[1] > '8'){
+            printf("ERRO: Linha origem invalida. Use numeros de 1-8.\n");
+            continue;
+        }
+        *linhaOrigem = input[1] - '1';
 
-        return coordenada - 1;
+        if(tolower(input[2]) < 'a' || tolower(input[2]) > 'h'){
+            printf("ERRO: Coluna destino invalida. Use letras de a-h.\n");
+            continue;
+        }
+        *colunaDestino = tolower(input[2]) - 'a';
+
+        if(input[3] < '1' || input[3] > '8'){
+            printf("ERRO: Linha destino invalida. Use numeros de 1-8.\n");
+            continue;
+        }
+        *linhaDestino = input[3] - '1';
+            
+        
+        break;
     }
 }
 
@@ -87,18 +120,68 @@ char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) {
         }
     }
 }
-
-int main() {
-    
-    
-    printf("----------------------XADREZ----------------------\n\n");
-
-    for(int i = 0; i < 2; i++){
-        printf("Digite o nome do %d jogador: ", i + 1);
-        scanf("%19s", jogadores[i].nome);
-        jogadores[i].pontos = 0;
+struct Salvamento
+{
+    char tabuleiro[8][8];
+    int jogadorDaVez;
+    int movimentosFeitos;
+    Jogador jogadores[2];
+};
+bool SalvarJogo() {
+    FILE *arquivo = fopen("salvamento.dat", "wb");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para salvar o jogo.\n");
+        return false;
     }
+    
+    
+    struct Salvamento salvamento;
+    memcpy(salvamento.tabuleiro, tabuleiro, sizeof(tabuleiro));
+    salvamento.jogadorDaVez = jogadorDaVez;
+    salvamento.movimentosFeitos = movimentosFeitos;
+    memcpy(salvamento.jogadores, jogadores, sizeof(jogadores));
 
+    fwrite(&salvamento, sizeof(salvamento), 1, arquivo);
+    fclose(arquivo);
+    
+    return true;
+}
+
+bool CarregarJogo() {
+    FILE *arquivo = fopen("salvamento.dat", "rb");
+    if (arquivo == NULL) {
+        printf("Nenhum jogo salvo encontrado.\n");
+        return false;
+    }
+    
+    struct Salvamento salvamento;
+
+    fread(&salvamento, sizeof(salvamento), 1, arquivo);
+    fclose(arquivo);
+    
+    memcpy(tabuleiro, salvamento.tabuleiro, sizeof(tabuleiro));
+    jogadorDaVez = salvamento.jogadorDaVez;
+    movimentosFeitos = salvamento.movimentosFeitos;
+    memcpy(jogadores, salvamento.jogadores, sizeof(jogadores));
+    
+    return true;
+}
+
+int iniciarJogo(int opcao) {
+    
+    
+    printf("--------------------------------------------\n\n");
+
+    if (opcao == 1){
+        for(int i = 0; i < 2; i++){
+            printf("Digite o nome do %d jogador: ", i + 1);
+            scanf("%19s", jogadores[i].nome);
+            jogadores[i].pontos = 0;
+        }
+    } else {
+        CarregarJogo();
+    }
+    
 
 
     while(!ganhou){
@@ -107,8 +190,10 @@ int main() {
 
         printf("E a vez de %s!\n (%s)", jogadores[jogadorDaVez].nome, (jogadorDaVez == 0) ? "MAIUSCULAS" : "minusculas");
 
-        int linhaOrigem = ObterCoordenada("da linha da peca que queres mover");
-        int colunaOrigem = ObterCoordenada("da coluna da peca que queres mover");
+        int linhaOrigem, colunaOrigem, linhaDestino, colunaDestino;
+
+        obterCoordenada(&linhaOrigem, &colunaOrigem, &linhaDestino, &colunaDestino);
+        
 
         if(tabuleiro[linhaOrigem][colunaOrigem] == ' '){
             printf("Jogada invalida! Nao ha peca na posicao de origem.\n");
@@ -117,8 +202,6 @@ int main() {
             
         }
 
-        int linhaDestino = ObterCoordenada("da linha da posicao para a qual queres mover");
-        int colunaDestino = ObterCoordenada("da coluna da posicao para a qual queres mover");
 
         const char* resultadoJogadaValida = JogadaValida(tabuleiro, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, jogadorDaVez);
 
