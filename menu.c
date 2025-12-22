@@ -24,7 +24,7 @@ int main(){
         } else if (opcao == 3)
         {
             printf("\nAJUDA:\n");
-            printf("Este e um jogo de xadrez para dois jogadores. Cada jogador controla um conjunto de pecas, uma em maiusculas e a outra em minusculas.\n");
+            printf("Este e um jogo de xadrez para dois jogadores. Cada jogador controla um conjunto de pecas, uma em MAIUSCULAS e a outra em minusculas.\n");
             printf("O objetivo do jogo e capturar o rei do oponente. As pecas se movem de acordo com as regras tradicionais do xadrez.\n");
             printf("Para fazer uma jogada, voce precisara inserir as coordenadas de origem e destino no formato de notacao algebrica (ex: e2e4).\n");
             printf("Voce tambem pode salvar o jogo a qualquer momento digitando 'salvar' quando solicitado a inserir uma jogada.\n");

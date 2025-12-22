@@ -73,7 +73,7 @@ Jogador1, digite a jogada em notacao algebrica (ex: e2e4):  e7e5
 2. **Sem roque**: Movimento especial não implementado
 3. **Sem en passant**: Captura especial de peão não implementada
 4. **Entrada estendida apenas**: Não aceita notação algébrica completa (e4, Nf3), apenas formato estendido (e2e4)
-5. **Sem detecção de empate**: Por afogamento, repetição ou 50 movimentos
+5. **Sem detecção de empate**: Por afogamento ou repetição.
 
 ## 📄 Licença
 

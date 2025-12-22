@@ -171,7 +171,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     return "OK"; // Movimento diagonal para capturar
                 } else if (linhaDestino == linhaOrigem + 1 && colunaDestino == colunaOrigem && tabuleiro[linhaDestino][colunaDestino] == ' '){
                     return "OK"; // Movimento para frente
-                } else if (linhaOrigem == 1 && linhaDestino == linhaOrigem + 2 && tabuleiro[linhaDestino + 1][colunaDestino] == ' ' && tabuleiro[linhaDestino][colunaDestino] == ' ') {
+                } else if (linhaOrigem == 1 && linhaDestino == linhaOrigem + 2 && colunaDestino == colunaOrigem && tabuleiro[linhaDestino - 1][colunaDestino] == ' ' && tabuleiro[linhaDestino][colunaDestino] == ' ') {
                     return "OK"; // Movimento de início para frente (duas casas)
                 } else {
                     return "Movimento invalido para o peao"; // Movimento inválido para o peão
@@ -343,10 +343,19 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
 
             if((linhaDestino == linhaOrigem + 1 || linhaDestino == linhaOrigem - 1 || linhaDestino == linhaOrigem) &&
                (colunaDestino == colunaOrigem + 1 || colunaDestino == colunaOrigem - 1 || colunaDestino == colunaOrigem)) {
-                if(!CasaAtacada(tabuleiro, linhaDestino, colunaDestino, 1 - jogadorDaVez)){
-                    return "OK"; // Movimento válido para o rei (uma casa em qualquer direção)
+                if(CasaAtacada(tabuleiro, linhaDestino, colunaDestino, 1 - jogadorDaVez)){
+                    return "Casa de destino em xeque"; // Casa de destino está sob ataque
                 } else{
-                    return "Casa de destino em xeque";
+                    char tabuleiroTemp[8][8];
+                    memcpy(tabuleiroTemp, tabuleiro, sizeof(char) * 8 * 8);
+                    tabuleiroTemp[linhaDestino][colunaDestino] = tabuleiroTemp[linhaOrigem][colunaOrigem];
+                    tabuleiroTemp[linhaOrigem][colunaOrigem] = ' ';
+
+                    if(CasaAtacada(tabuleiroTemp, linhaDestino, colunaDestino, 1 - jogadorDaVez)){
+                        return "Movimento colocaria rei em xeque"; // Movimento colocaria o rei em xeque
+                    } else {
+                        return "OK"; // Movimento válido
+                    }
                 }
                     
             } else {

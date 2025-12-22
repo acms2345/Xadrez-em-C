@@ -18,6 +18,8 @@ char tabuleiro[8][8] = {
 
 int jogadorDaVez = 0; // 0 para o Jogador 1 (maiúsculas), 1 para o Jogador 2 (minúsculas)
 
+int movimentosSemCapturaouPiao = 0;
+
 typedef struct {
     char nome[20];
     int pontos;
@@ -125,6 +127,7 @@ struct Salvamento
     char tabuleiro[8][8];
     int jogadorDaVez;
     int movimentosFeitos;
+    int movimentosSemCapturaouPiao;
     Jogador jogadores[2];
 };
 bool SalvarJogo() {
@@ -139,6 +142,7 @@ bool SalvarJogo() {
     memcpy(salvamento.tabuleiro, tabuleiro, sizeof(tabuleiro));
     salvamento.jogadorDaVez = jogadorDaVez;
     salvamento.movimentosFeitos = movimentosFeitos;
+    salvamento.movimentosSemCapturaouPiao = movimentosSemCapturaouPiao;
     memcpy(salvamento.jogadores, jogadores, sizeof(jogadores));
 
     fwrite(&salvamento, sizeof(salvamento), 1, arquivo);
@@ -162,6 +166,7 @@ bool CarregarJogo() {
     memcpy(tabuleiro, salvamento.tabuleiro, sizeof(tabuleiro));
     jogadorDaVez = salvamento.jogadorDaVez;
     movimentosFeitos = salvamento.movimentosFeitos;
+    movimentosSemCapturaouPiao = salvamento.movimentosSemCapturaouPiao;
     memcpy(jogadores, salvamento.jogadores, sizeof(jogadores));
     
     return true;
@@ -178,6 +183,8 @@ int iniciarJogo(int opcao) {
             scanf("%19s", jogadores[i].nome);
             jogadores[i].pontos = 0;
         }
+        movimentosSemCapturaouPiao = 0;
+        movimentosFeitos = 0;
     } else {
         CarregarJogo();
     }
@@ -209,20 +216,30 @@ int iniciarJogo(int opcao) {
             
             movimentosFeitos++;
 
+            bool capturaOuPiao = false;
+
+            if(toupper(tabuleiro[linhaOrigem][colunaOrigem]) == 'P'){
+                capturaOuPiao = true;
+            }
+
             //Verifica a captura de peças e atualiza a pontuação
             switch(toupper(tabuleiro[linhaDestino][colunaDestino])){
                 case 'P':
                     jogadores[jogadorDaVez].pontos += 1; // Incrementa o ponto do jogador que capturou
+                    capturaOuPiao = true;
                     break;
                 case 'C':
                 case 'B':
                     jogadores[jogadorDaVez].pontos += 3; // Incrementa 3 pontos para cavalo ou bispo
+                    capturaOuPiao = true;
                     break;
                 case 'T':
                     jogadores[jogadorDaVez].pontos += 5; // Incrementa 5 pontos para torre
+                    capturaOuPiao = true;
                     break;
                 case 'Q':
                     jogadores[jogadorDaVez].pontos += 9; // Incrementa 9 pontos para rainha
+                    capturaOuPiao = true;
                     break;
                 case 'K':
                     ganhou = true;
@@ -234,6 +251,20 @@ int iniciarJogo(int opcao) {
                 default:
                     break; // Nenhuma peça capturada
             }
+            if(capturaOuPiao){
+                movimentosSemCapturaouPiao = 0;
+            } else {
+                movimentosSemCapturaouPiao++;
+            }
+
+            if(movimentosSemCapturaouPiao >= 100){
+                printf("Empate por regra dos 50 movimentos sem captura ou movimento de peao!\n");
+                printf("Placar final: %s: %d pontos, %s: %d pontos\n", jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                printf("Total de movimentos feitos: %d\n", movimentosFeitos);
+                ganhou = true;
+                break; // Sai do loop principal do jogo
+            }
+            
             if(ganhou){
                 break; // Sai do loop principal do jogo se alguém ganhou
             }
