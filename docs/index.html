@@ -256,7 +256,14 @@
         let waitingForInput = false;
         
         var Module = {
-            preRun: [],
+            preRun: [function() {
+                // Cria arquivo de salvamento vazio
+                try {
+                    FS.createDataFile('/', 'salvamento.dat', new Uint8Array(), true, true, true);
+                } catch(e) {
+                    console.log('Arquivo salvamento.dat já existe ou erro ao criar');
+                }
+            }],
             postRun: [function() {
                 document.getElementById('input').disabled = false;
                 document.getElementById('sendBtn').disabled = false;
@@ -282,11 +289,7 @@
                     return c;
                 }
                 return null;
-            },
-            // Simula sistema de arquivos para salvamento
-            preRun: [function() {
-                Module.FS_createDataFile('/', 'salvamento.dat', new Uint8Array(), true, true, true);
-            }]
+            }
         };
         
         function sendInput() {
