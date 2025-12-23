@@ -253,10 +253,25 @@
     
     <script>
         let inputQueue = [];
+        let inputResolve = null;
         let waitingForInput = false;
         
         var Module = {
             preRun: [function() {
+                // Configura stdin para funcionar com ASYNCIFY
+                var stdin = function() {
+                    // Se não há dados na fila, retorna null para indicar EOF temporário
+                    if (inputQueue.length === 0) {
+                        return null;
+                    }
+                    return inputQueue.shift();
+                };
+                
+                var stdout = null;
+                var stderr = null;
+                
+                FS.init(stdin, stdout, stderr);
+                
                 // Cria arquivo de salvamento vazio
                 try {
                     FS.createDataFile('/', 'salvamento.dat', new Uint8Array(), true, true, true);
@@ -267,28 +282,22 @@
             postRun: [function() {
                 document.getElementById('input').disabled = false;
                 document.getElementById('sendBtn').disabled = false;
-                document.getElementById('output').innerHTML = '<span style="color: #00ff00;">✅ Jogo carregado! Digite um comando para começar.</span>\n';
+                document.getElementById('output').innerHTML = '<span style="color: #00ff00;">✅ Jogo carregado! O menu será exibido em breve...</span>\n';
             }],
             print: function(text) {
-                if (text === 'WAITING_INPUT') {
-                    waitingForInput = true;
-                    return;
-                }
                 const output = document.getElementById('output');
                 output.textContent += text + '\n';
                 output.scrollTop = output.scrollHeight;
+                
+                // Habilita input quando aparecer prompt
+                if (text.includes('Escolha') || text.includes('digite') || text.includes('Digite')) {
+                    document.getElementById('input').focus();
+                }
             },
             printErr: function(text) {
                 console.error(text);
                 const output = document.getElementById('output');
                 output.innerHTML += '<span style="color: #ff5555;">' + text + '</span>\n';
-            },
-            stdin: function() {
-                if (inputQueue.length > 0) {
-                    const c = inputQueue.shift();
-                    return c;
-                }
-                return null;
             }
         };
         
@@ -306,13 +315,11 @@
             
             // Mostra no output o que foi digitado
             const output = document.getElementById('output');
-            const displayText = text.length > 50 ? text.substring(0, 50) + '...' : text;
-            output.innerHTML += '<span style="color: #00d4ff;">' + displayText + '</span>\n';
+            output.innerHTML += '<span style="color: #00d4ff;">→ ' + text + '</span>\n';
             output.scrollTop = output.scrollHeight;
             
             input.value = '';
             input.focus();
-            waitingForInput = false;
         }
         
         // Permite enviar com Enter
@@ -326,7 +333,7 @@
         window.addEventListener('load', function() {
             setTimeout(function() {
                 document.getElementById('input').focus();
-            }, 1000);
+            }, 1500);
         });
     </script>
     
