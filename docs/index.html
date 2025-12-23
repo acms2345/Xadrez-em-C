@@ -252,34 +252,26 @@
     </div>
     
     <script>
-        let inputBuffer = [];
-        let inputIndex = 0;
-        let wasmModule = null;
-        
-        // Função que o C chama para ler entrada
+        let started = false;
+        let runtimeReady = false;
+
         function customStdin() {
-            if (inputIndex < inputBuffer.length) {
-                return inputBuffer[inputIndex++];
+            if (Module.inputBuffer.length > 0) {
+                return Module.inputBuffer.shift();
             }
-            return null; // Retorna null quando não há input
+            return null;
         }
-        
+
         var Module = {
             inputBuffer: [],
-            preRun: [
-                function() {
-                    console.log("Preparando módulo...");
-                }
-            ],
-            postRun: [
-                function() {
-                    console.log("Módulo carregado com sucesso!");
-                    document.getElementById('input').disabled = false;
-                    document.getElementById('sendBtn').disabled = false;
-                    document.getElementById('output').innerHTML = '<span style="color: #00ff00;">✅ Jogo pronto! Digite uma opção (1-4):</span>\n';
-                    document.getElementById('input').focus();
-                }
-            ],
+            preRun: [function() { console.log("Preparando módulo..."); }],
+            postRun: [function() {
+                console.log("Módulo carregado com sucesso!");
+                document.getElementById('input').disabled = false;
+                document.getElementById('sendBtn').disabled = false;
+                document.getElementById('output').innerHTML = '<span style="color: #00ff00;">✅ Jogo pronto! Digite uma opção (1-4):</span>\n';
+                document.getElementById('input').focus();
+            }],
             print: function(text) {
                 const output = document.getElementById('output');
                 output.textContent += text;
@@ -294,37 +286,37 @@
             noInitialRun: true,
             onRuntimeInitialized: function() {
                 console.log("Runtime inicializado!");
-                // Chama main() explicitamente
-                try {
-                    this._main();
-                } catch(e) {
-                    console.error("Erro ao executar main():", e);
-                }
+                runtimeReady = true;
             }
         };
-        
+
         function sendInput() {
             const input = document.getElementById('input');
             const text = input.value.trim();
-            
             if (text === '') return;
-            
-            // Converte texto para array de bytes + newline
+
             for (let i = 0; i < text.length; i++) {
                 Module.inputBuffer.push(text.charCodeAt(i));
             }
             Module.inputBuffer.push(10); // '\n'
-            
-            // Mostra no output
+
+            if (!started && runtimeReady) {
+                started = true;
+                try {
+                    Module._main();
+                } catch (e) {
+                    console.error("Erro ao executar main():", e);
+                }
+            }
+
             const output = document.getElementById('output');
             output.innerHTML += '<span style="color: #00d4ff;">→ ' + text + '</span>\n';
             output.scrollTop = output.scrollHeight;
-            
+
             input.value = '';
             input.focus();
         }
-        
-        // Enter para enviar
+
         document.getElementById('input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 sendInput();
