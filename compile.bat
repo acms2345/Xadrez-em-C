@@ -12,6 +12,9 @@ if %ERRORLEVEL% EQU 0 (
     echo Arquivos gerados em docs/:
     echo    - xadrez.js
     echo    - xadrez.wasm
+    echo.
+    echo Para testar localmente:
+    echo    cd docs ^&^& python -m http.server 8000
 ) else (
     echo Erro na compilacao
     exit /b 1
