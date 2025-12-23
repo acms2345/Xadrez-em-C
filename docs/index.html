@@ -252,53 +252,38 @@
     </div>
     
     <script>
-        let inputQueue = [];
-        let inputResolve = null;
-        let waitingForInput = false;
+        let inputBuffer = [];
+        let inputIndex = 0;
+        
+        // Função customizada de stdin que NÃO usa prompt
+        function customStdin() {
+            if (inputIndex < inputBuffer.length) {
+                return inputBuffer[inputIndex++];
+            }
+            return null; // Retorna null quando não há input
+        }
         
         var Module = {
-            preRun: [function() {
-                // Configura stdin para funcionar com ASYNCIFY
-                var stdin = function() {
-                    // Se não há dados na fila, retorna null para indicar EOF temporário
-                    if (inputQueue.length === 0) {
-                        return null;
-                    }
-                    return inputQueue.shift();
-                };
-                
-                var stdout = null;
-                var stderr = null;
-                
-                FS.init(stdin, stdout, stderr);
-                
-                // Cria arquivo de salvamento vazio
-                try {
-                    FS.createDataFile('/', 'salvamento.dat', new Uint8Array(), true, true, true);
-                } catch(e) {
-                    console.log('Arquivo salvamento.dat já existe ou erro ao criar');
-                }
-            }],
+            preRun: [],
             postRun: [function() {
                 document.getElementById('input').disabled = false;
                 document.getElementById('sendBtn').disabled = false;
-                document.getElementById('output').innerHTML = '<span style="color: #00ff00;">✅ Jogo carregado! O menu será exibido em breve...</span>\n';
+                document.getElementById('output').innerHTML = '<span style="color: #00ff00;">✅ Jogo pronto! Aguardando comandos...</span>\n';
+                document.getElementById('input').focus();
             }],
             print: function(text) {
                 const output = document.getElementById('output');
                 output.textContent += text + '\n';
                 output.scrollTop = output.scrollHeight;
-                
-                // Habilita input quando aparecer prompt
-                if (text.includes('Escolha') || text.includes('digite') || text.includes('Digite')) {
-                    document.getElementById('input').focus();
-                }
             },
             printErr: function(text) {
                 console.error(text);
                 const output = document.getElementById('output');
                 output.innerHTML += '<span style="color: #ff5555;">' + text + '</span>\n';
-            }
+            },
+            stdin: customStdin,
+            // Desabilita prompt do navegador
+            noInitialRun: false
         };
         
         function sendInput() {
@@ -307,13 +292,13 @@
             
             if (text.trim() === '') return;
             
-            // Adiciona o texto na fila de entrada
+            // Converte texto para array de bytes + newline
             for (let i = 0; i < text.length; i++) {
-                inputQueue.push(text.charCodeAt(i));
+                inputBuffer.push(text.charCodeAt(i));
             }
-            inputQueue.push(10); // newline
+            inputBuffer.push(10); // \n
             
-            // Mostra no output o que foi digitado
+            // Mostra no output
             const output = document.getElementById('output');
             output.innerHTML += '<span style="color: #00d4ff;">→ ' + text + '</span>\n';
             output.scrollTop = output.scrollHeight;
@@ -322,18 +307,11 @@
             input.focus();
         }
         
-        // Permite enviar com Enter
+        // Enter para enviar
         document.getElementById('input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 sendInput();
             }
-        });
-        
-        // Foca no input quando a página carrega
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.getElementById('input').focus();
-            }, 1500);
         });
     </script>
     
