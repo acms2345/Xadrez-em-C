@@ -254,8 +254,9 @@
     <script>
         let inputBuffer = [];
         let inputIndex = 0;
+        let wasmModule = null;
         
-        // Função customizada de stdin que NÃO usa prompt
+        // Função que o C chama para ler entrada
         function customStdin() {
             if (inputIndex < inputBuffer.length) {
                 return inputBuffer[inputIndex++];
@@ -264,39 +265,55 @@
         }
         
         var Module = {
-            preRun: [],
-            postRun: [function() {
-                document.getElementById('input').disabled = false;
-                document.getElementById('sendBtn').disabled = false;
-                document.getElementById('output').innerHTML = '<span style="color: #00ff00;">✅ Jogo pronto! Aguardando comandos...</span>\n';
-                document.getElementById('input').focus();
-            }],
+            inputBuffer: [],
+            preRun: [
+                function() {
+                    console.log("Preparando módulo...");
+                }
+            ],
+            postRun: [
+                function() {
+                    console.log("Módulo carregado com sucesso!");
+                    document.getElementById('input').disabled = false;
+                    document.getElementById('sendBtn').disabled = false;
+                    document.getElementById('output').innerHTML = '<span style="color: #00ff00;">✅ Jogo pronto! Digite uma opção (1-4):</span>\n';
+                    document.getElementById('input').focus();
+                }
+            ],
             print: function(text) {
                 const output = document.getElementById('output');
-                output.textContent += text + '\n';
+                output.textContent += text;
                 output.scrollTop = output.scrollHeight;
             },
             printErr: function(text) {
                 console.error(text);
                 const output = document.getElementById('output');
-                output.innerHTML += '<span style="color: #ff5555;">' + text + '</span>\n';
+                output.textContent += '❌ ' + text + '\n';
             },
             stdin: customStdin,
-            // Desabilita prompt do navegador
-            noInitialRun: false
+            noInitialRun: true,
+            onRuntimeInitialized: function() {
+                console.log("Runtime inicializado!");
+                // Chama main() explicitamente
+                try {
+                    this._main();
+                } catch(e) {
+                    console.error("Erro ao executar main():", e);
+                }
+            }
         };
         
         function sendInput() {
             const input = document.getElementById('input');
-            const text = input.value;
+            const text = input.value.trim();
             
-            if (text.trim() === '') return;
+            if (text === '') return;
             
             // Converte texto para array de bytes + newline
             for (let i = 0; i < text.length; i++) {
-                inputBuffer.push(text.charCodeAt(i));
+                Module.inputBuffer.push(text.charCodeAt(i));
             }
-            inputBuffer.push(10); // \n
+            Module.inputBuffer.push(10); // '\n'
             
             // Mostra no output
             const output = document.getElementById('output');

@@ -14,7 +14,13 @@ int main(){
     printf("Escolha uma opcao: ");
 
     while (1){
-        scanf("%d", &opcao);
+        if(scanf("%d", &opcao) != 1){
+            printf("Entrada invalida! Por favor, insira um numero entre 1 e 4: ");
+            
+            int c;
+            while((c = getchar()) != '\n' && c != EOF); // Limpa o buffer de entrada
+            continue;
+        }
 
         if(opcao < 1 || opcao > 4){
             printf("Opcao invalida!\n");
@@ -33,4 +39,6 @@ int main(){
             iniciarJogo(opcao);
         }
     }
+
+    return 0;
 }
