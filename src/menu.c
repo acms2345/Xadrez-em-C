@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include "jogadasvalidas.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten/emscripten.h>
+#endif
+
 int main(){
     int opcao;
     
