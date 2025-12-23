@@ -19,6 +19,9 @@ int main(){
             
             int c;
             while((c = getchar()) != '\n' && c != EOF); // Limpa o buffer de entrada
+            #ifdef __EMSCRIPTEN__
+                emscripten_sleep(10); // evita loop apertado no WASM
+            #endif
             continue;
         }
 
