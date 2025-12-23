@@ -13,7 +13,7 @@ int main(){
     printf("4. Sair\n\n");
     printf("Escolha uma opcao: ");
 
-    while (0 != 1){
+    while (1){
         scanf("%d", &opcao);
 
         if(opcao < 1 || opcao > 4){
