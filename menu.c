@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "jogadasvalidas.h"
+#include "jogo.h"
 
 /*Note: The source code is entirely written in Portuguese now.*/
 

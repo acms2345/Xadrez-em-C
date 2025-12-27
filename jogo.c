@@ -4,10 +4,11 @@
 #include <string.h>
 
 #include "jogadasvalidas.h"
+#include "jogo.h"
 
 /*Note: The source code is entirely written in Portuguese now.*/
 
-char tabuleiro[8][8] = {
+static char tabuleiro[8][8] = {
     {'t', 'c', 'b', 'k', 'q', 'b', 'c', 't'},
     {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -18,25 +19,25 @@ char tabuleiro[8][8] = {
     {'T', 'C', 'B', 'K', 'Q', 'B', 'C', 'T'}
 };
 
-int jogadorDaVez = 0; // 0 para o Jogador 1 (maiúsculas), 1 para o Jogador 2 (minúsculas)
+static int jogadorDaVez = 0; // 0 para o Jogador 1 (maiúsculas), 1 para o Jogador 2 (minúsculas)
 
-int movimentosSemCapturaouPiao = 0;
+static int movimentosSemCapturaouPiao = 0;
 
 typedef struct {
     char nome[20];
     int pontos;
 } Jogador;
 
-Jogador jogadores[2];
+static Jogador jogadores[2];
 
-int movimentosFeitos = 0;
+static int movimentosFeitos = 0;
 
-bool ganhou = false;
+static bool ganhou = false;
 
-bool SalvarJogo();
+static bool SalvarJogo();
 bool CarregarJogo();
 
-void ExibirTabuleiro() {
+static void ExibirTabuleiro() {
     printf("\n  a b c d e f g h\n");
     for (int i = 0; i < 8; i++) {
         printf("%d ", i + 1);
@@ -54,7 +55,7 @@ void ExibirTabuleiro() {
  *   linhaDestino, colunaDestino: ponteiros para armazenar a linha e coluna de destino.
  * O jogador pode digitar "salvar" para salvar o jogo atual.
  */
-void obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDestino, int *colunaDestino){
+static void obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDestino, int *colunaDestino){
     char input[10];
     int ch;
 
@@ -174,6 +175,32 @@ bool CarregarJogo() {
     return true;
 }
 
+bool capturaOuPiao = false;
+
+void atualizarPontuacao(int *pontos, char pecaCapturada){
+    switch(toupper(pecaCapturada)){
+                case 'P':
+                    *pontos += 1; // Incrementa o ponto do jogador que capturou
+                    capturaOuPiao = true;
+                    break;
+                case 'C':
+                case 'B':
+                    *pontos += 3; // Incrementa 3 pontos para cavalo ou bispo
+                    capturaOuPiao = true;
+                    break;
+                case 'T':
+                    *pontos += 5; // Incrementa 5 pontos para torre
+                    capturaOuPiao = true;
+                    break;
+                case 'Q':
+                    *pontos += 9; // Incrementa 9 pontos para rainha
+                    capturaOuPiao = true;
+                    break;
+                default:
+                    break; // Nenhuma peça capturada
+    }
+}
+
 int iniciarJogo(int opcao) {
     
     
@@ -218,41 +245,23 @@ int iniciarJogo(int opcao) {
             
             movimentosFeitos++;
 
-            bool capturaOuPiao = false;
-
             if(toupper(tabuleiro[linhaOrigem][colunaOrigem]) == 'P'){
                 capturaOuPiao = true;
             }
 
             //Verifica a captura de peças e atualiza a pontuação
-            switch(toupper(tabuleiro[linhaDestino][colunaDestino])){
-                case 'P':
-                    jogadores[jogadorDaVez].pontos += 1; // Incrementa o ponto do jogador que capturou
-                    capturaOuPiao = true;
-                    break;
-                case 'C':
-                case 'B':
-                    jogadores[jogadorDaVez].pontos += 3; // Incrementa 3 pontos para cavalo ou bispo
-                    capturaOuPiao = true;
-                    break;
-                case 'T':
-                    jogadores[jogadorDaVez].pontos += 5; // Incrementa 5 pontos para torre
-                    capturaOuPiao = true;
-                    break;
-                case 'Q':
-                    jogadores[jogadorDaVez].pontos += 9; // Incrementa 9 pontos para rainha
-                    capturaOuPiao = true;
-                    break;
-                case 'K':
-                    ganhou = true;
-                    printf("O jogador %s ganhou o jogo!\n", jogadores[jogadorDaVez].nome);
-                    printf("Placar final: %s: %d pontos, %s: %d pontos\n", jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
-                    printf("Total de movimentos feitos: %d\n", movimentosFeitos);
-                    break; // Sai do loop principal do jogo
-                
-                default:
-                    break; // Nenhuma peça capturada
+            atualizarPontuacao(&jogadores[jogadorDaVez].pontos, tabuleiro[linhaDestino][colunaDestino]);
+            
+            if(tabuleiro[linhaDestino][colunaDestino] == 'K'){
+                ganhou = true;
+                printf("O jogador %s ganhou o jogo!\n", jogadores[jogadorDaVez].nome);
+                printf("Placar final: %s: %d pontos, %s: %d pontos\n", jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                printf("Total de movimentos feitos: %d\n", movimentosFeitos);
+                break; // Sai do loop principal do jogo
             }
+            
+            
+        
             if(capturaOuPiao){
                 movimentosSemCapturaouPiao = 0;
             } else {

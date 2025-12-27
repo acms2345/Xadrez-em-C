@@ -4,9 +4,3 @@
 *.out
 salvamento.dat
 
-# Arquivos intermediários do Emscripten
-*.bc
-
-# Não ignorar os arquivos finais do WebAssembly no docs/
-!docs/xadrez.js
-!docs/xadrez.wasm

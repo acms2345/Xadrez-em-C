@@ -22,7 +22,7 @@ The code also includes a scoring system for each player based on the value of ea
 ```
 Xadrez-em-C/
 ├── menu.c             # Main menu and entry point
-├── xadrez.c           # Main code (interface, game loop)
+├── jogo.c           # Main code (interface, game loop)
 ├── jogadasvalidas.c   # Move validation logic
 ├── jogadasvalidas.h   # Header with prototypes
 └── README.md          # This file
@@ -56,7 +56,7 @@ Xadrez-em-C/
 -   If you download the project, you can compile it using a C compiler like GCC. With it, you can run the following command:
 
 ```bash
-gcc menu.c xadrez.c jogadasvalidas.c -o xadrez
+gcc menu.c jogo.c jogadasvalidas.c -o xadrez
 ```
 
 1.  The names of the two players are entered into the system.
@@ -120,7 +120,7 @@ Por enquanto, o código também conta com um sistema de pontuação para cada jo
 ```
 Xadrez-em-C/
 ├── menu.c             # Menu principal e ponto de entrada
-├── xadrez.c           # Código principal (interface, loop do jogo)
+├── jogo.c           # Código principal (interface, loop do jogo)
 ├── jogadasvalidas.c   # Lógica de validação de movimentos
 ├── jogadasvalidas.h   # Header com protótipos
 └── README.md          # Este arquivo
@@ -152,7 +152,7 @@ Xadrez-em-C/
 
 - Caso você baixe o projeto, o processo de compilação deve ocorrer por meio de um compilador como o GCC. Com ele, você pode executar o seguinte comando:
 ```bash
-gcc menu.c xadrez.c jogadasvalidas.c -o xadrez
+gcc menu.c jogo.c jogadasvalidas.c -o xadrez
 ```
 
 1. O nome dos dois jogadores são informados ao sistema.
