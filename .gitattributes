@@ -1,15 +1,10 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-# Arquivos shell sempre com LF
-*.sh text eol=lf
-
-# Arquivos Windows sempre com CRLF
-*.bat text eol=crlf
 
 # Arquivos normais seguem o padrão do sistema
 *.c text
 *.h text
 *.md text
-*.html text
-*.js text
+
+

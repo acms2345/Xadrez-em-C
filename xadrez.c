@@ -5,6 +5,8 @@
 
 #include "jogadasvalidas.h"
 
+/*Note: The source code is entirely written in Portuguese now.*/
+
 char tabuleiro[8][8] = {
     {'t', 'c', 'b', 'k', 'q', 'b', 'c', 't'},
     {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},

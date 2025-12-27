@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+/*Note: The source code is entirely written in Portuguese now.*/
 
 bool CasaAtacada(char tabuleiro[8][8], int linha, int coluna, int oponente){
     //Verificação de ataque de peões
