@@ -1,10 +1,6 @@
 #include <stdio.h>
 #include "jogadasvalidas.h"
 
-#ifdef __EMSCRIPTEN__
-#include <emscripten/emscripten.h>
-#endif
-
 int main(){
     int opcao;
     
@@ -23,9 +19,7 @@ int main(){
             
             int c;
             while((c = getchar()) != '\n' && c != EOF); // Limpa o buffer de entrada
-            #ifdef __EMSCRIPTEN__
-                emscripten_sleep(10); // evita loop apertado no WASM
-            #endif
+            
             continue;
         }
 
