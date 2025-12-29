@@ -23,6 +23,7 @@ The code also includes a scoring system for each player based on the value of ea
 Xadrez-em-C/
 ├── menu.c             # Main menu and entry point
 ├── jogo.c           # Main code (interface, game loop)
+├── jogo.h           # Header that links jogo.c to menu.c.
 ├── jogadasvalidas.c   # Move validation logic
 ├── jogadasvalidas.h   # Header with prototypes
 └── README.md          # This file
@@ -32,11 +33,12 @@ Xadrez-em-C/
 
 -   `ExibirTabuleiro()`: Prints the current state of the board.
 -   `SalvarJogo()`: Saves the game information to a file named `salvamento.dat`.
--   `CarregarJogo()`: Accesses the information saved by the `SalvarJogo()` function.
+-   `CarregarJogo()`: Loads the information saved by the `SalvarJogo()` function.
 -   `obterCoordenada()`: Reads and validates the user's algebraic notation input.
 -   `JogadaValida()`: Checks if a move is valid.
     -   `CasaAtacada()`: Checks if the square the king is moving to is under attack.
 -   `PromocaoPeao()`: Allows choosing a piece for pawn promotion.
+-   `atualizarPontuacao()`: Checks if a piece was captured and assigns the piece score accordingly (explained in detail in the scoring section).
 
 ## 📊 Scoring System
 
@@ -48,6 +50,8 @@ Xadrez-em-C/
 | Rook (T/t) | 5       |
 | Queen (Q/q)  | 9       |
 | King (K/k)   | Victory |
+
+> This scoring system does not directly determine the winner. It only gives an idea of which player potentially performed better during the match.
 
 ## 🎮 How to Play
 
@@ -69,6 +73,8 @@ gcc menu.c jogo.c jogadasvalidas.c -o xadrez
     -   Type "salvar" to save the game.
 4.  The game includes a draw system based on the 50-move rule (100 moves without a capture or pawn move).
 
+- If you wish, there is a Help option in the game that provides quick instructions about the gameplay.
+
 ### Example of a Move
 
 ```
@@ -83,6 +89,8 @@ gcc menu.c jogo.c jogadasvalidas.c -o xadrez
 8 T C B K Q B C T
 
 Player1, enter your move in algebraic notation (e.g., e2e4): e7e5
+
+
 ```
 
 ### 💾 About Saving and Loading Games
@@ -121,6 +129,7 @@ Por enquanto, o código também conta com um sistema de pontuação para cada jo
 Xadrez-em-C/
 ├── menu.c             # Menu principal e ponto de entrada
 ├── jogo.c           # Código principal (interface, loop do jogo)
+├── jogo.h             # Header que interliga jogo.c a menu.c
 ├── jogadasvalidas.c   # Lógica de validação de movimentos
 ├── jogadasvalidas.h   # Header com protótipos
 └── README.md          # Este arquivo
@@ -135,6 +144,7 @@ Xadrez-em-C/
 - `JogadaValida()`: Verifica se o movimento é válido.
   - `CasaAtacada()`: Verifica se a casa para que o rei está se movendo não está em xeque.
 - `PromocaoPeao()`: Permite escolher peça na promoção.
+- `atualizarPontuacao()`: Verifica se houve captura e, se teve, atribui a pontuação de peças (melhor explicada no tópico a seguir).
 
 ## 📊 Sistema de pontuação
 
@@ -146,6 +156,8 @@ Xadrez-em-C/
 | Torre (T/t) | 5 |
 | Rainha (Q/q) | 9 |
 | Rei (K/k) | Vitória |
+
+> Esse sistema não influencia diretamente em quem ganha. Eles só dão uma ideia de qual jogador possivelmente se saiu melhor na partida.
 
 ## 🎮 Como jogar 
 - O link para testar a demo do projeto é [esse aqui](https://onlinegdb.com/dUODuECUZ).
@@ -163,8 +175,11 @@ gcc menu.c jogo.c jogadasvalidas.c -o xadrez
   - Segunda letra: coluna de destino (a-h);
   - Segundo número: linha de destino (1-8);
   - Digite "salvar" para salvar o jogo.
+  - Digite "desistir" para desistir do jogo e dar a vitória a seu oponente.
 
-4. O jogo possui o sistema de empate por 50 lances (100 movimentos sem captura ou movimento de peão).
+4. O jogo possui o sistema de empate por 50 lances (100 movimentos - ou seja, meias-jogadas - sem captura ou movimento de peão).
+
+- Caso você queira, no jogo há a opção de Ajuda, na qual há algumas instruções rápidas sobre o jogo.
 
 ### Exemplo de jogada
 

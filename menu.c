@@ -9,13 +9,15 @@ int main(){
     printf("==============================================\n");
     printf("            XADREZ EM C\n");
     printf("==============================================\n\n");
-    printf("1. Nova Partida\n");
-    printf("2. Carregar Partida Salva\n");
-    printf("3. Ajuda\n");
-    printf("4. Sair\n\n");
-    printf("Escolha uma opcao: ");
+    
 
     while (1){
+        printf("1. Nova Partida\n");
+        printf("2. Carregar Partida Salva\n");
+        printf("3. Ajuda\n");
+        printf("4. Sair\n\n");
+        printf("Escolha uma opcao: ");
+
         if(scanf("%d", &opcao) != 1){
             printf("Entrada invalida! Por favor, insira um numero entre 1 e 4: ");
             
@@ -37,6 +39,7 @@ int main(){
             printf("O objetivo do jogo e capturar o rei do oponente. As pecas se movem de acordo com as regras tradicionais do xadrez.\n");
             printf("Para fazer uma jogada, voce precisara inserir as coordenadas de origem e destino no formato de notacao algebrica (ex: e2e4).\n");
             printf("Voce tambem pode salvar o jogo a qualquer momento digitando 'salvar' quando solicitado a inserir uma jogada.\n");
+            printf("Digite 'desistir' para abandonar o jogo atual e conceder a vitoria ao oponente.\n");
             printf("Boa sorte e divirta-se!\n\n");
         } else{
             iniciarJogo(opcao);

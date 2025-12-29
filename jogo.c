@@ -6,18 +6,25 @@
 #include "jogadasvalidas.h"
 #include "jogo.h"
 
+void limpezaBuffer(){
+    int ch;
+    while ((ch = getchar()) != '\n' && ch != EOF);
+}
+
 /*Note: The source code is entirely written in Portuguese now.*/
 
-static char tabuleiro[8][8] = {
-    {'t', 'c', 'b', 'k', 'q', 'b', 'c', 't'},
+static const char TABULEIRO_INICIAL[8][8] = {
+    {'t', 'c', 'b', 'q', 'k', 'b', 'c', 't'},
     {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
     {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
-    {'T', 'C', 'B', 'K', 'Q', 'B', 'C', 'T'}
+    {'T', 'C', 'B', 'Q', 'K', 'B', 'C', 'T'}
 };
+
+static char tabuleiro[8][8];
 
 static int jogadorDaVez = 0; // 0 para o Jogador 1 (maiúsculas), 1 para o Jogador 2 (minúsculas)
 
@@ -35,14 +42,16 @@ static int movimentosFeitos = 0;
 static bool ganhou = false;
 
 static bool SalvarJogo();
-bool CarregarJogo();
+static bool CarregarJogo();
 
 static void ExibirTabuleiro() {
     printf("\n  a b c d e f g h\n");
-    for (int i = 0; i < 8; i++) {
-        printf("%d ", i + 1);
+    for (int i = 8; i >= 1; i--) {
+        int conversaoLinha = 8 - i;
+        printf("%d ", i);
+        
         for (int j = 0; j < 8; j++) {
-            printf("%c ", tabuleiro[i][j]);
+            printf("%c ", tabuleiro[conversaoLinha][j]);
         }
         printf("\n");
     }
@@ -55,15 +64,14 @@ static void ExibirTabuleiro() {
  *   linhaDestino, colunaDestino: ponteiros para armazenar a linha e coluna de destino.
  * O jogador pode digitar "salvar" para salvar o jogo atual.
  */
-static void obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDestino, int *colunaDestino){
+static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDestino, int *colunaDestino){
     char input[10];
-    int ch;
 
     while(1){
         printf("\n%s, digite a jogada em notacao algebrica (ex: e2e4): ", jogadores[jogadorDaVez].nome);
         scanf("%9s", input);
 
-        while ((ch = getchar()) != '\n' && ch != EOF);
+        limpezaBuffer();
 
         if(strcmp(input, "salvar") == 0 || strcmp(input, "SALVAR") == 0){
             if(SalvarJogo()){
@@ -72,6 +80,12 @@ static void obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
                 printf("Erro ao salvar o jogo.\n");
             }
             continue;
+        }
+
+        if(strcmp(input, "desistir") == 0 || strcmp(input, "DESISTIR") == 0){
+            printf("%s desistiu do jogo. %s e o vencedor!\n", jogadores[jogadorDaVez].nome, jogadores[1 - jogadorDaVez].nome);
+            ganhou = true;
+            return false;
         }
 
         if(strlen(input) != 4){
@@ -88,7 +102,9 @@ static void obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             printf("ERRO: Linha origem invalida. Use numeros de 1-8.\n");
             continue;
         }
-        *linhaOrigem = input[1] - '1';
+        
+        int conversaoLinhaOrigem = input[1] - '0';
+        *linhaOrigem = 8 - conversaoLinhaOrigem;
 
         if(tolower(input[2]) < 'a' || tolower(input[2]) > 'h'){
             printf("ERRO: Coluna destino invalida. Use letras de a-h.\n");
@@ -100,14 +116,19 @@ static void obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             printf("ERRO: Linha destino invalida. Use numeros de 1-8.\n");
             continue;
         }
-        *linhaDestino = input[3] - '1';
+        
+        
+        int conversaoLinhaDestino = input[3] - '0';
+        *linhaDestino = 8 - conversaoLinhaDestino;
             
         
         break;
     }
+    
+    return true;
 }
 
-char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) {
+static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) {
     char escolha;
     printf("Seu peao chegou na ultima linha! Escolha a peca para promover (Q, C, B, T): ");
     while (1) {
@@ -125,6 +146,7 @@ char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) {
         }
     }
 }
+
 struct Salvamento
 {
     char tabuleiro[8][8];
@@ -133,7 +155,8 @@ struct Salvamento
     int movimentosSemCapturaouPiao;
     Jogador jogadores[2];
 };
-bool SalvarJogo() {
+
+static bool SalvarJogo() {
     FILE *arquivo = fopen("salvamento.dat", "wb");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo para salvar o jogo.\n");
@@ -154,7 +177,7 @@ bool SalvarJogo() {
     return true;
 }
 
-bool CarregarJogo() {
+static bool CarregarJogo() {
     FILE *arquivo = fopen("salvamento.dat", "rb");
     if (arquivo == NULL) {
         printf("Nenhum jogo salvo encontrado.\n");
@@ -175,9 +198,9 @@ bool CarregarJogo() {
     return true;
 }
 
-bool capturaOuPiao = false;
+static bool capturaOuPiao = false;
 
-void atualizarPontuacao(int *pontos, char pecaCapturada){
+static void atualizarPontuacao(int *pontos, char pecaCapturada){
     switch(toupper(pecaCapturada)){
                 case 'P':
                     *pontos += 1; // Incrementa o ponto do jogador que capturou
@@ -201,9 +224,21 @@ void atualizarPontuacao(int *pontos, char pecaCapturada){
     }
 }
 
+static void reiniciarJogo(){
+    memcpy(tabuleiro, TABULEIRO_INICIAL, sizeof(TABULEIRO_INICIAL));
+    jogadorDaVez = 0;
+    movimentosSemCapturaouPiao = 0;
+    movimentosFeitos = 0;
+    capturaOuPiao = false;
+    ganhou = false;
+}
+
 int iniciarJogo(int opcao) {
     
-    
+    limpezaBuffer();
+
+    reiniciarJogo();
+
     printf("--------------------------------------------\n\n");
 
     if (opcao == 1){
@@ -228,8 +263,11 @@ int iniciarJogo(int opcao) {
 
         int linhaOrigem, colunaOrigem, linhaDestino, colunaDestino;
 
-        obterCoordenada(&linhaOrigem, &colunaOrigem, &linhaDestino, &colunaDestino);
+        if(!obterCoordenada(&linhaOrigem, &colunaOrigem, &linhaDestino, &colunaDestino)){
+            break; // Sai do loop principal do jogo se o jogador desistir
+        }
         
+
 
         if(tabuleiro[linhaOrigem][colunaOrigem] == ' '){
             printf("Jogada invalida! Nao ha peca na posicao de origem.\n");
@@ -252,7 +290,7 @@ int iniciarJogo(int opcao) {
             //Verifica a captura de peças e atualiza a pontuação
             atualizarPontuacao(&jogadores[jogadorDaVez].pontos, tabuleiro[linhaDestino][colunaDestino]);
             
-            if(tabuleiro[linhaDestino][colunaDestino] == 'K'){
+            if(toupper(tabuleiro[linhaDestino][colunaDestino]) == 'K'){
                 ganhou = true;
                 printf("O jogador %s ganhou o jogo!\n", jogadores[jogadorDaVez].nome);
                 printf("Placar final: %s: %d pontos, %s: %d pontos\n", jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
@@ -297,9 +335,8 @@ int iniciarJogo(int opcao) {
         }
 
     }
-    printf("Pressione Enter para sair...");
-    while(getchar() != '\n'); // Limpa o buffer de entrada
-    getchar();
+    
+    printf("-----------------------------------------------\n\n");
 
     return 0;
 }
