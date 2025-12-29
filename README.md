@@ -55,7 +55,7 @@ Xadrez-em-C/
 
 ## 🎮 How to Play
 
--   You can test a demo of the project at [this link](https://onlinegdb.com/dUODuECUZ).
+-   You can test a demo of the project at [this link](https://onlinegdb.com/mCVxTRf8M).
 
 -   If you download the project, you can compile it using a C compiler like GCC. With it, you can run the following command:
 
@@ -160,7 +160,7 @@ Xadrez-em-C/
 > Esse sistema não influencia diretamente em quem ganha. Eles só dão uma ideia de qual jogador possivelmente se saiu melhor na partida.
 
 ## 🎮 Como jogar 
-- O link para testar a demo do projeto é [esse aqui](https://onlinegdb.com/dUODuECUZ).
+- O link para testar a demo do projeto é [esse aqui](https://onlinegdb.com/mCVxTRf8M).
 
 - Caso você baixe o projeto, o processo de compilação deve ocorrer por meio de um compilador como o GCC. Com ele, você pode executar o seguinte comando:
 ```bash

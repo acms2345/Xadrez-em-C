@@ -6,12 +6,14 @@
 #include "jogadasvalidas.h"
 #include "jogo.h"
 
+/*Note: The source code is entirely written in Portuguese now.*/
+
 void limpezaBuffer(){
     int ch;
     while ((ch = getchar()) != '\n' && ch != EOF);
 }
 
-/*Note: The source code is entirely written in Portuguese now.*/
+
 
 static const char TABULEIRO_INICIAL[8][8] = {
     {'t', 'c', 'b', 'q', 'k', 'b', 'c', 't'},
