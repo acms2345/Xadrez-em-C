@@ -1,5 +1,9 @@
 # Documentação do projeto de Xadrez em C
 
+[Versão em português abaixo/ Portuguese version below](#versão-em-português)
+
+---
+
 # English version
 
 This code implements a local two-player chess game, inspired by the official rules of chess.
@@ -7,6 +11,60 @@ This code implements a local two-player chess game, inspired by the official rul
 > **Note**: This is an educational project. Some advanced rules are not yet implemented.
 
 > **Developer's note**: Please be aware that the source code, including all variable names, function names, and comments, is written in Portuguese. I'm trying to make the translation of certain parts, but it takes time.
+
+### 🔗 Useful Links
+
+- **Online Demo**: [Test on OnlineGDB](https://onlinegdb.com/mCVxTRf8M)
+- **Repository**: [GitHub - Xadrez-em-C](https://github.com/acms2345/Xadrez-em-C)
+
+## 📋 System Requirements
+
+- **C Compiler**: GCC, Clang, or any standard C compiler
+- **Operating System**: Windows, Linux, or macOS
+- **Disk Space**: Less than 1 MB
+
+## 🚀 How to Install and Run
+
+### 1. **Download the Project**
+
+#### Option A: Clone from GitHub
+```bash
+git clone https://github.com/acms2345/Xadrez-em-C.git
+cd Xadrez-em-C
+```
+
+#### Option B: Direct download
+
+Access the GitHub repository and click "Code" → "Download ZIP". Then extract the file.
+
+### 2. Compile the project
+
+Open terminal/command prompt in the project folder and run:
+
+If using GCC:
+```bash
+gcc menu.c jogo.c jogadasvalidas.c -o xadrez
+```
+If using Clang:
+```bash
+clang menu.c jogo.c jogadasvalidas.c -o xadrez
+```
+Or if using MinGW (Windows):
+```bash
+mingw32-gcc menu.c jogo.c jogadasvalidas.c -o xadrez
+```
+
+### 3. Run the code
+Just find the `xadrez.exe` file generated after compilation (it should be in the same folder as the other files). Or you can run:
+
+On Windows:
+```bash
+xadrez.exe
+```
+On Linux or macOS:
+```bash
+./xadrez
+```
 
 ## How the Code Works
 
@@ -55,14 +113,6 @@ Xadrez-em-C/
 
 ## 🎮 How to Play
 
--   You can test a demo of the project at [this link](https://onlinegdb.com/mCVxTRf8M).
-
--   If you download the project, you can compile it using a C compiler like GCC. With it, you can run the following command:
-
-```bash
-gcc menu.c jogo.c jogadasvalidas.c -o xadrez
-```
-
 1.  The names of the two players are entered into the system.
 2.  The board is an 8x8 grid (with the row order being the reverse of conventional chess).
 3.  To make a move, the user must enter it in algebraic notation (e.g., e2e4):
@@ -71,26 +121,49 @@ gcc menu.c jogo.c jogadasvalidas.c -o xadrez
     -   Second letter: destination column (a-h);
     -   Second number: destination row (1-8);
     -   Type "salvar" to save the game.
-4.  The game includes a draw system based on the 50-move rule (100 moves without a capture or pawn move).
+    -   Type "desistir" to forfeit the game and give victory to your opponent.
+4.  The game includes a draw system based on the 50-move rule (100 moves - or half moves - without a capture or pawn move).
 
-- If you wish, there is a Help option in the game that provides quick instructions about the gameplay.
+- If you wish, in the game there is a Help option, in which there are some quick instructions about the game.
 
 ### Example of a Move
 
 ```
   a b c d e f g h
-1 t c b k q b c t
-2 p p p p p p p p
-3
-4
-5
-6
-7 P P P P P P P P
-8 T C B K Q B C T
+8 t c b k q b c t
+7 p p p p p p p p
+6                
+5                
+4                
+3                
+2 P P P P P P P P
+1 T C B K Q B C T
 
-Player1, enter your move in algebraic notation (e.g., e2e4): e7e5
+Player1, enter your move in algebraic notation (ex: e2e4): e2e4
 
+  a b c d e f g h
+8 t c b k q b c t
+7 p p p p p p p p
+6                
+5                
+4         P       
+3                
+2 P P P P   P P P
+1 T C B K Q B C T
 
+Player2, enter your move in algebraic notation (ex: e2e4): e7e5
+
+  a b c d e f g h
+8 t c b k q b c t
+7 p p p p   p p p
+6                
+5         p      
+4         P       
+3                
+2 P P P P   P P P
+1 T C B K Q B C T
+
+...
 ```
 
 ### 💾 About Saving and Loading Games
@@ -112,11 +185,65 @@ To resume a saved game, you must choose the "Load Saved Game" option from the ma
 
 This project is under the MIT License. See the `LICENSE` file for more details.
 
+---
+
 # Versão em português
 Tal código corresponde a um jogo de dois jogadores local, inspirado nas regras oficiais do xadrez.
 
 > **Nota**: Este é um projeto educacional. Algumas regras avançadas ainda não estão implementadas.
 
+> **Nota do Desenvolvedor**: O código-fonte, incluindo nomes de variáveis, funções e comentários, está escrito em português. Estou trabalhando na tradução de certas partes.
+
+### 🔗 Links úteis
+
+- **Demo Online**: [Testar no OnlineGDB](https://onlinegdb.com/mCVxTRf8M)
+- **Repositório**: [GitHub - Xadrez-em-C](https://github.com/acms2345/Xadrez-em-C)
+
+## 📋 Requisitos do Sistema
+
+- **Compilador C**: GCC, Clang ou qualquer compilador C padrão
+- **Sistema Operacional**: Windows, Linux ou macOS
+- **Espaço em disco**: Menos de 1 MB
+
+## 🚀 Como Instalar e Executar
+
+### 1. **Baixar o Projeto**
+
+#### Opção A: Clonar do GitHub
+```bash
+git clone https://github.com/acms2345/Xadrez-em-C.git
+cd Xadrez-em-C
+```
+#### Opção B: Download direto
+Acesse o repositório no GitHub e clique em "Code" → "Download ZIP". Depois, extraia o arquivo.
+
+### 2. **Compilar o projeto**
+
+Abra o terminal/prompt de comando na pasta do projeto e execute:
+
+Caso use o GCC:
+```bash
+gcc menu.c jogo.c jogadasvalidas.c -o xadrez
+```
+Caso use o Clang:
+```bash
+clang menu.c jogo.c jogadasvalidas.c -o xadrez
+```
+Ou caso use o MinGW (Windows):
+```bash
+mingw32-gcc menu.c jogo.c jogadasvalidas.c -o xadrez
+```
+
+### 3. Executar o código
+- Apenas é necessário encontrar o arquivo `xadrez.exe` gerado após a compilação (ele deve estar na mesma pasta dos outros arquivos). Ou, você pode abrir o arquivo:
+No Windows:
+```bash
+xadrez.exe
+```
+No Linux ou MacOS:
+```bash
+./xadrez
+```
 ## Sobre o funcionamento do código
 Ao invés das pecas brancas e pretas, o código diferencia as peças por caracteres maiúsculos e minúsculos:
 - **Peças brancas**: letras MAIÚSCULAS (P, T, C, B, Q, K)
@@ -160,12 +287,6 @@ Xadrez-em-C/
 > Esse sistema não influencia diretamente em quem ganha. Eles só dão uma ideia de qual jogador possivelmente se saiu melhor na partida.
 
 ## 🎮 Como jogar 
-- O link para testar a demo do projeto é [esse aqui](https://onlinegdb.com/mCVxTRf8M).
-
-- Caso você baixe o projeto, o processo de compilação deve ocorrer por meio de um compilador como o GCC. Com ele, você pode executar o seguinte comando:
-```bash
-gcc menu.c jogo.c jogadasvalidas.c -o xadrez
-```
 
 1. O nome dos dois jogadores são informados ao sistema.
 2. O tabuleiro funciona com uma tabela de 8 linhas e 8 colunas (com a ordem de linhas sendo o contrário ao convencional do xadrez).
@@ -185,16 +306,40 @@ gcc menu.c jogo.c jogadasvalidas.c -o xadrez
 
 ```
   a b c d e f g h
-1 t c b k q b c t
-2 p p p p p p p p
-3                
-4                
-5                
+8 t c b k q b c t
+7 p p p p p p p p
 6                
-7 P P P P P P P P
-8 T C B K Q B C T
+5                
+4                
+3                
+2 P P P P P P P P
+1 T C B K Q B C T
 
-Jogador1, digite a jogada em notacao algebrica (ex: e2e4):  e7e5
+Jogador1, digite a jogada em notacao algebrica (ex: e2e4):  e2e4
+
+  a b c d e f g h
+8 t c b k q b c t
+7 p p p p p p p p
+6                
+5                
+4         P       
+3                
+2 P P P P   P P P
+1 T C B K Q B C T
+
+Jogador2, digite a jogada em notacao algebrica (ex: e2e4):  e7e5
+
+  a b c d e f g h
+8 t c b k q b c t
+7 p p p p   p p p
+6                
+5         p      
+4         P       
+3                
+2 P P P P   P P P
+1 T C B K Q B C T
+
+...
 ```
 
 ### 💾 Sobre o salvamento e carregamento de partidas

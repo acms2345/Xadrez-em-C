@@ -258,6 +258,8 @@ int iniciarJogo(int opcao) {
 
 
     while(!ganhou){
+        capturaOuPiao = false;
+        
         printf("\n");
         ExibirTabuleiro();
 
