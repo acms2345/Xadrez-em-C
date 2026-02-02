@@ -90,41 +90,82 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             return false;
         }
 
-        if(strlen(input) != 4){
-            printf("ERRO: Formato invalido. Use 4 caracteres (ex: e2e4)\n");
-            continue;
-        }
-        if(tolower(input[0]) < 'a' || tolower(input[0]) > 'h'){
-            printf("ERRO: Coluna origem invalida. Use letras de a-h.\n");
-            continue;
-        }
-        *colunaOrigem = tolower(input[0]) - 'a';
+        //Para notação sem separação (ex: e2e4)
+        if(strlen(input) == 4){
+            if(tolower(input[0]) < 'a' || tolower(input[0]) > 'h'){
+                printf("ERRO: Coluna origem invalida. Use letras de a-h.\n");
+                continue;
+            }
+            *colunaOrigem = tolower(input[0]) - 'a';
         
-        if(input[1] < '1' || input[1] > '8'){
-            printf("ERRO: Linha origem invalida. Use numeros de 1-8.\n");
-            continue;
-        }
-        
-        int conversaoLinhaOrigem = input[1] - '0';
-        *linhaOrigem = 8 - conversaoLinhaOrigem;
-
-        if(tolower(input[2]) < 'a' || tolower(input[2]) > 'h'){
-            printf("ERRO: Coluna destino invalida. Use letras de a-h.\n");
-            continue;
-        }
-        *colunaDestino = tolower(input[2]) - 'a';
-
-        if(input[3] < '1' || input[3] > '8'){
-            printf("ERRO: Linha destino invalida. Use numeros de 1-8.\n");
-            continue;
-        }
-        
-        
-        int conversaoLinhaDestino = input[3] - '0';
-        *linhaDestino = 8 - conversaoLinhaDestino;
+            if(input[1] < '1' || input[1] > '8'){
+                printf("ERRO: Linha origem invalida. Use numeros de 1-8.\n");
+                continue;
+            }
             
+            int conversaoLinhaOrigem = input[1] - '0';
+            *linhaOrigem = 8 - conversaoLinhaOrigem;
+
+            if(tolower(input[2]) < 'a' || tolower(input[2]) > 'h'){
+                printf("ERRO: Coluna destino invalida. Use letras de a-h.\n");
+                continue;
+            }
+            *colunaDestino = tolower(input[2]) - 'a';
+
+            if(input[3] < '1' || input[3] > '8'){
+                printf("ERRO: Linha destino invalida. Use numeros de 1-8.\n");
+                continue;
+            }
+            
+            
+            int conversaoLinhaDestino = input[3] - '0';
+            *linhaDestino = 8 - conversaoLinhaDestino;
+                
+            
+            break;
+        } 
+        //Notação com separador (ex: e2-e4)
+        else if (strlen(input) == 5){
+            if ((input[2] != ' ') && (input[2] != '-')){
+                printf("ERRO: Digito invalido. Para separar, use espaco ou hifen.\n");
+                continue;
+            }
+            if(tolower(input[0]) < 'a' || tolower(input[0]) > 'h'){
+                printf("ERRO: Coluna origem invalida. Use letras de a-h.\n");
+                continue;
+            }
+            *colunaOrigem = tolower(input[0]) - 'a';
         
-        break;
+            if(input[1] < '1' || input[1] > '8'){
+                printf("ERRO: Linha origem invalida. Use numeros de 1-8.\n");
+                continue;
+            }
+            
+            int conversaoLinhaOrigem = input[1] - '0';
+            *linhaOrigem = 8 - conversaoLinhaOrigem;
+
+            if(tolower(input[3]) < 'a' || tolower(input[3]) > 'h'){
+                printf("ERRO: Coluna destino invalida. Use letras de a-h.\n");
+                continue;
+            }
+            *colunaDestino = tolower(input[3]) - 'a';
+
+            if(input[4] < '1' || input[4] > '8'){
+                printf("ERRO: Linha destino invalida. Use numeros de 1-8.\n");
+                continue;
+            }
+            
+            
+            int conversaoLinhaDestino = input[4] - '0';
+            *linhaDestino = 8 - conversaoLinhaDestino;
+                
+            
+            break;
+        } else{
+            printf("ERRO: Formato invalido. Use 4 caracteres (ex: e2e4) ou use 5 caracteres (ex: e2-e4)\n");
+            continue;
+        }
+        
     }
     
     return true;
