@@ -16,6 +16,7 @@ This code implements a local two-player chess game, inspired by the official rul
 
 - **Online Demo**: [Test on OnlineGDB](https://onlinegdb.com/mCVxTRf8M)
 - **Repository**: [GitHub - Xadrez-em-C](https://github.com/acms2345/Xadrez-em-C)
+- **Pre-compiled Executable**: [releases page](https://github.com/acms2345/Xadrez-em-C/releases)
 
 ## 📋 System Requirements
 
@@ -198,6 +199,7 @@ Tal código corresponde a um jogo de dois jogadores local, inspirado nas regras 
 
 - **Demo Online**: [Testar no OnlineGDB](https://onlinegdb.com/mCVxTRf8M)
 - **Repositório**: [GitHub - Xadrez-em-C](https://github.com/acms2345/Xadrez-em-C)
+- **Executável pré-compilado**: [página de releases](https://github.com/acms2345/Xadrez-em-C/releases)
 
 ## 📋 Requisitos do Sistema
 

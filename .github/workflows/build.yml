@@ -1,0 +1,36 @@
+name: Build Executables
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            output: xadrez
+          - os: windows-latest
+            output: xadrez.exe
+          - os: macos-latest
+            output: xadrez
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Compile on ${{ matrix.os }}
+      run: gcc menu.c jogo.c jogadasvalidas.c -o ${{ matrix.output }}
+    
+    - name: Upload to Release
+      if: github.event_name == 'release'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ${{ matrix.output }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
