@@ -3,8 +3,7 @@ name: Build Executables
 on:
   workflow_dispatch:
   push:
-    tags:
-      - 'v*'
+    branches: [ main, master ]
 
 jobs:
   build:
@@ -25,9 +24,8 @@ jobs:
     - name: Compile on ${{ matrix.os }}
       run: gcc menu.c jogo.c jogadasvalidas.c -o ${{ matrix.output }}
     
-    - name: Create Release and Upload
-      uses: softprops/action-gh-release@v1
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
       with:
-        files: ${{ matrix.output }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: xadrez-${{ matrix.os }}
+        path: ${{ matrix.output }}
