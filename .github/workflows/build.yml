@@ -1,12 +1,10 @@
 name: Build Executables
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
-  release:
-    types: [created]
+    tags:
+      - 'v*'
 
 jobs:
   build:
@@ -27,8 +25,7 @@ jobs:
     - name: Compile on ${{ matrix.os }}
       run: gcc menu.c jogo.c jogadasvalidas.c -o ${{ matrix.output }}
     
-    - name: Upload to Release
-      if: github.event_name == 'release'
+    - name: Create Release and Upload
       uses: softprops/action-gh-release@v1
       with:
         files: ${{ matrix.output }}
