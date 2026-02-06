@@ -179,8 +179,7 @@ To resume a saved game, you must choose the "Load Saved Game" option from the ma
 1.  **No checkmate detection**: The game only ends when the king is captured.
 2.  **No castling**: This special move is not implemented.
 3.  **No en passant**: This special pawn capture is not implemented.
-4.  **Extended notation only**: Does not accept standard algebraic notation (e.g., e4, Nf3), only the extended format (e.g., e2e4).
-5.  **No draw detection**: For stalemate or repetition.
+4.  **No draw detection**: For stalemate or repetition.
 
 ## 📄 License
 
@@ -355,8 +354,7 @@ Para retomar a partida salva, você deve escolher a opção de "Carregar Partida
 1. **Não detecta xeque-mate**: Jogo termina apenas com captura do rei
 2. **Sem roque**: Movimento especial não implementado
 3. **Sem en passant**: Captura especial de peão não implementada
-4. **Entrada estendida apenas**: Não aceita notação algébrica completa (e4, Nf3), apenas formato estendido (e2e4)
-5. **Sem detecção de empate**: Por afogamento ou repetição.
+4. **Sem detecção de empate**: Por afogamento ou repetição.
 
 ## 📄 Licença
 

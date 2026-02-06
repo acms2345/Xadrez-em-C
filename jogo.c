@@ -170,7 +170,8 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
     
     return true;
 }
-
+/*Função para a promoção de peão.
+Ela solicita a peça para a qual o usuário vai querer promover.*/
 static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) {
     char escolha;
     printf("Seu peao chegou na ultima linha! Escolha a peca para promover (Q, C, B, T): ");
