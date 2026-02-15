@@ -338,6 +338,7 @@ int iniciarJogo(int opcao) {
             
             if(toupper(tabuleiro[linhaDestino][colunaDestino]) == 'K'){
                 ganhou = true;
+                printf("\n=== XEQUE-MATE (REI CAPTURADO) ===\n");
                 printf("O jogador %s ganhou o jogo!\n", jogadores[jogadorDaVez].nome);
                 printf("Placar final: %s: %d pontos, %s: %d pontos\n", jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
                 printf("Total de movimentos feitos: %d\n", movimentosFeitos);
@@ -376,6 +377,16 @@ int iniciarJogo(int opcao) {
 
 
             jogadorDaVez = 1 - jogadorDaVez; // Alterna entre 0 e 1, trocando o jogador da vez
+
+            if(XequeMate(tabuleiro, jogadorDaVez)){
+                ganhou = true;
+                printf("\n=== XEQUE-MATE ===\n");
+                printf("O jogador %s ganhou o jogo!\n", jogadores[1 - jogadorDaVez].nome);
+                printf("Placar final: %s: %d pontos, %s: %d pontos\n", jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                printf("Total de movimentos feitos: %d\n", movimentosFeitos);
+                break; // Sai do loop principal do jogo
+            }
+
         } else {
             printf("Jogada invalida! %s.\n", resultadoJogadaValida);
         }

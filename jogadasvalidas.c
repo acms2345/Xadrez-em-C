@@ -154,6 +154,60 @@ bool movimentoDeixaReiemXeque(char tabuleiro[8][8], int jogadorDaVez, int linhaO
 
 
 }
+bool ReiEmXeque(char tabuleiro[8][8], int jogadorDaVez){
+    char ReiDoJogador = (jogadorDaVez == 0) ? 'K' : 'k';
+
+    int CoordenadaLinhaRei = -1;
+    int CoordenadaColunaRei = -1;
+
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            if (tabuleiro[i][j] == ReiDoJogador){
+                CoordenadaLinhaRei = i;
+                CoordenadaColunaRei = j;
+            }
+        }
+    }
+    return CasaAtacada(tabuleiro, CoordenadaLinhaRei, CoordenadaColunaRei, (jogadorDaVez + 1) % 2);
+}
+/*A função verifica se há algum movimento em que o jogador possa impedir o xeque-mate.*/
+bool XequeMate(char tabuleiro[8][8], int JogadorDaVez){
+    // 1️⃣ Primeiro verifica se está em xeque
+    if(!ReiEmXeque(tabuleiro, JogadorDaVez)){
+        return false; //O rei pode ficar na posição, se protegendo de um xeque-mate.
+    }
+    
+    //Verifica todas as peças e possíveis movimentos.
+    for(int linha = 0; linha < 8; linha++){
+        for(int coluna = 0; coluna < 8; coluna++){
+            char peca = tabuleiro[linha][coluna];
+
+            if(peca == ' ') continue;
+
+            if((JogadorDaVez == 0 && !isupper(peca)) || (JogadorDaVez == 1 && isupper(peca)))
+                continue;
+            
+            for (int linhaDestino = 0; linhaDestino < 8; linhaDestino++)
+            {
+                for (int colunaDestino = 0; colunaDestino < 8; colunaDestino++)
+                {
+                    const char* resultado = JogadaValida(tabuleiro, linha, coluna, linhaDestino, colunaDestino, JogadorDaVez);
+
+                    //Verifica se é um movimento válido.
+                    if(strcmp(resultado, "OK") == 0){
+                        //Verifica se esse movimento ESCAPA do xeque
+                        if(!movimentoDeixaReiemXeque(tabuleiro, JogadorDaVez, linha, coluna, linhaDestino, colunaDestino)){
+                            return false; //Tal movimento não deixa o rei em xeque-mate
+                        }
+                    }
+                }
+                
+            }
+            
+        }
+    }
+    return true; //É xeque-mate.
+}
 /*A função retorna alguns valores de acordo com o seu resultado:
     - "OK" para jogadas válidas;
     - Outros textos para jogadas inválidas, para mostrar ao usuário o erro dele
