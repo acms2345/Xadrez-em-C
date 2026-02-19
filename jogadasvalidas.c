@@ -1,4 +1,5 @@
 #include "jogadasvalidas.h"
+#include "traducao.h"
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
@@ -218,13 +219,13 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
     char peca = tabuleiro[linhaOrigem][colunaOrigem];
 
     if(linhaOrigem == linhaDestino && colunaOrigem == colunaDestino) {
-        return "Movimento para a mesma posicao"; // Movimento para a mesma posição
+        return Msg(MSG_JOGADAS_MOVIMENTO_MESMA_POSICAO); // Movimento para a mesma posição
 
     } else if((jogadorDaVez == 0 && isupper(tabuleiro[linhaDestino][colunaDestino])) || ((jogadorDaVez == 1 && islower(tabuleiro[linhaDestino][colunaDestino])))) {
-        return "Peca do mesmo jogador"; // Tentativa de capturar uma peça do mesmo jogador
+        return Msg(MSG_JOGADAS_PECA_MESMO_JOGADOR); // Tentativa de capturar uma peça do mesmo jogador
 
     } else if ((jogadorDaVez == 0 && islower(tabuleiro[linhaOrigem][colunaOrigem])) || (jogadorDaVez == 1 && isupper(tabuleiro[linhaOrigem][colunaOrigem]))) {
-        return "Tentativa de mover peca do oponente"; // Tentativa de mover a peça do oponente
+        return Msg(MSG_JOGADAS_MOVER_PECA_OPONENTE); // Tentativa de mover a peça do oponente
     } else {
         
         switch (toupper(peca))
@@ -235,50 +236,50 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             if(jogadorDaVez == 0) {
                 if ((linhaDestino == linhaOrigem - 1 && colunaDestino == colunaOrigem - 1 && tabuleiro[linhaDestino][colunaDestino] != ' ')) {
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK"; // Movimento diagonal para capturar
                 } else if ((linhaDestino == linhaOrigem - 1 && colunaDestino == colunaOrigem + 1 && tabuleiro[linhaDestino][colunaDestino] != ' ')) {
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK"; // Movimento diagonal para capturar
                 } else if (linhaDestino == linhaOrigem - 1 && colunaDestino == colunaOrigem && tabuleiro[linhaDestino][colunaDestino] == ' '){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK"; // Movimento para frente
                 } else if (linhaOrigem == 6 && linhaDestino == linhaOrigem - 2 && colunaDestino == colunaOrigem && tabuleiro[linhaDestino - 1][colunaDestino] == ' ' && tabuleiro[linhaDestino][colunaDestino] == ' ') {
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK"; // Movimento de início para frente (duas casas)
                 } else {
-                    return "Movimento invalido para o peao"; // Movimento inválido para o peão
+                    return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_PEAO); // Movimento inválido para o peão
                 }
             } else {
                 if ((linhaDestino == linhaOrigem + 1 && colunaDestino == colunaOrigem - 1 && tabuleiro[linhaDestino][colunaDestino] != ' ')) {
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK"; // Movimento diagonal para capturar
                 } else if ((linhaDestino == linhaOrigem + 1 && colunaDestino == colunaOrigem + 1 && tabuleiro[linhaDestino][colunaDestino] != ' ')) {
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK"; // Movimento diagonal para capturar
                 } else if (linhaDestino == linhaOrigem + 1 && colunaDestino == colunaOrigem && tabuleiro[linhaDestino][colunaDestino] == ' '){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK"; // Movimento para frente
                 } else if (linhaOrigem == 1 && linhaDestino == linhaOrigem + 2 && colunaDestino == colunaOrigem && tabuleiro[linhaDestino - 1][colunaDestino] == ' ' && tabuleiro[linhaDestino][colunaDestino] == ' ') {
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK"; // Movimento de início para frente (duas casas)
                 } else {
-                    return "Movimento invalido para o peao"; // Movimento inválido para o peão
+                    return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_PEAO); // Movimento inválido para o peão
                 }
             }
             break;
@@ -289,7 +290,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = 1; i + linhaOrigem < 8; i++){ //verifica se é movimento para baixo
                 if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
@@ -299,7 +300,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = -1; i + linhaOrigem >= 0; i--){ //verifica se é movimento para cima
                 if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
@@ -309,7 +310,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = 1; i + colunaOrigem < 8; i++){ //verifica se é movimento para direita
                 if(colunaDestino == colunaOrigem + i && linhaDestino == linhaOrigem){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem][colunaOrigem + i] != ' '){
@@ -319,60 +320,60 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = -1; i + colunaOrigem >= 0; i--){ //verifica se é movimento para esquerda
                 if(colunaDestino == colunaOrigem + i && linhaDestino == linhaOrigem){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem][colunaOrigem + i] != ' '){
                     break;
                 }
             }
-            return "Movimento invalido para a torre";
+            return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_TORRE); // Movimento inválido para a torre
         
         case 'C':
             /* Código para movimento do cavalo */
 
             if(linhaDestino == linhaOrigem + 2 && colunaDestino == colunaOrigem - 1){
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                    return "Movimento deixaria rei em xeque";
+                    return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
                 return "OK"; // Movimento em "L" em pé para sudoeste
             } else if (linhaDestino == linhaOrigem - 2 && colunaDestino == colunaOrigem - 1){
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                    return "Movimento deixaria rei em xeque";
+                    return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
                 return "OK"; // Movimento em "L" em pé para noroeste
             } else if(linhaDestino == linhaOrigem + 2 && colunaDestino == colunaOrigem + 1){
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                    return "Movimento deixaria rei em xeque";
+                    return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
                 return "OK"; // Movimento em "L" em pé para sudeste
             } else if (linhaDestino == linhaOrigem - 2 && colunaDestino == colunaOrigem + 1){
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                    return "Movimento deixaria rei em xeque";
+                    return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
                 return "OK"; // Movimento em "L" em pé para nordeste
             } else if(linhaDestino == linhaOrigem + 1 && colunaDestino == colunaOrigem - 2){
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                    return "Movimento deixaria rei em xeque";
+                    return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
                 return "OK"; // Movimento em "L" deitado para sudoeste
             } else if (linhaDestino == linhaOrigem - 1 && colunaDestino == colunaOrigem - 2){
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                    return "Movimento deixaria rei em xeque";
+                    return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
                 return "OK"; // Movimento em "L" deitado para noroeste
             } else if(linhaDestino == linhaOrigem + 1 && colunaDestino == colunaOrigem + 2){
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                    return "Movimento deixaria rei em xeque";
+                    return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
                 return "OK"; // Movimento em "L" deitado para sudeste
             } else if (linhaDestino == linhaOrigem - 1 && colunaDestino == colunaOrigem + 2){
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                    return "Movimento deixaria rei em xeque";
+                    return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
                 return "OK"; // Movimento em "L" deitado para nordeste
             } else {
-                return "Movimento invalido para o cavalo";
+                return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_CAVALO); // Movimento inválido para o cavalo
             }
             
             break;
@@ -383,7 +384,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = 1; linhaOrigem + i < 8 && colunaOrigem + i < 8; i++){//Para ver movimento para sudeste
                 if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem + i){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem + i] != ' '){
@@ -393,7 +394,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = 1; linhaOrigem - i >= 0 && colunaOrigem + i < 8; i++){//Para ver movimento para nordeste
                 if(linhaDestino == linhaOrigem - i && colunaDestino == colunaOrigem + i){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem - i][colunaOrigem + i] != ' '){
@@ -403,7 +404,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = 1; linhaOrigem + i < 8 && colunaOrigem - i >= 0; i++){//Para ver movimento para sudoeste
                 if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem - i){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem - i] != ' '){
@@ -413,14 +414,14 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = 1; linhaOrigem - i >= 0 && colunaOrigem - i >= 0; i++){//Para ver movimento para noroeste
                 if(linhaDestino == linhaOrigem - i && colunaDestino == colunaOrigem - i){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem - i][colunaOrigem - i] != ' '){
                     break;
                 }
             }
-            return "Movimento invalido para o bispo";
+            return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_BISPO);
             
 
         case 'Q':
@@ -432,7 +433,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = 1; i + linhaOrigem < 8; i++){ //verifica se é movimento para baixo
                 if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
@@ -442,7 +443,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = -1; i + linhaOrigem >= 0; i--){ //verifica se é movimento para cima
                 if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
@@ -452,7 +453,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = 1; i + colunaOrigem < 8; i++){ //verifica se é movimento para direita
                 if(colunaDestino == colunaOrigem + i && linhaDestino == linhaOrigem){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem][colunaOrigem + i] != ' '){
@@ -462,7 +463,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = -1; i + colunaOrigem >= 0; i--){ //verifica se é movimento para esquerda
                 if(colunaDestino == colunaOrigem + i && linhaDestino == linhaOrigem){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem][colunaOrigem + i] != ' '){
@@ -474,7 +475,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = 1; linhaOrigem + i < 8 && colunaOrigem + i < 8; i++){//Para ver movimento para sudeste
                 if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem + i){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem + i] != ' '){
@@ -484,7 +485,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = 1; linhaOrigem - i >= 0 && colunaOrigem + i < 8; i++){//Para ver movimento para nordeste
                 if(linhaDestino == linhaOrigem - i && colunaDestino == colunaOrigem + i){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem - i][colunaOrigem + i] != ' '){
@@ -494,7 +495,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = 1; linhaOrigem + i < 8 && colunaOrigem - i >= 0; i++){//Para ver movimento para sudoeste
                 if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem - i){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem - i] != ' '){
@@ -504,7 +505,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             for(int i = 1; linhaOrigem - i >= 0 && colunaOrigem - i >= 0; i++){//Para ver movimento para noroeste
                 if(linhaDestino == linhaOrigem - i && colunaDestino == colunaOrigem - i){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
-                        return "Movimento deixaria rei em xeque";
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK";
                 } else if (tabuleiro[linhaOrigem - i][colunaOrigem - i] != ' '){
@@ -512,7 +513,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                 }
             }
 
-            return "Movimento invalido para a rainha";
+            return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_RAINHA);
 
         case 'K':
             /* Código para movimento do rei */
@@ -520,23 +521,23 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             if((linhaDestino == linhaOrigem + 1 || linhaDestino == linhaOrigem - 1 || linhaDestino == linhaOrigem) &&
                (colunaDestino == colunaOrigem + 1 || colunaDestino == colunaOrigem - 1 || colunaDestino == colunaOrigem)) {
                 if(CasaAtacada(tabuleiro, linhaDestino, colunaDestino, 1 - jogadorDaVez)){
-                    return "Casa de destino em xeque"; // Casa de destino está sob ataque
+                    return Msg(MSG_JOGADAS_CASA_DESTINO_XEQUE); // Casa de destino está sob ataque
                 } else{
                     
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)){
-                        return "Movimento colocaria rei em xeque"; // Movimento colocaria o rei em xeque
+                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE); // Movimento colocaria o rei em xeque
                     } else {
                         return "OK"; // Movimento válido
                     }
                 }
                     
             } else {
-                return "Movimento invalido para o rei"; // Movimento inválido para o rei
+                return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_REI); // Movimento inválido para o rei
             }
             break;
 
         default: //Se não for nenhuma peça válida
-            return "Peça invalida";
+            return Msg(MSG_JOGADAS_PECA_INVALIDA);
 
         }
         

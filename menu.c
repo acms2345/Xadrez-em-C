@@ -1,25 +1,37 @@
 #include <stdio.h>
 #include "jogo.h"
+#include "traducao.h"
 
 /*Note: The source code is entirely written in Portuguese now.*/
 
 int main(){
     int opcao;
-    
-    printf("==============================================\n");
-    printf("            XADREZ EM C\n");
-    printf("==============================================\n\n");
-    
+    Lingua opcao_lingua;
+    while(1){
+        printf("Escolha a lingua/Choose the language (0 = Portugues, 1 = English): ");
+        if(scanf("%d", &opcao_lingua) != 1){
+            printf("Opcao invalida!/Invalid option!\n");
+
+            int c;
+            while((c = getchar()) != '\n' && c != EOF); // Limpa o buffer de entrada
+            
+            continue;
+        }
+
+        definirIdioma(opcao_lingua);
+        break;
+    }
+    printf(Msg(MSG_MENU_TITULO));
 
     while (1){
-        printf("1. Nova Partida\n");
-        printf("2. Carregar Partida Salva\n");
-        printf("3. Ajuda\n");
-        printf("4. Sair\n\n");
-        printf("Escolha uma opcao: ");
+        printf(Msg(MSG_MENU_OPCAO_NOVA_PARTIDA));
+        printf(Msg(MSG_MENU_OPCAO_CARREGAR_PARTIDA));
+        printf(Msg(MSG_MENU_OPCAO_AJUDA));
+        printf(Msg(MSG_MENU_OPCAO_SAIR));
+        printf(Msg(MSG_MENU_OPCAO_ESCOLHA_OPCAO));
 
         if(scanf("%d", &opcao) != 1){
-            printf("Entrada invalida! Por favor, insira um numero entre 1 e 4: ");
+            printf(Msg(MSG_MENU_OPCAO_INVALIDA));
             
             int c;
             while((c = getchar()) != '\n' && c != EOF); // Limpa o buffer de entrada
@@ -28,19 +40,19 @@ int main(){
         }
 
         if(opcao < 1 || opcao > 4){
-            printf("Opcao invalida!\n");
+            printf(Msg(MSG_MENU_OPCAO_INVALIDA));
         } else if(opcao == 4){
-            printf("Fechando o programa...\n");
+            printf(Msg(MSG_MENU_FECHANDO_PROGRAMA));
             return 0;
         } else if (opcao == 3)
         {
-            printf("\nAJUDA:\n");
-            printf("Este e um jogo de xadrez para dois jogadores. Cada jogador controla um conjunto de pecas, uma em MAIUSCULAS e a outra em minusculas.\n");
-            printf("O objetivo do jogo e capturar o rei do oponente. As pecas se movem de acordo com as regras tradicionais do xadrez.\n");
-            printf("Para fazer uma jogada, voce precisara inserir as coordenadas de origem e destino no formato de notacao algebrica (ex: e2e4).\n");
-            printf("Voce tambem pode salvar o jogo a qualquer momento digitando 'salvar' quando solicitado a inserir uma jogada.\n");
-            printf("Digite 'desistir' para abandonar o jogo atual e conceder a vitoria ao oponente.\n");
-            printf("Boa sorte e divirta-se!\n\n");
+            printf(Msg(MSG_MENU_AJUDA_TITULO));
+            printf(Msg(MSG_MENU_AJUDA_LINHA1));
+            printf(Msg(MSG_MENU_AJUDA_LINHA2));
+            printf(Msg(MSG_MENU_AJUDA_LINHA3));
+            printf(Msg(MSG_MENU_AJUDA_LINHA4));
+            printf(Msg(MSG_MENU_AJUDA_LINHA5));
+            printf(Msg(MSG_MENU_AJUDA_LINHA6));
         } else{
             iniciarJogo(opcao);
         }

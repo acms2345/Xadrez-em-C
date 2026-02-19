@@ -5,6 +5,7 @@
 
 #include "jogadasvalidas.h"
 #include "jogo.h"
+#include "traducao.h"
 
 /*Note: The source code is entirely written in Portuguese now.*/
 
@@ -70,22 +71,23 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
     char input[10];
 
     while(1){
-        printf("\n%s, digite a jogada em notacao algebrica (ex: e2e4): ", jogadores[jogadorDaVez].nome);
+        printf(Msg(MSG_JOGO_DIGITE_JOGADA), jogadores[jogadorDaVez].nome);
         scanf("%9s", input);
 
         limpezaBuffer();
 
-        if(strcmp(input, "salvar") == 0 || strcmp(input, "SALVAR") == 0){
+        if(strcmp(input, "salvar") == 0 || strcmp(input, "SALVAR") == 0 || 
+        strcmp(input, "save") == 0 || strcmp(input, "SAVE") == 0){
             if(SalvarJogo()){
-                printf("Jogo salvo com sucesso!\n");
+                printf(Msg(MSG_JOGO_SALVAR_SUCESSO));
             } else {
-                printf("Erro ao salvar o jogo.\n");
+                printf(Msg(MSG_JOGO_SALVAR_ERRO));
             }
             continue;
         }
 
-        if(strcmp(input, "desistir") == 0 || strcmp(input, "DESISTIR") == 0){
-            printf("%s desistiu do jogo. %s e o vencedor!\n", jogadores[jogadorDaVez].nome, jogadores[1 - jogadorDaVez].nome);
+        if(strcmp(input, "desistir") == 0 || strcmp(input, "DESISTIR") == 0 || strcmp(input, "resign") == 0 || strcmp(input, "RESIGN") == 0){
+            printf(Msg(MSG_JOGO_DESISTENCIA), jogadores[jogadorDaVez].nome, jogadores[1 - jogadorDaVez].nome);
             ganhou = true;
             return false;
         }
@@ -93,13 +95,13 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
         //Para notação sem separação (ex: e2e4)
         if(strlen(input) == 4){
             if(tolower(input[0]) < 'a' || tolower(input[0]) > 'h'){
-                printf("ERRO: Coluna origem invalida. Use letras de a-h.\n");
+                printf(Msg(MSG_JOGO_COLUNA_ORIGEM_INVALIDA));
                 continue;
             }
             *colunaOrigem = tolower(input[0]) - 'a';
         
             if(input[1] < '1' || input[1] > '8'){
-                printf("ERRO: Linha origem invalida. Use numeros de 1-8.\n");
+                printf(Msg(MSG_JOGO_LINHA_ORIGEM_INVALIDA));
                 continue;
             }
             
@@ -107,13 +109,13 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             *linhaOrigem = 8 - conversaoLinhaOrigem;
 
             if(tolower(input[2]) < 'a' || tolower(input[2]) > 'h'){
-                printf("ERRO: Coluna destino invalida. Use letras de a-h.\n");
+                printf(Msg(MSG_JOGO_COLUNA_DESTINO_INVALIDA));
                 continue;
             }
             *colunaDestino = tolower(input[2]) - 'a';
 
             if(input[3] < '1' || input[3] > '8'){
-                printf("ERRO: Linha destino invalida. Use numeros de 1-8.\n");
+                printf(Msg(MSG_JOGO_LINHA_DESTINO_INVALIDA));
                 continue;
             }
             
@@ -127,17 +129,17 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
         //Notação com separador (ex: e2-e4)
         else if (strlen(input) == 5){
             if ((input[2] != ' ') && (input[2] != '-')){
-                printf("ERRO: Digito invalido. Para separar, use espaco ou hifen.\n");
+                printf(Msg(MSG_JOGO_SEPARADOR_COORDENADAS_INVALIDO));
                 continue;
             }
             if(tolower(input[0]) < 'a' || tolower(input[0]) > 'h'){
-                printf("ERRO: Coluna origem invalida. Use letras de a-h.\n");
+                printf(Msg(MSG_JOGO_COLUNA_ORIGEM_INVALIDA));
                 continue;
             }
             *colunaOrigem = tolower(input[0]) - 'a';
         
             if(input[1] < '1' || input[1] > '8'){
-                printf("ERRO: Linha origem invalida. Use numeros de 1-8.\n");
+                printf(Msg(MSG_JOGO_LINHA_ORIGEM_INVALIDA));
                 continue;
             }
             
@@ -145,13 +147,13 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             *linhaOrigem = 8 - conversaoLinhaOrigem;
 
             if(tolower(input[3]) < 'a' || tolower(input[3]) > 'h'){
-                printf("ERRO: Coluna destino invalida. Use letras de a-h.\n");
+                printf(Msg(MSG_JOGO_COLUNA_DESTINO_INVALIDA));
                 continue;
             }
             *colunaDestino = tolower(input[3]) - 'a';
 
             if(input[4] < '1' || input[4] > '8'){
-                printf("ERRO: Linha destino invalida. Use numeros de 1-8.\n");
+                printf(Msg(MSG_JOGO_LINHA_DESTINO_INVALIDA));
                 continue;
             }
             
@@ -162,7 +164,7 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             
             break;
         } else{
-            printf("ERRO: Formato invalido. Use 4 caracteres (ex: e2e4) ou use 5 caracteres (ex: e2-e4)\n");
+            printf(Msg(MSG_JOGO_FORMATO_COORDENADAS_INVALIDO));
             continue;
         }
         
@@ -174,7 +176,7 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
 Ela solicita a peça para a qual o usuário vai querer promover.*/
 static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) {
     char escolha;
-    printf("Seu peao chegou na ultima linha! Escolha a peca para promover (Q, C, B, T): ");
+    printf(Msg(MSG_JOGO_PROMOCAO_PEAO_ESCOLHA_PECA));
     while (1) {
         scanf(" %c", &escolha);
         if(jogadorDaVez == 0) {
@@ -186,7 +188,7 @@ static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) 
             ((escolha == 'q' || escolha == 'c' || escolha == 'b' || escolha == 't') && jogadorDaVez == 1)) {
             return escolha;
         } else {
-            printf("Escolha invalida. Por favor, escolha entre Q, C, B, T: ");
+            printf(Msg(MSG_JOGO_PROMOCAO_PEAO_PECA_INVALIDA));
         }
     }
 }
@@ -203,7 +205,7 @@ struct Salvamento
 static bool SalvarJogo() {
     FILE *arquivo = fopen("salvamento.dat", "wb");
     if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo para salvar o jogo.\n");
+        printf(Msg(MSG_JOGO_SALVAR_ERRO));
         return false;
     }
     
@@ -224,7 +226,7 @@ static bool SalvarJogo() {
 static bool CarregarJogo() {
     FILE *arquivo = fopen("salvamento.dat", "rb");
     if (arquivo == NULL) {
-        printf("Nenhum jogo salvo encontrado.\n");
+        printf(Msg(MSG_JOGO_CARREGAR_ERRO));
         return false;
     }
     
@@ -287,7 +289,7 @@ int iniciarJogo(int opcao) {
 
     if (opcao == 1){
         for(int i = 0; i < 2; i++){
-            printf("Digite o nome do %d jogador: ", i + 1);
+            printf(Msg(MSG_JOGO_DIGITE_JOGADOR), i + 1);
             scanf("%19s", jogadores[i].nome);
             jogadores[i].pontos = 0;
         }
@@ -305,7 +307,8 @@ int iniciarJogo(int opcao) {
         printf("\n");
         ExibirTabuleiro();
 
-        printf("E a vez de %s!\n (%s)", jogadores[jogadorDaVez].nome, (jogadorDaVez == 0) ? "MAIUSCULAS" : "minusculas");
+        printf(Msg(MSG_JOGO_VEZ_JOGADOR), jogadores[jogadorDaVez].nome, (jogadorDaVez == 0) 
+        ? Msg(MSG_JOGO_MAIUSCULAS) : Msg(MSG_JOGO_MINUSCULAS));
 
         int linhaOrigem, colunaOrigem, linhaDestino, colunaDestino;
 
@@ -316,7 +319,7 @@ int iniciarJogo(int opcao) {
 
 
         if(tabuleiro[linhaOrigem][colunaOrigem] == ' '){
-            printf("Jogada invalida! Nao ha peca na posicao de origem.\n");
+            printf(Msg(MSG_JOGO_POSICAO_ORIGEM_VAZIA));
             
             continue;
             
@@ -338,10 +341,10 @@ int iniciarJogo(int opcao) {
             
             if(toupper(tabuleiro[linhaDestino][colunaDestino]) == 'K'){
                 ganhou = true;
-                printf("\n=== XEQUE-MATE (REI CAPTURADO) ===\n");
-                printf("O jogador %s ganhou o jogo!\n", jogadores[jogadorDaVez].nome);
-                printf("Placar final: %s: %d pontos, %s: %d pontos\n", jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
-                printf("Total de movimentos feitos: %d\n", movimentosFeitos);
+                printf(Msg(MSG_JOGO_XEQUEMATE_REI_CAPTURADO_TITULO));
+                printf(Msg(MSG_JOGO_XEQUEMATE_VENCEDOR), jogadores[jogadorDaVez].nome);
+                printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
                 break; // Sai do loop principal do jogo
             }
             
@@ -354,9 +357,9 @@ int iniciarJogo(int opcao) {
             }
 
             if(movimentosSemCapturaouPiao >= 100){
-                printf("Empate por regra dos 50 movimentos sem captura ou movimento de peao!\n");
-                printf("Placar final: %s: %d pontos, %s: %d pontos\n", jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
-                printf("Total de movimentos feitos: %d\n", movimentosFeitos);
+                printf(Msg(MSG_JOGO_EMPATE_50MOVIMENTOS_TITULO));
+                printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
                 ganhou = true;
                 break; // Sai do loop principal do jogo
             }
@@ -380,15 +383,15 @@ int iniciarJogo(int opcao) {
 
             if(XequeMate(tabuleiro, jogadorDaVez)){
                 ganhou = true;
-                printf("\n=== XEQUE-MATE ===\n");
-                printf("O jogador %s ganhou o jogo!\n", jogadores[1 - jogadorDaVez].nome);
-                printf("Placar final: %s: %d pontos, %s: %d pontos\n", jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
-                printf("Total de movimentos feitos: %d\n", movimentosFeitos);
+                printf(Msg(MSG_JOGO_XEQUEMATE_TITULO));
+                printf(Msg(MSG_JOGO_XEQUEMATE_VENCEDOR), jogadores[1 - jogadorDaVez].nome);
+                printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
                 break; // Sai do loop principal do jogo
             }
 
         } else {
-            printf("Jogada invalida! %s.\n", resultadoJogadaValida);
+            printf(Msg(MSG_JOGO_JOGADA_INVALIDA), resultadoJogadaValida);
         }
 
     }

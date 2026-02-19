@@ -10,11 +10,11 @@ This code implements a local two-player chess game, inspired by the official rul
 
 > **Note**: This is an educational project. Some advanced rules are not yet implemented.
 
-> **Developer's note**: Please be aware that the source code, including all variable names, function names, and comments, is written in Portuguese. I'm trying to make the translation of certain parts, but it takes time.
+> **Developer's note**: Please be aware that the source code, including all variable names, function names, comments, is written in Portuguese. I'm making the translation of certain parts of UI, but it takes time.
 
 ### 🔗 Useful Links
 
-- **Online Demo**: [Test on OnlineGDB](https://onlinegdb.com/mCVxTRf8M)
+- **Online Demo**: [Test on OnlineGDB (OUTDATED VERSION)](https://onlinegdb.com/mCVxTRf8M)
 - **Repository**: [GitHub - Xadrez-em-C](https://github.com/acms2345/Xadrez-em-C)
 - **Pre-compiled Executable**: [releases page](https://github.com/acms2345/Xadrez-em-C/releases)
 
@@ -44,15 +44,15 @@ Open terminal/command prompt in the project folder and run:
 
 If using GCC:
 ```bash
-gcc menu.c jogo.c jogadasvalidas.c -o xadrez
+gcc menu.c jogo.c jogadasvalidas.c traducao.c -o xadrez
 ```
 If using Clang:
 ```bash
-clang menu.c jogo.c jogadasvalidas.c -o xadrez
+clang menu.c jogo.c jogadasvalidas.c traducao.c -o xadrez
 ```
 Or if using MinGW (Windows):
 ```bash
-mingw32-gcc menu.c jogo.c jogadasvalidas.c -o xadrez
+mingw32-gcc menu.c jogo.c jogadasvalidas.c traducao.c -o xadrez
 ```
 
 ### 3. Run the code
@@ -85,6 +85,8 @@ Xadrez-em-C/
 ├── jogo.h           # Header that links jogo.c to menu.c.
 ├── jogadasvalidas.c   # Move validation logic
 ├── jogadasvalidas.h   # Header with prototypes
+├── traducao.c         # Message translation functions
+├── traducao.h          # Header with prototypes
 └── README.md          # This file
 ```
 
@@ -176,8 +178,7 @@ To resume a saved game, you must choose the "Load Saved Game" option from the ma
 
 ## ⚠️ Known Limitations
 
-1.  **No checkmate detection**: The game only ends when the king is captured.
-2.  **No castling**: This special move is not implemented.
+1.  **No castling**: This special move is not implemented.
 3.  **No en passant**: This special pawn capture is not implemented.
 4.  **No draw detection**: For stalemate or repetition.
 
@@ -196,7 +197,7 @@ Tal código corresponde a um jogo de dois jogadores local, inspirado nas regras 
 
 ### 🔗 Links úteis
 
-- **Demo Online**: [Testar no OnlineGDB](https://onlinegdb.com/mCVxTRf8M)
+- **Demo Online**: [Testar no OnlineGDB (VERSÃO DESATUALIZADA)](https://onlinegdb.com/mCVxTRf8M)
 - **Repositório**: [GitHub - Xadrez-em-C](https://github.com/acms2345/Xadrez-em-C)
 - **Executável pré-compilado**: [página de releases](https://github.com/acms2345/Xadrez-em-C/releases)
 
@@ -224,15 +225,15 @@ Abra o terminal/prompt de comando na pasta do projeto e execute:
 
 Caso use o GCC:
 ```bash
-gcc menu.c jogo.c jogadasvalidas.c -o xadrez
+gcc menu.c jogo.c jogadasvalidas.c traducao.c -o xadrez
 ```
 Caso use o Clang:
 ```bash
-clang menu.c jogo.c jogadasvalidas.c -o xadrez
+clang menu.c jogo.c jogadasvalidas.c traducao.c -o xadrez
 ```
 Ou caso use o MinGW (Windows):
 ```bash
-mingw32-gcc menu.c jogo.c jogadasvalidas.c -o xadrez
+mingw32-gcc menu.c jogo.c jogadasvalidas.c traducao.c -o xadrez
 ```
 
 ### 3. Executar o código
@@ -260,6 +261,8 @@ Xadrez-em-C/
 ├── jogo.h             # Header que interliga jogo.c a menu.c
 ├── jogadasvalidas.c   # Lógica de validação de movimentos
 ├── jogadasvalidas.h   # Header com protótipos
+├── traducao.c         # Funções de tradução de mensagens
+├── traducao.h          # Header com protótipos
 └── README.md          # Este arquivo
 ```
 
@@ -351,8 +354,7 @@ Para retomar a partida salva, você deve escolher a opção de "Carregar Partida
 
 ## ⚠️ Limitações conhecidas
 
-1. **Não detecta xeque-mate**: Jogo termina apenas com captura do rei
-2. **Sem roque**: Movimento especial não implementado
+1. **Sem roque**: Movimento especial não implementado
 3. **Sem en passant**: Captura especial de peão não implementada
 4. **Sem detecção de empate**: Por afogamento ou repetição.
 
