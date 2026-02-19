@@ -4,13 +4,23 @@
 
 /*Note: The source code is entirely written in Portuguese now.*/
 
+// ✅ Ativa UTF-8 automaticamente no Windows
+#ifdef _WIN32
+    #include <windows.h>
+#endif
+
 int main(){
+    #ifdef _WIN32
+        SetConsoleCP(65001);
+        SetConsoleOutputCP(65001);
+    #endif
+    
     int opcao;
     Lingua opcao_lingua;
     while(1){
-        printf("Escolha a lingua/Choose the language (0 = Portugues, 1 = English): ");
+        printf("Escolha a língua/Choose the language (0 = Português, 1 = English): ");
         if(scanf("%d", &opcao_lingua) != 1){
-            printf("Opcao invalida!/Invalid option!\n");
+            printf("Opcao inválida!/Invalid option!\n");
 
             int c;
             while((c = getchar()) != '\n' && c != EOF); // Limpa o buffer de entrada

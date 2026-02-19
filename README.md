@@ -123,8 +123,8 @@ Xadrez-em-C/
     -   First number: origin row (1-8);
     -   Second letter: destination column (a-h);
     -   Second number: destination row (1-8);
-    -   Type "salvar" to save the game.
-    -   Type "desistir" to forfeit the game and give victory to your opponent.
+    -   Type "save" to save the game.
+    -   Type "resign" to forfeit the game and give victory to your opponent.
 4.  The game includes a draw system based on the 50-move rule (100 moves - or half moves - without a capture or pawn move).
 
 - If you wish, in the game there is a Help option, in which there are some quick instructions about the game.

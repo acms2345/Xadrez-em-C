@@ -26,11 +26,11 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "4. Exit\n\n"
     },
     {
-        "Escolha uma opcao: ",
+        "Escolha uma opção: ",
         "Choose an option: "
     },
     {
-        "Opcao invalida! Por favor, insira um numero entre 1 e 4: ",
+        "Opção inválida! Por favor, insira um número entre 1 e 4: ",
         "Invalid option! Please enter a number between 1 and 4: "
     },
     {
@@ -45,23 +45,23 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "\nHELP:\n"
     },
     {
-        "Este e um jogo de xadrez para dois jogadores. Cada jogador controla um conjunto de pecas, uma em MAIUSCULAS e a outra em minusculas.\n",
+        "Este é um jogo de xadrez para dois jogadores. Cada jogador controla um conjunto de pecas, uma em MAIÚSCULAS e a outra em minúsculas.\n",
         "This is a chess game for two players. Each player controls a set of pieces, one in UPPERCASE and the other in lowercase.\n"
     },
     {
-        "O objetivo do jogo e capturar o rei do oponente. As pecas se movem de acordo com as regras tradicionais do xadrez.\n",
+        "O objetivo do jogo é capturar o rei do oponente. As peças se movem de acordo com as regras tradicionais do xadrez.\n",
         "The objective of the game is to capture the opponent's king. The pieces move according to traditional chess rules.\n"
     },
     {
-        "Para fazer uma jogada, voce precisara inserir as coordenadas de origem e destino no formato de notacao algebrica (ex: e2e4, e2-e4).\n",
+        "Para fazer uma jogada, você precisará inserir as coordenadas de origem e destino no formato de notação algébrica (ex: e2e4, e2-e4).\n",
         "To make a move, you will need to enter the source and destination coordinates in algebraic notation (e.g., e2e4, e2-e4).\n"
     },
     {
-        "Voce tambem pode salvar o jogo a qualquer momento digitando 'salvar' quando solicitado a inserir uma jogada.\n",
+        "Você também pode salvar o jogo a qualquer momento digitando 'salvar' quando solicitado a inserir uma jogada.\n",
         "You can also save the game at any time by typing 'save' when prompted to enter a move.\n"
     },
     {
-        "Digite 'desistir' para abandonar o jogo atual e conceder a vitoria ao oponente.\n",
+        "Digite 'desistir' para abandonar o jogo atual e conceder a vitória ao oponente.\n",
         "Type 'resign' to abandon the current game and concede victory to the opponent.\n"
     },
     {
@@ -72,7 +72,7 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
 
     //jogo.c
     {
-        "\n%s, digite a jogada em notacao algebrica (ex: e2e4): ",
+        "\n%s, digite a jogada em notação algébrica (ex: e2e4): ",
         "\n%s, enter your move in algebraic notation (e.g., e2e4): "
     },
     {
@@ -84,39 +84,39 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "Error saving the game.\n"
     },
     {
-        "%s desistiu do jogo. %s e o vencedor!\n",
+        "%s desistiu do jogo. %s é o vencedor!\n",
         "%s resigned from the game. %s is the winner!\n"
     },
     {
-        "ERRO: Coluna origem invalida. Use letras de a-h.\n",
+        "ERRO: Coluna origem inválida. Use letras de a-h.\n",
         "ERROR: Invalid source column. Use letters a-h.\n"
     },
     {
-        "ERRO: Linha origem invalida. Use numeros de 1-8.\n",
+        "ERRO: Linha origem inválida. Use números de 1-8.\n",
         "ERROR: Invalid source row. Use numbers 1-8.\n"
     },
     {
-        "ERRO: Coluna destino invalida. Use letras de a-h.\n",
+        "ERRO: Coluna destino inválida. Use letras de a-h.\n",
         "ERROR: Invalid destination column. Use letters a-h.\n"
     },
     {
-        "ERRO: Linha destino invalida. Use numeros de 1-8.\n",
+        "ERRO: Linha destino inválida. Use números de 1-8.\n",
         "ERROR: Invalid destination row. Use numbers 1-8.\n"
     },
     {
-        "ERRO: Digito invalido. Para separar, use espaco ou hifen.\n",
+        "ERRO: Dígito inválido. Para separar, use espaço ou hífen.\n",
         "ERROR: Invalid character. To separate, use space or hyphen.\n"
     },
     {
-        "ERRO: Formato invalido. Use 4 caracteres (ex: e2e4) ou use 5 caracteres (ex: e2-e4)\n",
+        "ERRO: Formato inválido. Use 4 caracteres (ex: e2e4) ou use 5 caracteres (ex: e2-e4)\n",
         "ERROR: Invalid format. Use 4 characters (e.g., e2e4) or use 5 characters (e.g., e2-e4)\n"
     },
     {
-        "Seu peao chegou na ultima linha! Escolha a peca para promover (Q, C, B, T): ",
+        "Seu peão chegou na última linha! Escolha a peça para promover (Q, C, B, T): ",
         "Your pawn has reached the last row! Choose the piece to promote to (Q, C, B, T): "
     },
     {
-        "Escolha invalida. Por favor, escolha entre Q, C, B, T: ",
+        "Escolha inválida. Por favor, escolha entre Q, C, B, T: ",
         "Invalid choice. Please choose between Q, C, B, T: "
     },
 
@@ -138,15 +138,15 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "It's %s's turn!\n (%s)"
     },
     {
-        "MAIUSCULAS",
+        "MAIÚSCULAS",
         "UPPERCASE"
     },
     {
-        "minusculas",
+        "minúsculas",
         "lowercase"
     },
     {
-        "Jogada invalida! Nao ha peca na posicao de origem.\n",
+        "Jogada inválida! Não há peça na posição de origem.\n",
         "Invalid move! There is no piece at the source position.\n"
     },
 
@@ -167,7 +167,7 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "Total moves made: %d\n"
     },
     {
-        "\n=== EMPATE (REGRA DOS 50 MOVIMENTOS SEM CAPTURA OU PEAO) ===\n",
+        "\n=== EMPATE (REGRA DOS 50 MOVIMENTOS SEM CAPTURA OU PEÃO) ===\n",
         "\n=== DRAW (50-MOVE RULE WITHOUT CAPTURE OR PAWN MOVE) ===\n"
     },
     {
@@ -176,7 +176,7 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
     },
 
     {
-        "Jogada invalida! %s.\n",
+        "Jogada inválida! %s.\n",
         "Invalid move! %s.\n"
     },
 
@@ -184,15 +184,15 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
     //jogadasvalidas.c
 
     {
-        "Movimento para a mesma posicao",
+        "Movimento para a mesma posição",
         "Move to the same position"
     },
     {
-        "Tentativa de capturar propria peca",
+        "Tentativa de capturar própria peça",
         "Attempt to capture own piece"
     },
     {
-        "Tentativa de mover peca do oponente",
+        "Tentativa de mover peça do oponente",
         "Attempt to move opponent's piece"
     },
     {
@@ -200,23 +200,23 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "Move would leave king in check"
     },
     {
-        "Movimento invalido para o peao",
+        "Movimento inválido para o peão",
         "Invalid move for the pawn"
     },
     {
-        "Movimento invalido para a torre",
+        "Movimento inválido para a torre",
         "Invalid move for the rook"
     },
     {
-        "Movimento invalido para o cavalo",
+        "Movimento inválido para o cavalo",
         "Invalid move for the knight"
     },
     {
-        "Movimento invalido para o bispo",
+        "Movimento inválido para o bispo",
         "Invalid move for the bishop"
     },
     {
-        "Movimento invalido para a rainha",
+        "Movimento inválido para a rainha",
         "Invalid move for the queen"
     },
     {
@@ -224,11 +224,11 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "Destination square is in check"
     },
     {
-        "Movimento invalido para o rei",
+        "Movimento inválido para o rei",
         "Invalid move for the king"
     },
     {
-        "Peça invalida",
+        "Peça inválida",
         "Invalid piece"
     }
 };
