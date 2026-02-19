@@ -22,7 +22,7 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Compile on ${{ matrix.os }}
-      run: gcc menu.c jogo.c jogadasvalidas.c -o ${{ matrix.output }}
+      run: gcc menu.c jogo.c jogadasvalidas.c traducao.c -o ${{ matrix.output }}
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
