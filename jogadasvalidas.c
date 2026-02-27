@@ -209,6 +209,44 @@ bool XequeMate(char tabuleiro[8][8], int JogadorDaVez){
     }
     return true; //É xeque-mate.
 }
+
+bool Afogamento(char tabuleiro[8][8], int JogadorDaVez){
+    // 1️⃣ Primeiro verifica se está em xeque
+    if(ReiEmXeque(tabuleiro, JogadorDaVez)){
+        return false; //O rei deveria poder ficar na mesma posição para ser um afogamento.
+    }
+    
+    //Verifica todas as peças e possíveis movimentos.
+    for(int linha = 0; linha < 8; linha++){
+        for(int coluna = 0; coluna < 8; coluna++){
+            char peca = tabuleiro[linha][coluna];
+
+            if(peca == ' ') continue;
+
+            if((JogadorDaVez == 0 && !isupper(peca)) || (JogadorDaVez == 1 && isupper(peca)))
+                continue;
+            
+            for (int linhaDestino = 0; linhaDestino < 8; linhaDestino++)
+            {
+                for (int colunaDestino = 0; colunaDestino < 8; colunaDestino++)
+                {
+                    const char* resultado = JogadaValida(tabuleiro, linha, coluna, linhaDestino, colunaDestino, JogadorDaVez);
+
+                    //Verifica se é um movimento válido.
+                    if(strcmp(resultado, "OK") == 0){
+                        //Verifica se esse movimento ESCAPA do xeque
+                        if(!movimentoDeixaReiemXeque(tabuleiro, JogadorDaVez, linha, coluna, linhaDestino, colunaDestino)){
+                            return false; //Tal movimento não deixa o rei em xeque-mate
+                        }
+                    }
+                }
+                
+            }
+            
+        }
+    }
+    return true; //É afogamento.
+}
 /*A função retorna alguns valores de acordo com o seu resultado:
     - "OK" para jogadas válidas;
     - Outros textos para jogadas inválidas, para mostrar ao usuário o erro dele

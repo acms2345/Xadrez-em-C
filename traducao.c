@@ -176,6 +176,16 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
     },
 
     {
+        "=== AFOGAMENTO ===\n",
+        "=== STALEMATE ===\n"
+    },
+
+    {
+        "Houve um empate! Nenhum jogador tem movimentos válidos, mas o rei não está em xeque.\n",
+        "It's a draw! Neither player has valid moves, but the king is not in check.\n"
+    },
+
+    {
         "Jogada inválida! %s.\n",
         "Invalid move! %s.\n"
     },

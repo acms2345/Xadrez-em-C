@@ -389,6 +389,14 @@ int iniciarJogo(int opcao) {
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
                 break; // Sai do loop principal do jogo
             }
+            if(Afogamento(tabuleiro, jogadorDaVez)){
+                ganhou = true;
+                printf(Msg(MSG_JOGO_AFOGAMENTO_TITULO));
+                printf(Msg(MSG_JOGO_EMPATE_TEXTO));
+                printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
+                break; // Sai do loop principal do jogo
+            }
 
         } else {
             printf(Msg(MSG_JOGO_JOGADA_INVALIDA), resultadoJogadaValida);
