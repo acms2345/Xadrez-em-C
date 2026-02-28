@@ -47,6 +47,32 @@ static bool ganhou = false;
 static bool SalvarJogo();
 static bool CarregarJogo();
 
+static const char* ObterSimboloPeca(char peca) {
+    static const char* simbolos[] = {
+        ['P'] = "♙",
+        ['T'] = "♖",
+        ['C'] = "♘",
+        ['B'] = "♗",
+        ['Q'] = "♕",
+        ['K'] = "♔",
+
+        ['p'] = "♟",
+        ['t'] = "♜",
+        ['c'] = "♞",
+        ['b'] = "♝",
+        ['q'] = "♛",
+        ['k'] = "♚",
+
+        [' '] = " "
+    };
+
+    int ConversorIndice = (int)peca;
+    if(ConversorIndice < sizeof(simbolos) / sizeof(simbolos[0]) && simbolos[ConversorIndice] != NULL){
+        return simbolos[ConversorIndice];
+    }
+    return " "; // Caso de segurança
+}
+
 static void ExibirTabuleiro() {
     printf("\n  a b c d e f g h\n");
     for (int i = 8; i >= 1; i--) {
@@ -54,7 +80,7 @@ static void ExibirTabuleiro() {
         printf("%d ", i);
         
         for (int j = 0; j < 8; j++) {
-            printf("%c ", tabuleiro[conversaoLinha][j]);
+            printf("%s ", ObterSimboloPeca(tabuleiro[conversaoLinha][j]));
         }
         printf("\n");
     }
