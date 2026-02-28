@@ -69,10 +69,11 @@ On Linux or macOS:
 
 ## How the Code Works
 
-Instead of traditional black and white pieces, the code differentiates them using uppercase and lowercase characters:
 
--   **White pieces**: UPPERCASE letters (P, T, C, B, Q, K)
--   **Black pieces**: lowercase letters (p, t, c, b, q, k)
+-   **White pieces**: ♙ ♖ ♘ ♗ ♕ ♔ (P, T, C, B, Q, K)
+-   **Black pieces**: ♟ ♜ ♞ ♝ ♛ ♚ (p, t, c, b, q, k)
+
+Inside the code, instead of white and black pieces, they are differentiated by uppercase and lowercase characters.
 
 The code also includes a scoring system for each player based on the value of each piece.
 
@@ -103,14 +104,14 @@ Xadrez-em-C/
 
 ## 📊 Scoring System
 
-| Piece      | Value   |
-| ---------- | ------- |
-| Pawn (P/p) | 1       |
-| Knight (C/c) | 3       |
-| Bishop (B/b) | 3       |
-| Rook (T/t) | 5       |
-| Queen (Q/q)  | 9       |
-| King (K/k)   | Victory |
+| Piece      |Symbol   |Value   |
+| ---------- |---------|------- |
+| Pawn (P/p) |♙ ♟  |1       |
+| Knight (C/c) |♘ ♞  |3       |
+| Bishop (B/b) |♗ ♝  |3       |
+| Rook (T/t) |♖ ♜  |5       |
+| Queen (Q/q)  |♕ ♛  |9       |
+| King (K/k)   |♔ ♚  |Victory |
 
 > This scoring system does not directly determine the winner. It only gives an idea of which player potentially performed better during the match.
 
@@ -133,38 +134,38 @@ Xadrez-em-C/
 
 ```
   a b c d e f g h
-8 t c b k q b c t
-7 p p p p p p p p
+8 ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜
+7 ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟
 6                
 5                
 4                
 3                
-2 P P P P P P P P
-1 T C B K Q B C T
+2 ♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙
+1 ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖
 
 Player1, enter your move in algebraic notation (ex: e2e4): e2e4
 
   a b c d e f g h
-8 t c b k q b c t
-7 p p p p p p p p
+8 ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜
+7 ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟
 6                
 5                
-4         P       
+4            ♙       
 3                
-2 P P P P   P P P
-1 T C B K Q B C T
+2 ♙ ♙ ♙ ♙   ♙ ♙ ♙
+1 ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖
 
 Player2, enter your move in algebraic notation (ex: e2e4): e7e5
 
   a b c d e f g h
-8 t c b k q b c t
-7 p p p p   p p p
+8 ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜
+7 ♟ ♟ ♟ ♟   ♟ ♟ ♟
 6                
-5         p      
-4         P       
+5            ♟      
+4            ♙             
 3                
-2 P P P P   P P P
-1 T C B K Q B C T
+2 ♙ ♙ ♙ ♙   ♙ ♙ ♙
+1 ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖
 
 ...
 ```
@@ -179,8 +180,9 @@ To resume a saved game, you must choose the "Load Saved Game" option from the ma
 ## ⚠️ Known Limitations
 
 1.  **No castling**: This special move is not implemented.
-3.  **No en passant**: This special pawn capture is not implemented.
-4.  **No draw detection**: For stalemate or repetition.
+2.  **No en passant**: This special pawn capture is not implemented.
+3. **No repetition detection**: Draw by repetition is not implemented (but stalemate and 50-move rule are).
+
 
 ## 📄 License
 
@@ -247,9 +249,11 @@ No Linux ou MacOS:
 ./xadrez
 ```
 ## Sobre o funcionamento do código
-Ao invés das pecas brancas e pretas, o código diferencia as peças por caracteres maiúsculos e minúsculos:
-- **Peças brancas**: letras MAIÚSCULAS (P, T, C, B, Q, K)
-- **Peças pretas**: letras minúsculas (p, t, c, b, q, k)
+
+- **Peças brancas**: ♙ ♖ ♘ ♗ ♕ ♔ (P, T, C, B, Q, K)
+- **Peças pretas**: ♟ ♜ ♞ ♝ ♛ ♚ (p, t, c, b, q, k)
+
+Dentro do código, ao invés de peças brancas e pretas, elas são diferenciadas por caracteres maiúsculos e minúsculos.
 
 Por enquanto, o código também conta com um sistema de pontuação para cada jogador com base no valor de cada peça.
 ## 📁 Estrutura do projeto
@@ -279,14 +283,14 @@ Xadrez-em-C/
 
 ## 📊 Sistema de pontuação
 
-| Peça | Valor |
-|------|-------|
-| Peão (P/p) | 1 |
-| Cavalo (C/c) | 3 |
-| Bispo (B/b) | 3 |
-| Torre (T/t) | 5 |
-| Rainha (Q/q) | 9 |
-| Rei (K/k) | Vitória |
+| Peça |Símbolos |Valor |
+|------|---------|-------|
+| Peão (P/p) | ♙ ♟  | 1 |
+| Cavalo (C/c) | ♘ ♞  | 3 |
+| Bispo (B/b) | ♗ ♝  | 3 |
+| Torre (T/t) | ♖ ♜  | 5 |
+| Rainha (Q/q) | ♕ ♛  | 9 |
+| Rei (K/k) |♔ ♚  | Vitória |
 
 > Esse sistema não influencia diretamente em quem ganha. Eles só dão uma ideia de qual jogador possivelmente se saiu melhor na partida.
 
@@ -356,7 +360,7 @@ Para retomar a partida salva, você deve escolher a opção de "Carregar Partida
 
 1. **Sem roque**: Movimento especial não implementado
 3. **Sem en passant**: Captura especial de peão não implementada
-4. **Sem detecção de empate**: Por afogamento ou repetição.
+4. **Sem detecção de empate**: O empate por repetição não é detectado (mas afogamento e 50-lances são).
 
 ## 📄 Licença
 
