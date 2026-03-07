@@ -183,11 +183,6 @@ To resume a saved game, you must choose the "Load Saved Game" option from the ma
 2.  **No en passant**: This special pawn capture is not implemented.
 3. **No repetition detection**: Draw by repetition is not implemented (but stalemate and 50-move rule are).
 
-## ⚠️ Knowm Bugs
-
-- When the user tries to load a game without having `salvamento.dat`, the game starts without the beginning informations.
-
-
 ## 📄 License
 
 This project is under the MIT License. See the `LICENSE` file for more details.
@@ -365,11 +360,6 @@ Para retomar a partida salva, você deve escolher a opção de "Carregar Partida
 1. **Sem roque**: Movimento especial não implementado
 3. **Sem en passant**: Captura especial de peão não implementada
 4. **Sem detecção de empate**: O empate por repetição não é detectado (mas afogamento e 50-lances são).
-
-## ⚠️ Bugs conhecidos
-
-- Quando o usuário tenta carregar um jogo antigo sem ter o `salvamento.dat`, o jogo inicia mesmo sen ter as informações iniciais.
-
 
 ## 📄 Licença
 

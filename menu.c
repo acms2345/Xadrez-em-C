@@ -19,7 +19,7 @@ int main(){
     Lingua opcao_lingua;
     while(1){
         printf("Escolha a língua/Choose the language (0 = Português, 1 = English): ");
-        if(scanf("%d", &opcao_lingua) != 1){
+        if(scanf("%d", &opcao_lingua) != 1 || opcao_lingua >= TOTAL_LINGUAS || opcao_lingua < 0){
             printf("Opcao inválida!/Invalid option!\n");
 
             int c;

@@ -322,7 +322,15 @@ int iniciarJogo(int opcao) {
         movimentosSemCapturaouPiao = 0;
         movimentosFeitos = 0;
     } else {
-        CarregarJogo();
+        if(!CarregarJogo()){
+            for(int i = 0; i < 2; i++){
+                printf(Msg(MSG_JOGO_DIGITE_JOGADOR), i + 1);
+                scanf("%19s", jogadores[i].nome);
+                jogadores[i].pontos = 0;
+             }
+             movimentosSemCapturaouPiao = 0;
+             movimentosFeitos = 0;
+        }
     }
     
 
