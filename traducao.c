@@ -76,6 +76,10 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "\n%s, enter your move in algebraic notation (e.g., e2e4): "
     },
     {
+        "Fim do arquivo (EOF) detectado. Encerrando a partida...\n",
+        "End of file (EOF) detected. Ending the game...\n"
+    },
+    {
         "Jogo salvo com sucesso!\n",
         "Game saved successfully!\n"
     },

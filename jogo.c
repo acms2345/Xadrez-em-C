@@ -99,14 +99,24 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
 
     while(1){
         printf(Msg(MSG_JOGO_DIGITE_JOGADA), jogadores[jogadorDaVez].nome);
-        if(scanf("%9s", input) != 1){
+        
+        int retornoInput = scanf("%9s", input);
+        
+        if (retornoInput == EOF){
+            printf(Msg(MSG_JOGO_ENCERRAMENTO_EOF));
+
+            return false; // Indica que o jogo deve ser encerrado
+        }
+        
+        if(retornoInput != 1){
             printf(Msg(MSG_JOGO_JOGADA_INVALIDA));
             
             limpezaBuffer();
             
             continue;
 
-        };
+        }  
+        
 
         limpezaBuffer();
 
