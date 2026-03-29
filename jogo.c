@@ -107,7 +107,7 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
 
             return false; // Indica que o jogo deve ser encerrado
         }
-        
+
         if(retornoInput != 1){
             printf(Msg(MSG_JOGO_JOGADA_INVALIDA));
             
@@ -141,8 +141,8 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             scanf("%1s", resposta);
             limpezaBuffer();
 
-            if(strcmp(resposta, "y") == 0 || strcmp(resposta, "Y") == 0){
-                printf(Msg(MSG_JOGO_EMPATE_TEXTO));
+            if((strcmp(resposta, "y") == 0 || strcmp(resposta, "Y") == 0) || (strcmp(resposta, "s") == 0 || strcmp(resposta, "S") == 0)){
+                printf(Msg(MSG_JOGO_EMPATE_ACEITO), jogadores[1 - jogadorDaVez].nome);
                 ganhou = true;
                 return false;
             } else if(strcmp(resposta, "n") == 0 || strcmp(resposta, "N") == 0){
