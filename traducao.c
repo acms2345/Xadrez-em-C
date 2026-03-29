@@ -88,6 +88,10 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "%s resigned from the game. %s is the winner!\n"
     },
     {
+       "%s deseja um empate. %s aceita?",
+        "%s offers a draw. Does %s accept?"
+    },
+    {
         "ERRO: Coluna origem inválida. Use letras de a-h.\n",
         "ERROR: Invalid source column. Use letters a-h.\n"
     },

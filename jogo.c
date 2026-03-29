@@ -92,13 +92,21 @@ static void ExibirTabuleiro() {
  *   linhaOrigem, colunaOrigem: ponteiros para armazenar a linha e coluna de origem.
  *   linhaDestino, colunaDestino: ponteiros para armazenar a linha e coluna de destino.
  * O jogador pode digitar "salvar" para salvar o jogo atual.
+ * O jogador pode digitar "desistir" para dar a vitória ao oponente.
  */
 static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDestino, int *colunaDestino){
     char input[10];
 
     while(1){
         printf(Msg(MSG_JOGO_DIGITE_JOGADA), jogadores[jogadorDaVez].nome);
-        scanf("%9s", input);
+        if(scanf("%9s", input) != 1){
+            printf(Msg(MSG_JOGO_JOGADA_INVALIDA));
+            
+            limpezaBuffer();
+            
+            continue;
+
+        };
 
         limpezaBuffer();
 
@@ -117,6 +125,24 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             ganhou = true;
             return false;
         }
+        if (strcmp(input, "empatar") == 0 || strcmp(input, "EMPATAR") == 0 || strcmp(input, "draw") == 0 || strcmp(input, "DRAW") == 0){
+            printf(Msg(MSG_JOGO_EMPATE_SUGESTAO), jogadores[jogadorDaVez].nome, jogadores[1 - jogadorDaVez].nome);
+            char resposta[2];
+            scanf("%1s", resposta);
+            limpezaBuffer();
+
+            if(strcmp(resposta, "y") == 0 || strcmp(resposta, "Y") == 0){
+                printf(Msg(MSG_JOGO_EMPATE_TEXTO));
+                ganhou = true;
+                return false;
+            } else if(strcmp(resposta, "n") == 0 || strcmp(resposta, "N") == 0){
+                continue;
+            } else {
+                printf(Msg(MSG_JOGO_JOGADA_INVALIDA));
+                continue;
+            }
+        }
+        
 
         //Para notação sem separação (ex: e2e4)
         if(strlen(input) == 4){
@@ -205,6 +231,9 @@ static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) 
     printf(Msg(MSG_JOGO_PROMOCAO_PEAO_ESCOLHA_PECA));
     while (1) {
         scanf(" %c", &escolha);
+        
+        limpezaBuffer();
+
         if(jogadorDaVez == 0) {
             escolha = toupper(escolha);
         } else {
@@ -231,7 +260,7 @@ struct Salvamento
 static bool SalvarJogo() {
     FILE *arquivo = fopen("salvamento.dat", "wb");
     if (arquivo == NULL) {
-        printf(Msg(MSG_JOGO_SALVAR_ERRO));
+        printf(Msg(MSG_JOGO_SALVAR_ERRO_ABERTURA_ARQUIVO));
         return false;
     }
     

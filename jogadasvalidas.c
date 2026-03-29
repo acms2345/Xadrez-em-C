@@ -287,7 +287,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
                     return "OK"; // Movimento para frente
-                } else if (linhaOrigem == 6 && linhaDestino == linhaOrigem - 2 && colunaDestino == colunaOrigem && tabuleiro[linhaDestino - 1][colunaDestino] == ' ' && tabuleiro[linhaDestino][colunaDestino] == ' ') {
+                } else if (linhaOrigem == 6 && linhaDestino == linhaOrigem - 2 && colunaDestino == colunaOrigem && tabuleiro[linhaDestino + 1][colunaDestino] == ' ' && tabuleiro[linhaDestino][colunaDestino] == ' ') {
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
