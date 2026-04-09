@@ -100,22 +100,27 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
     while(1){
         printf(Msg(MSG_JOGO_DIGITE_JOGADA), jogadores[jogadorDaVez].nome);
         
-        int retornoInput = scanf("%9s", input);
-        
-        if (retornoInput == EOF){
-            printf(Msg(MSG_JOGO_ENCERRAMENTO_EOF));
+        char* retornoInput = fgets(input, sizeof(input), stdin);
+        if(retornoInput == NULL){
+            if(feof(stdin)){//Verifica se é EOF para encerrar o jogo, caso o jogador use Ctrl+D ou Ctrl+Z
+                printf(Msg(MSG_JOGO_ENCERRAMENTO_EOF));
+                ganhou = true;
+                return false; // Indica que o jogo deve ser encerrado
+            }
 
-            return false; // Indica que o jogo deve ser encerrado
-        }
+            else if(ferror(stdin)){// Verifica se é erro de leitura (problema no stream)
+                printf(Msg(MSG_JOGO_JOGADA_INVALIDA));
 
-        if(retornoInput != 1){
-            printf(Msg(MSG_JOGO_JOGADA_INVALIDA));
-            
-            limpezaBuffer();
-            
-            continue;
+                clearerr(stdin); // Limpa o estado de erro do stream
+                
+                limpezaBuffer();
+                
+                continue;
+            }
 
         }  
+        // Após fgets, antes de strcmp:
+        input[strcspn(input, "\n")] = '\0';  // Remove newline
         
 
         limpezaBuffer();
