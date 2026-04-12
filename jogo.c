@@ -14,6 +14,27 @@ void limpezaBuffer(){
     while ((ch = getchar()) != '\n' && ch != EOF);
 }
 
+void trim(char *str){
+    str[strcspn(str, "\n\r")] = '\0'; //Tira o newline
+
+    int contagemInicio = 0;
+    while(str[contagemInicio] == ' ' || str[contagemInicio] == '\t') contagemInicio++;
+    /*O while acima conta onde realmente começa o texto da string.
+    Por exemplo, na string " desistir", haverá uma contagem até onde realmente começa o texto
+    (que é o caractere 'd').
+    OBS: '\t' = caractere Tab.*/
+
+    int contagemFinal = (int)strlen(str) - 1;
+    while(contagemFinal >= contagemInicio && (str[contagemFinal] == ' ' || str[contagemFinal] == '\t')) contagemFinal--;
+
+    if (contagemInicio <= contagemFinal){ //Ou seja, se houver algum texto (não-espaço) na string:
+        memmove(str, &str[contagemInicio], contagemFinal - contagemInicio + 1);
+        str[contagemFinal - contagemInicio + 1] = '\0';
+    } else{
+        str[0] = '\0'; //String vazia.
+    }
+}
+
 
 
 static const char TABULEIRO_INICIAL[8][8] = {
@@ -74,16 +95,19 @@ static const char* ObterSimboloPeca(char peca) {
 }
 
 static void ExibirTabuleiro() {
-    printf("\n  a b c d e f g h\n");
+    printf("  ╔═════════════════╗\n");
+    printf("  ║ a b c d e f g h ║\n");
+    printf("  ╠═════════════════╣\n");
     for (int i = 8; i >= 1; i--) {
         int conversaoLinha = 8 - i;
-        printf("%d ", i);
+        printf("%d ║ ", i);
         
         for (int j = 0; j < 8; j++) {
             printf("%s ", ObterSimboloPeca(tabuleiro[conversaoLinha][j]));
         }
-        printf("\n");
+        printf("║\n");
     }
+    printf("  ╚═════════════════╝\n");
 }
 
 /**
@@ -118,12 +142,16 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
                 continue;
             }
 
+            //O bloco abaixo serve como caso anômalo
+            printf(Msg(MSG_JOGO_JOGADA_INVALIDA));
+            continue;
+
         }  
         // Após fgets, antes de strcmp:
-        input[strcspn(input, "\n")] = '\0';  // Remove newline
+        trim(input);
         
 
-        limpezaBuffer();
+        
 
         if(strcmp(input, "salvar") == 0 || strcmp(input, "SALVAR") == 0 || 
         strcmp(input, "save") == 0 || strcmp(input, "SAVE") == 0){
@@ -140,22 +168,30 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             ganhou = true;
             return false;
         }
+
         if (strcmp(input, "empatar") == 0 || strcmp(input, "EMPATAR") == 0 || strcmp(input, "draw") == 0 || strcmp(input, "DRAW") == 0){
             printf(Msg(MSG_JOGO_EMPATE_SUGESTAO), jogadores[jogadorDaVez].nome, jogadores[1 - jogadorDaVez].nome);
-            char resposta[2];
-            scanf("%1s", resposta);
-            limpezaBuffer();
+            char resposta[4];
+            char *inputResposta = fgets(resposta, sizeof(resposta), stdin);
 
-            if((strcmp(resposta, "y") == 0 || strcmp(resposta, "Y") == 0) || (strcmp(resposta, "s") == 0 || strcmp(resposta, "S") == 0)){
-                printf(Msg(MSG_JOGO_EMPATE_ACEITO), jogadores[1 - jogadorDaVez].nome);
-                ganhou = true;
-                return false;
-            } else if(strcmp(resposta, "n") == 0 || strcmp(resposta, "N") == 0){
-                continue;
-            } else {
+            if(inputResposta){
+                trim(resposta);
+                
+                if((strcmp(resposta, "y") == 0 || strcmp(resposta, "Y") == 0) || (strcmp(resposta, "s") == 0 || strcmp(resposta, "S") == 0)){
+                    printf(Msg(MSG_JOGO_EMPATE_ACEITO), jogadores[1 - jogadorDaVez].nome);
+                    ganhou = true;
+                    return false;
+                } else if(strcmp(resposta, "n") == 0 || strcmp(resposta, "N") == 0){
+                    continue;
+                } else {
+                    printf(Msg(MSG_JOGO_JOGADA_INVALIDA));
+                    continue;
+                }
+            } else{
                 printf(Msg(MSG_JOGO_JOGADA_INVALIDA));
                 continue;
             }
+            continue; //Impede que caia para a verificação de casas.
         }
         
 
@@ -363,6 +399,7 @@ int iniciarJogo(int opcao) {
             scanf("%19s", jogadores[i].nome);
             jogadores[i].pontos = 0;
         }
+        limpezaBuffer();
         movimentosSemCapturaouPiao = 0;
         movimentosFeitos = 0;
     } else {
@@ -372,6 +409,7 @@ int iniciarJogo(int opcao) {
                 scanf("%19s", jogadores[i].nome);
                 jogadores[i].pontos = 0;
              }
+             limpezaBuffer();
              movimentosSemCapturaouPiao = 0;
              movimentosFeitos = 0;
         }
