@@ -19,13 +19,13 @@ jobs:
             output: xadrez
     
     steps:
-    - uses: actions/checkout@1.6
+    - uses: actions/checkout@1.4
     
     - name: Compile on ${{ matrix.os }}
       run: gcc menu.c jogo.c jogadasvalidas.c traducao.c -o ${{ matrix.output }}
     
     - name: Upload artifacts
-      uses: actions/upload-artifact@1.7
+      uses: actions/upload-artifact@1.4
       with:
         name: xadrez-${{ matrix.os }}
         path: ${{ matrix.output }}
