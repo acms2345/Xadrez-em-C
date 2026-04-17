@@ -6,6 +6,7 @@
 #include "jogadasvalidas.h"
 #include "jogo.h"
 #include "traducao.h"
+#include "cores.h"
 
 /*Note: The source code is entirely written in Portuguese now.*/
 
@@ -103,7 +104,12 @@ static void ExibirTabuleiro() {
         printf("%d ║ ", i);
         
         for (int j = 0; j < 8; j++) {
+            char* backgroundColor = (conversaoLinha + j) % 2 == 0 ? BRANCO_BACKGROUND : PRETO_BACKGROUND;
+            char* textColor = (conversaoLinha + j) % 2 == 0 ? PRETO_FOREGROUND : BRANCO_FOREGROUND;
+            
+            printf("%s", backgroundColor);
             printf("%s ", ObterSimboloPeca(tabuleiro[conversaoLinha][j]));
+            printf("%s", RESET);
         }
         printf("║\n");
     }
@@ -133,7 +139,7 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             }
 
             else if(ferror(stdin)){// Verifica se é erro de leitura (problema no stream)
-                printf(Msg(MSG_JOGO_JOGADA_INVALIDA));
+                printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_JOGADA_INVALIDA));
 
                 clearerr(stdin); // Limpa o estado de erro do stream
                 
@@ -143,7 +149,7 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             }
 
             //O bloco abaixo serve como caso anômalo
-            printf(Msg(MSG_JOGO_JOGADA_INVALIDA));
+            printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_JOGADA_INVALIDA));
             continue;
 
         }  
@@ -156,9 +162,9 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
         if(strcmp(input, "salvar") == 0 || strcmp(input, "SALVAR") == 0 || 
         strcmp(input, "save") == 0 || strcmp(input, "SAVE") == 0){
             if(SalvarJogo()){
-                printf(Msg(MSG_JOGO_SALVAR_SUCESSO));
+                printfColor(VERDE_FOREGROUND, Msg(MSG_JOGO_SALVAR_SUCESSO));
             } else {
-                printf(Msg(MSG_JOGO_SALVAR_ERRO));
+                printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_SALVAR_ERRO));
             }
             continue;
         }
@@ -184,11 +190,11 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
                 } else if(strcmp(resposta, "n") == 0 || strcmp(resposta, "N") == 0){
                     continue;
                 } else {
-                    printf(Msg(MSG_JOGO_JOGADA_INVALIDA));
+                    printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_JOGADA_INVALIDA));
                     continue;
                 }
             } else{
-                printf(Msg(MSG_JOGO_JOGADA_INVALIDA));
+                printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_JOGADA_INVALIDA));
                 continue;
             }
             continue; //Impede que caia para a verificação de casas.
@@ -198,13 +204,13 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
         //Para notação sem separação (ex: e2e4)
         if(strlen(input) == 4){
             if(tolower(input[0]) < 'a' || tolower(input[0]) > 'h'){
-                printf(Msg(MSG_JOGO_COLUNA_ORIGEM_INVALIDA));
+                printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_COLUNA_ORIGEM_INVALIDA));
                 continue;
             }
             *colunaOrigem = tolower(input[0]) - 'a';
         
             if(input[1] < '1' || input[1] > '8'){
-                printf(Msg(MSG_JOGO_LINHA_ORIGEM_INVALIDA));
+                printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_LINHA_ORIGEM_INVALIDA));
                 continue;
             }
             
@@ -212,13 +218,13 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             *linhaOrigem = 8 - conversaoLinhaOrigem;
 
             if(tolower(input[2]) < 'a' || tolower(input[2]) > 'h'){
-                printf(Msg(MSG_JOGO_COLUNA_DESTINO_INVALIDA));
+                printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_COLUNA_DESTINO_INVALIDA));
                 continue;
             }
             *colunaDestino = tolower(input[2]) - 'a';
 
             if(input[3] < '1' || input[3] > '8'){
-                printf(Msg(MSG_JOGO_LINHA_DESTINO_INVALIDA));
+                printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_LINHA_DESTINO_INVALIDA));
                 continue;
             }
             
@@ -232,17 +238,17 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
         //Notação com separador (ex: e2-e4)
         else if (strlen(input) == 5){
             if ((input[2] != ' ') && (input[2] != '-')){
-                printf(Msg(MSG_JOGO_SEPARADOR_COORDENADAS_INVALIDO));
+                printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_SEPARADOR_COORDENADAS_INVALIDO));
                 continue;
             }
             if(tolower(input[0]) < 'a' || tolower(input[0]) > 'h'){
-                printf(Msg(MSG_JOGO_COLUNA_ORIGEM_INVALIDA));
+                printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_COLUNA_ORIGEM_INVALIDA));
                 continue;
             }
             *colunaOrigem = tolower(input[0]) - 'a';
         
             if(input[1] < '1' || input[1] > '8'){
-                printf(Msg(MSG_JOGO_LINHA_ORIGEM_INVALIDA));
+                printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_LINHA_ORIGEM_INVALIDA));
                 continue;
             }
             
@@ -250,13 +256,13 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             *linhaOrigem = 8 - conversaoLinhaOrigem;
 
             if(tolower(input[3]) < 'a' || tolower(input[3]) > 'h'){
-                printf(Msg(MSG_JOGO_COLUNA_DESTINO_INVALIDA));
+                printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_COLUNA_DESTINO_INVALIDA));
                 continue;
             }
             *colunaDestino = tolower(input[3]) - 'a';
 
             if(input[4] < '1' || input[4] > '8'){
-                printf(Msg(MSG_JOGO_LINHA_DESTINO_INVALIDA));
+                printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_LINHA_DESTINO_INVALIDA));
                 continue;
             }
             
@@ -267,7 +273,7 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             
             break;
         } else{
-            printf(Msg(MSG_JOGO_FORMATO_COORDENADAS_INVALIDO));
+            printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_FORMATO_COORDENADAS_INVALIDO));
             continue;
         }
         
@@ -294,7 +300,7 @@ static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) 
             ((escolha == 'q' || escolha == 'c' || escolha == 'b' || escolha == 't') && jogadorDaVez == 1)) {
             return escolha;
         } else {
-            printf(Msg(MSG_JOGO_PROMOCAO_PEAO_PECA_INVALIDA));
+            printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_PROMOCAO_PEAO_PECA_INVALIDA));
         }
     }
 }
@@ -311,7 +317,7 @@ struct Salvamento
 static bool SalvarJogo() {
     FILE *arquivo = fopen("salvamento.dat", "wb");
     if (arquivo == NULL) {
-        printf(Msg(MSG_JOGO_SALVAR_ERRO_ABERTURA_ARQUIVO));
+        printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_SALVAR_ERRO_ABERTURA_ARQUIVO));
         return false;
     }
     
@@ -332,7 +338,7 @@ static bool SalvarJogo() {
 static bool CarregarJogo() {
     FILE *arquivo = fopen("salvamento.dat", "rb");
     if (arquivo == NULL) {
-        printf(Msg(MSG_JOGO_CARREGAR_ERRO));
+        printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_CARREGAR_ERRO));
         return false;
     }
     
@@ -435,7 +441,7 @@ int iniciarJogo(int opcao) {
 
 
         if(tabuleiro[linhaOrigem][colunaOrigem] == ' '){
-            printf(Msg(MSG_JOGO_POSICAO_ORIGEM_VAZIA));
+            printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_POSICAO_ORIGEM_VAZIA));
             
             continue;
             
@@ -457,7 +463,7 @@ int iniciarJogo(int opcao) {
             
             if(toupper(tabuleiro[linhaDestino][colunaDestino]) == 'K'){
                 ganhou = true;
-                printf(Msg(MSG_JOGO_XEQUEMATE_REI_CAPTURADO_TITULO));
+                printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_JOGO_XEQUEMATE_REI_CAPTURADO_TITULO));
                 printf(Msg(MSG_JOGO_XEQUEMATE_VENCEDOR), jogadores[jogadorDaVez].nome);
                 printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
@@ -499,7 +505,7 @@ int iniciarJogo(int opcao) {
 
             if(XequeMate(tabuleiro, jogadorDaVez)){
                 ganhou = true;
-                printf(Msg(MSG_JOGO_XEQUEMATE_TITULO));
+                printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_JOGO_XEQUEMATE_TITULO));
                 printf(Msg(MSG_JOGO_XEQUEMATE_VENCEDOR), jogadores[1 - jogadorDaVez].nome);
                 printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
@@ -507,7 +513,7 @@ int iniciarJogo(int opcao) {
             }
             if(Afogamento(tabuleiro, jogadorDaVez)){
                 ganhou = true;
-                printf(Msg(MSG_JOGO_AFOGAMENTO_TITULO));
+                printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_JOGO_AFOGAMENTO_TITULO));
                 printf(Msg(MSG_JOGO_EMPATE_TEXTO));
                 printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
@@ -515,7 +521,9 @@ int iniciarJogo(int opcao) {
             }
 
         } else {
+            printf("%s", VERMELHO_FOREGROUND);
             printf(Msg(MSG_JOGO_JOGADA_INVALIDA), resultadoJogadaValida);
+            printf("%s", RESET);
         }
 
     }

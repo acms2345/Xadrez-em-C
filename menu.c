@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "jogo.h"
 #include "traducao.h"
+#include "cores.h"
 
 /*Note: The source code is entirely written in Portuguese now.*/
 
@@ -31,7 +32,7 @@ int main(){
         definirIdioma(opcao_lingua);
         break;
     }
-    printf(Msg(MSG_MENU_TITULO));
+    printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_MENU_TITULO));
 
     while (1){
         printf(Msg(MSG_MENU_OPCAO_NOVA_PARTIDA));
