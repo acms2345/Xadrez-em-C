@@ -255,6 +255,7 @@ No Linux ou MacOS:
 Dentro do código, ao invés de peças brancas e pretas, elas são diferenciadas por caracteres maiúsculos e minúsculos.
 
 Por enquanto, o código também conta com um sistema de pontuação para cada jogador com base no valor de cada peça.
+
 ## 📁 Estrutura do projeto
 
 ```
@@ -266,19 +267,30 @@ Xadrez-em-C/
 ├── jogadasvalidas.h   # Header com protótipos
 ├── traducao.c         # Funções de tradução de mensagens
 ├── traducao.h          # Header com protótipos
+├── cores.h            # Definição de cores para o terminal
+├── salvamento.dat      # Arquivo binário para salvar o estado do jogo
+├── LICENSE             # Licença do projeto
 └── README.md          # Este arquivo
 ```
 
 ### Principais funções
 
-- `ExibirTabuleiro()`: Imprime o estado atual do tabuleiro.
-- `SalvarJogo()`: Salva as informações da partida para serem acessados depois em um arquivo chamado `salvamento.dat`.
-- `CarregarJogo()`: Acessa as informações salvas pela função `SalvarJogo()`.
-- `obterCoordenada()`: Lê e valida entrada de notação algébrica do usuário.
-- `JogadaValida()`: Verifica se o movimento é válido.
-  - `CasaAtacada()`: Verifica se a casa para que o rei está se movendo não está em xeque.
-- `PromocaoPeao()`: Permite escolher peça na promoção.
-- `atualizarPontuacao()`: Verifica se houve captura e, se teve, atribui a pontuação de peças (melhor explicada no tópico a seguir).
+- Em `jogo.c`:
+  - `ExibirTabuleiro()`: Imprime o estado atual do tabuleiro.
+  - `SalvarJogo()`: Salva as informações da partida para serem acessados depois em um arquivo chamado `salvamento.dat`.
+  - `CarregarJogo()`: Acessa as informações salvas pela função `SalvarJogo()`.
+  - `obterCoordenada()`: Lê e valida entrada de notação algébrica do usuário.
+  - `PromocaoPeao()`: Permite escolher peça na promoção.
+  - `atualizarPontuacao()`: Verifica se houve captura e, se teve, atribui a pontuação de peças (melhor explicada no tópico a seguir).
+  - Funções auxiliares: `limpezaBuffer()` (limpa o buffer de entrada), `trim()` (remove espaços extras).
+- Em `jogadasvalidas.c`:
+  - `JogadaValida()`: Verifica se o movimento é válido.
+    - `CasaAtacada()`: Verifica se a casa para que o rei está se movendo não está em xeque.
+  - `movimentoDeixaReiEmXeque()`: Verifica se o movimento deixa o rei do jogador em xeque.
+  - `ReiEmXeque()`: Verifica se o rei do jogador está em xeque.
+  - `XequeMate()`: Verifica se o rei do jogador está em xeque-mate.
+  - `Afogamento()`: Verifica se o jogador está em afogamento.
+
 
 ## 📊 Sistema de pontuação
 
