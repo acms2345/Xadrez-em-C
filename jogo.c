@@ -105,7 +105,7 @@ static void ExibirTabuleiro() {
         
         for (int j = 0; j < 8; j++) {
             char* backgroundColor = (conversaoLinha + j) % 2 == 0 ? BRANCO_BACKGROUND : PRETO_BACKGROUND;
-            char* textColor = (conversaoLinha + j) % 2 == 0 ? PRETO_FOREGROUND : BRANCO_FOREGROUND;
+            char* textColor = (conversaoLinha + j) % 2 == 0 ? AZUL_FOREGROUND : CIANO_FOREGROUND;
             
             printf("%s", backgroundColor);
             printf("%s ", ObterSimboloPeca(tabuleiro[conversaoLinha][j]));
