@@ -58,6 +58,8 @@ typedef struct {
     int ultimoMovimentoDestino[2];
 } EstadoJogo;
 
+EstadoJogo ultimoMovimento;
+
 static char tabuleiro[8][8];
 
 static int jogadorDaVez = 0; // 0 para o Jogador 1 (maiúsculas), 1 para o Jogador 2 (minúsculas)
@@ -462,11 +464,12 @@ int iniciarJogo(int opcao) {
         if(strcmp(resultadoJogadaValida, "OK") == 0){
             
             movimentosFeitos++;
+
             
-            EstadoJogo.ultimoMovimentoOrigem[0] = linhaOrigem;
-            EstadoJogo.ultimoMovimentoOrigem[1] = colunaOrigem;
-            EstadoJogo.ultimoMovimentoDestino[0] = linhaDestino;
-            EstadoJogo.ultimoMovimentoDestino[1] = colunaDestino;
+            ultimoMovimento.ultimoMovimentoOrigem[0] = linhaOrigem;
+            ultimoMovimento.ultimoMovimentoOrigem[1] = colunaOrigem;
+            ultimoMovimento.ultimoMovimentoDestino[0] = linhaDestino;
+            ultimoMovimento.ultimoMovimentoDestino[1] = colunaDestino;
 
             if(toupper(tabuleiro[linhaOrigem][colunaOrigem]) == 'P'){
                 capturaOuPiao = true;
