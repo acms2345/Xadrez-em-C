@@ -49,6 +49,15 @@ static const char TABULEIRO_INICIAL[8][8] = {
     {'T', 'C', 'B', 'Q', 'K', 'B', 'C', 'T'}
 };
 
+typedef struct {
+    bool moveu; // se a peça já se moveu
+} Peca;
+
+typedef struct {
+    int ultimoMovimentoOrigem[2];
+    int ultimoMovimentoDestino[2];
+} EstadoJogo;
+
 static char tabuleiro[8][8];
 
 static int jogadorDaVez = 0; // 0 para o Jogador 1 (maiúsculas), 1 para o Jogador 2 (minúsculas)
@@ -453,6 +462,11 @@ int iniciarJogo(int opcao) {
         if(strcmp(resultadoJogadaValida, "OK") == 0){
             
             movimentosFeitos++;
+            
+            EstadoJogo.ultimoMovimentoOrigem[0] = linhaOrigem;
+            EstadoJogo.ultimoMovimentoOrigem[1] = colunaOrigem;
+            EstadoJogo.ultimoMovimentoDestino[0] = linhaDestino;
+            EstadoJogo.ultimoMovimentoDestino[1] = colunaDestino;
 
             if(toupper(tabuleiro[linhaOrigem][colunaOrigem]) == 'P'){
                 capturaOuPiao = true;
