@@ -50,13 +50,13 @@ static const char TABULEIRO_INICIAL[8][8] = {
 };
 
 typedef struct {
-    int moved; // se a peça já se moveu
+    bool moveu; // se a peça já se moveu
 } Peca;
 
 typedef struct {
     int ultimoMovimentoOrigem[2];
     int ultimoMovimentoDestino[2];
-} GameState;
+} EstadoJogo;
 
 static char tabuleiro[8][8];
 
@@ -462,6 +462,11 @@ int iniciarJogo(int opcao) {
         if(strcmp(resultadoJogadaValida, "OK") == 0){
             
             movimentosFeitos++;
+            
+            EstadoJogo.ultimoMovimentoOrigem[0] = linhaOrigem;
+            EstadoJogo.ultimoMovimentoOrigem[1] = colunaOrigem;
+            EstadoJogo.ultimoMovimentoDestino[0] = linhaDestino;
+            EstadoJogo.ultimoMovimentoDestino[1] = colunaDestino;
 
             if(toupper(tabuleiro[linhaOrigem][colunaOrigem]) == 'P'){
                 capturaOuPiao = true;
