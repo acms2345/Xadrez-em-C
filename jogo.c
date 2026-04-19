@@ -49,6 +49,15 @@ static const char TABULEIRO_INICIAL[8][8] = {
     {'T', 'C', 'B', 'Q', 'K', 'B', 'C', 'T'}
 };
 
+typedef struct {
+    int moved; // se a peça já se moveu
+} Peca;
+
+typedef struct {
+    int ultimoMovimentoOrigem[2];
+    int ultimoMovimentoDestino[2];
+} GameState;
+
 static char tabuleiro[8][8];
 
 static int jogadorDaVez = 0; // 0 para o Jogador 1 (maiúsculas), 1 para o Jogador 2 (minúsculas)
