@@ -155,6 +155,36 @@ bool movimentoDeixaReiemXeque(char tabuleiro[8][8], int jogadorDaVez, int linhaO
 
 
 }
+
+/*Como o En Passant deixa uma brecha de verificação que nenhum outro movimento deixa, é necessário
+ter essa função adaptada.*/
+bool movimentoDeixaReiemXequeEnPassant(char tabuleiro[8][8], int jogadorDaVez, int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino){
+    char tabuleiroTemp[8][8];
+    memcpy(tabuleiroTemp, tabuleiro, sizeof(char) * 8 * 8);
+
+    tabuleiroTemp[linhaDestino][colunaDestino] = tabuleiroTemp[linhaOrigem][colunaOrigem];
+    tabuleiroTemp[linhaOrigem][colunaOrigem] = ' ';
+    tabuleiroTemp[linhaOrigem][colunaDestino] = ' '; //Essa é a ÚNICA diferença entre a função normal e essa.
+
+    char ReiDoJogador = (jogadorDaVez == 0) ? 'K' : 'k';
+
+    int CoordenadaLinhaRei = -1;
+    int CoordenadaColunaRei = -1;
+
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            if (tabuleiroTemp[i][j] == ReiDoJogador){
+                CoordenadaLinhaRei = i;
+                CoordenadaColunaRei = j;
+            }
+        }
+    }
+
+    return CasaAtacada(tabuleiroTemp, CoordenadaLinhaRei, CoordenadaColunaRei, (jogadorDaVez + 1) % 2);
+
+
+}
+
 bool ReiEmXeque(char tabuleiro[8][8], int jogadorDaVez){
     char ReiDoJogador = (jogadorDaVez == 0) ? 'K' : 'k';
 
@@ -171,8 +201,9 @@ bool ReiEmXeque(char tabuleiro[8][8], int jogadorDaVez){
     }
     return CasaAtacada(tabuleiro, CoordenadaLinhaRei, CoordenadaColunaRei, (jogadorDaVez + 1) % 2);
 }
+
 /*A função verifica se há algum movimento em que o jogador possa impedir o xeque-mate.*/
-bool XequeMate(char tabuleiro[8][8], int JogadorDaVez){
+bool XequeMate(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrigem[2], int ultimoMovimentoDestino[2]){
     // 1️⃣ Primeiro verifica se está em xeque
     if(!ReiEmXeque(tabuleiro, JogadorDaVez)){
         return false; //O rei pode ficar na posição, se protegendo de um xeque-mate.
@@ -192,7 +223,7 @@ bool XequeMate(char tabuleiro[8][8], int JogadorDaVez){
             {
                 for (int colunaDestino = 0; colunaDestino < 8; colunaDestino++)
                 {
-                    const char* resultado = JogadaValida(tabuleiro, linha, coluna, linhaDestino, colunaDestino, JogadorDaVez);
+                    const char* resultado = JogadaValida(tabuleiro, linha, coluna, linhaDestino, colunaDestino, JogadorDaVez, ultimoMovimentoOrigem, ultimoMovimentoDestino);
 
                     //Verifica se é um movimento válido.
                     if(strcmp(resultado, "OK") == 0){
@@ -210,7 +241,7 @@ bool XequeMate(char tabuleiro[8][8], int JogadorDaVez){
     return true; //É xeque-mate.
 }
 
-bool Afogamento(char tabuleiro[8][8], int JogadorDaVez){
+bool Afogamento(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrigem[2], int ultimoMovimentoDestino[2]){
     // 1️⃣ Primeiro verifica se está em xeque
     if(ReiEmXeque(tabuleiro, JogadorDaVez)){
         return false; //O rei deveria poder ficar na mesma posição para ser um afogamento.
@@ -230,7 +261,7 @@ bool Afogamento(char tabuleiro[8][8], int JogadorDaVez){
             {
                 for (int colunaDestino = 0; colunaDestino < 8; colunaDestino++)
                 {
-                    const char* resultado = JogadaValida(tabuleiro, linha, coluna, linhaDestino, colunaDestino, JogadorDaVez);
+                    const char* resultado = JogadaValida(tabuleiro, linha, coluna, linhaDestino, colunaDestino, JogadorDaVez, ultimoMovimentoOrigem, ultimoMovimentoDestino);
 
                     //Verifica se é um movimento válido.
                     if(strcmp(resultado, "OK") == 0){
@@ -247,13 +278,14 @@ bool Afogamento(char tabuleiro[8][8], int JogadorDaVez){
     }
     return true; //É afogamento.
 }
+
 /*A função retorna alguns valores de acordo com o seu resultado:
     - "OK" para jogadas válidas;
     - Outros textos para jogadas inválidas, para mostrar ao usuário o erro dele
         (Por exemplo, "Peça do mesmo jogador" quando ocorre tentativa de capturar uma peça do mesmo jogador)
         
 */
-const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino, int jogadorDaVez) {
+const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino, int jogadorDaVez, int ultimoMovimentoOrigem[2], int ultimoMovimentoDestino[2]) {
     char peca = tabuleiro[linhaOrigem][colunaOrigem];
 
     if(linhaOrigem == linhaDestino && colunaOrigem == colunaDestino) {
@@ -270,6 +302,21 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
         {
         case 'P':
             /* Código para movimento do peão */
+
+            //Verificação de en passant:
+            if (colunaDestino != colunaOrigem && tabuleiro[linhaDestino][colunaDestino] == ' '){
+                if(ultimoMovimentoDestino[0] == linhaOrigem && ultimoMovimentoDestino[1] == colunaDestino){
+                    char peaoInimigo = (jogadorDaVez == 0) ? 'p' : 'P';
+                    if(tabuleiro[linhaOrigem][colunaDestino] == peaoInimigo){
+                        //En passant QUASE válido. Exceto:
+                        if(movimentoDeixaReiemXequeEnPassant(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)){
+                            return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
+                        }
+
+                        return "OK_EN_PASSANT";
+                    }
+                }
+            }
 
             if(jogadorDaVez == 0) {
                 if ((linhaDestino == linhaOrigem - 1 && colunaDestino == colunaOrigem - 1 && tabuleiro[linhaDestino][colunaDestino] != ' ')) {
@@ -319,7 +366,10 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                 } else {
                     return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_PEAO); // Movimento inválido para o peão
                 }
+
             }
+
+            
             break;
         
         case 'T':

@@ -54,8 +54,15 @@ typedef struct {
 } Peca;
 
 typedef struct {
+    bool reiMoveu[2];
+    bool torreEsquerdaMoveu[2];
+    bool torreDireitaMoveu[2];
+} EstadoRoque;
+
+typedef struct {
     int ultimoMovimentoOrigem[2];
     int ultimoMovimentoDestino[2];
+    EstadoRoque EstadoRoque;
 } EstadoJogo;
 
 EstadoJogo ultimoMovimento;
@@ -115,7 +122,9 @@ static void ExibirTabuleiro() {
         printf("%d ║ ", i);
         
         for (int j = 0; j < 8; j++) {
-            char* backgroundColor = (conversaoLinha + j) % 2 == 0 ? BRANCO_BACKGROUND : PRETO_BACKGROUND;
+            char* backgroundColor = ((conversaoLinha == ultimoMovimento.ultimoMovimentoOrigem[0] && j == ultimoMovimento.ultimoMovimentoOrigem[1]) ||
+        (conversaoLinha == ultimoMovimento.ultimoMovimentoDestino[0] && j == ultimoMovimento.ultimoMovimentoDestino[1])) ? AMARELO_BACKGROUND :
+            ((conversaoLinha + j) % 2 == 0 ? BRANCO_BACKGROUND : PRETO_BACKGROUND);
             char* textColor = (conversaoLinha + j) % 2 == 0 ? AZUL_FOREGROUND : CIANO_FOREGROUND;
             
             printf("%s", backgroundColor);
@@ -400,6 +409,11 @@ static void reiniciarJogo(){
     movimentosFeitos = 0;
     capturaOuPiao = false;
     ganhou = false;
+
+    ultimoMovimento.ultimoMovimentoOrigem[0] = -1;
+    ultimoMovimento.ultimoMovimentoOrigem[1] = -1;
+    ultimoMovimento.ultimoMovimentoDestino[0] = -1;
+    ultimoMovimento.ultimoMovimentoDestino[1] = -1;
 }
 
 int iniciarJogo(int opcao) {
@@ -459,9 +473,9 @@ int iniciarJogo(int opcao) {
         }
 
 
-        const char* resultadoJogadaValida = JogadaValida(tabuleiro, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, jogadorDaVez);
+        const char* resultadoJogadaValida = JogadaValida(tabuleiro, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, jogadorDaVez, ultimoMovimento.ultimoMovimentoOrigem, ultimoMovimento.ultimoMovimentoDestino);
 
-        if(strcmp(resultadoJogadaValida, "OK") == 0){
+        if((strcmp(resultadoJogadaValida, "OK") == 0) || (strcmp(resultadoJogadaValida, "OK_EN_PASSANT") == 0)){
             
             movimentosFeitos++;
 
@@ -512,6 +526,10 @@ int iniciarJogo(int opcao) {
             tabuleiro[linhaDestino][colunaDestino] = tabuleiro[linhaOrigem][colunaOrigem];
             tabuleiro[linhaOrigem][colunaOrigem] = ' ';
 
+            if(strcmp(resultadoJogadaValida, "OK_EN_PASSANT") == 0){
+                tabuleiro[linhaOrigem][colunaDestino] = ' ';
+            }
+
             if((tabuleiro[linhaDestino][colunaDestino] == 'p' && linhaDestino == 7) || (tabuleiro[linhaDestino][colunaDestino] == 'P' && linhaDestino == 0)){
                 tabuleiro[linhaDestino][colunaDestino] = PromocaoPeao(linhaDestino, colunaDestino, jogadorDaVez);
 
@@ -520,7 +538,7 @@ int iniciarJogo(int opcao) {
 
             jogadorDaVez = 1 - jogadorDaVez; // Alterna entre 0 e 1, trocando o jogador da vez
 
-            if(XequeMate(tabuleiro, jogadorDaVez)){
+            if(XequeMate(tabuleiro, jogadorDaVez, ultimoMovimento.ultimoMovimentoOrigem, ultimoMovimento.ultimoMovimentoDestino)){
                 ganhou = true;
                 printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_JOGO_XEQUEMATE_TITULO));
                 printf(Msg(MSG_JOGO_XEQUEMATE_VENCEDOR), jogadores[1 - jogadorDaVez].nome);
@@ -528,7 +546,7 @@ int iniciarJogo(int opcao) {
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
                 break; // Sai do loop principal do jogo
             }
-            if(Afogamento(tabuleiro, jogadorDaVez)){
+            if(Afogamento(tabuleiro, jogadorDaVez, ultimoMovimento.ultimoMovimentoOrigem, ultimoMovimento.ultimoMovimentoDestino)){
                 ganhou = true;
                 printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_JOGO_AFOGAMENTO_TITULO));
                 printf(Msg(MSG_JOGO_EMPATE_TEXTO));

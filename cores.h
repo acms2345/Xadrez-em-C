@@ -6,6 +6,7 @@
 //Background (cores de fundo)
 #define PRETO_BACKGROUND  "\x1b[40m"
 #define BRANCO_BACKGROUND  "\x1b[47m"
+#define AMARELO_BACKGROUND   "\x1b[43m"
 #define AZUL_BACKGROUND       "\x1b[44m"
 #define MAGENTA_BACKGROUND    "\x1b[45m"
 
