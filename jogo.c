@@ -10,11 +10,14 @@
 
 /*Note: The source code is entirely written in Portuguese now.*/
 
+
+//Função auxiliar
 void limpezaBuffer(){
     int ch;
     while ((ch = getchar()) != '\n' && ch != EOF);
 }
 
+//Função auxiliar: limpa os espaços no começo e final da string.
 void trim(char *str){
     str[strcspn(str, "\n\r")] = '\0'; //Tira o newline
 
@@ -87,6 +90,8 @@ static bool ganhou = false;
 static bool SalvarJogo();
 static bool CarregarJogo();
 
+
+//Esse é um sistema de conversão do formato de letras para os ícones do ANSI.
 static const char* ObterSimboloPeca(char peca) {
     static const char* simbolos[] = {
         ['P'] = "♙",
@@ -112,7 +117,10 @@ static const char* ObterSimboloPeca(char peca) {
     }
     return " "; // Caso de segurança
 }
-
+/*A função exibe o tabuleiro:
+    - As casas a-h;
+    - Exibe as peças, colocando o backgruond com a coloração do tabuleiro do xadrez;
+    - E ao lado, os números das linhas.*/
 static void ExibirTabuleiro() {
     printf("  ╔═════════════════╗\n");
     printf("  ║ a b c d e f g h ║\n");
@@ -141,8 +149,12 @@ static void ExibirTabuleiro() {
  * Parâmetros:
  *   linhaOrigem, colunaOrigem: ponteiros para armazenar a linha e coluna de origem.
  *   linhaDestino, colunaDestino: ponteiros para armazenar a linha e coluna de destino.
- * O jogador pode digitar "salvar" para salvar o jogo atual.
- * O jogador pode digitar "desistir" para dar a vitória ao oponente.
+ * 
+ * O jogador pode digitar "salvar" ou "save" para salvar o jogo atual.
+ * O jogador pode digitar "desistir" ou "resign" para dar a vitória ao oponente.
+ * O jogador pode digitar "empatar" ou "draw" para passar ao oponente uma proposta de empate.
+ * 
+ * Retorno: true se obteve coordenada, false se o jogo deve ser encerrado.
  */
 static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDestino, int *colunaDestino){
     char input[10];
@@ -307,7 +319,9 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
     return true;
 }
 /*Função para a promoção de peão.
-Ela solicita a peça para a qual o usuário vai querer promover.*/
+Ela solicita a peça para a qual o usuário vai querer promover, e o usuário fica num while enquanto
+não responder.
+Após a resposta, é feita a troca de peças.*/
 static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) {
     char escolha;
     printf(Msg(MSG_JOGO_PROMOCAO_PEAO_ESCOLHA_PECA));

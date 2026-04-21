@@ -16,6 +16,7 @@
 #define BRANCO_FOREGROUND    "\x1b[37m"
 #define VERDE_FOREGROUND  "\x1b[32m"
 #define VERMELHO_FOREGROUND  "\x1b[31m"
+#define MAGENTA_FOREGROUND "\x1b[35m"
 #define AMARELO_FOREGROUND    "\x1b[33m"
 #define AZUL_FOREGROUND      "\x1b[34m"
 #define CIANO_FOREGROUND     "\x1b[36m"
