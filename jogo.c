@@ -57,9 +57,11 @@ typedef struct {
 } Peca;
 
 typedef struct {
-    bool reiMoveu[2];
-    bool torreEsquerdaMoveu[2];
-    bool torreDireitaMoveu[2];
+    bool reiMoveu[2]; 
+    bool torreEsquerdaMoveu[2]; //esquerda = coluna a
+    bool torreDireitaMoveu[2]; //direita = coluna h
+    
+    //[0] = maiúsculas, [1] = minúsculas
 } EstadoRoque;
 
 typedef struct {
@@ -356,6 +358,10 @@ struct Salvamento
     int ultimoMovimentoOrigem[2];
     int ultimoMovimentoDestino[2];
     Jogador jogadores[2];
+    //Informações de roque
+    bool reiMoveu[2]; 
+    bool torreEsquerdaMoveu[2]; //esquerda = coluna a
+    bool torreDireitaMoveu[2];
 };
 
 static bool SalvarJogo() {
@@ -375,6 +381,8 @@ static bool SalvarJogo() {
     salvamento.ultimoMovimentoOrigem[1] = ultimoMovimento.ultimoMovimentoOrigem[1];
     salvamento.ultimoMovimentoDestino[0] = ultimoMovimento.ultimoMovimentoDestino[0];
     memcpy(salvamento.jogadores, jogadores, sizeof(jogadores));
+    reiMoveu[0] = ultimoMovimento.EstadoRoque.reiMoveu[0];
+    reiMoveu[1] = ultimoMovimento.EstadoRoque.reiMoveu[1];
 
     fwrite(&salvamento, sizeof(salvamento), 1, arquivo);
     fclose(arquivo);
