@@ -353,6 +353,8 @@ struct Salvamento
     int jogadorDaVez;
     int movimentosFeitos;
     int movimentosSemCapturaouPiao;
+    int ultimoMovimentoOrigem[2];
+    int ultimoMovimentoDestino[2];
     Jogador jogadores[2];
 };
 
@@ -369,6 +371,9 @@ static bool SalvarJogo() {
     salvamento.jogadorDaVez = jogadorDaVez;
     salvamento.movimentosFeitos = movimentosFeitos;
     salvamento.movimentosSemCapturaouPiao = movimentosSemCapturaouPiao;
+    salvamento.ultimoMovimentoOrigem[0] = ultimoMovimento.ultimoMovimentoOrigem[0];
+    salvamento.ultimoMovimentoOrigem[1] = ultimoMovimento.ultimoMovimentoOrigem[1];
+    salvamento.ultimoMovimentoDestino[0] = ultimoMovimento.ultimoMovimentoDestino[0];
     memcpy(salvamento.jogadores, jogadores, sizeof(jogadores));
 
     fwrite(&salvamento, sizeof(salvamento), 1, arquivo);
@@ -393,6 +398,10 @@ static bool CarregarJogo() {
     jogadorDaVez = salvamento.jogadorDaVez;
     movimentosFeitos = salvamento.movimentosFeitos;
     movimentosSemCapturaouPiao = salvamento.movimentosSemCapturaouPiao;
+    ultimoMovimento.ultimoMovimentoOrigem[0] = salvamento.ultimoMovimentoOrigem[0];
+    ultimoMovimento.ultimoMovimentoOrigem[1] = salvamento.ultimoMovimentoOrigem[1];
+    ultimoMovimento.ultimoMovimentoDestino[0] = salvamento.ultimoMovimentoDestino[0];
+    ultimoMovimento.ultimoMovimentoDestino[1] = salvamento.ultimoMovimentoDestino[1];
     memcpy(jogadores, salvamento.jogadores, sizeof(jogadores));
     
     return true;
