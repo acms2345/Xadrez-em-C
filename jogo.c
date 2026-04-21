@@ -380,9 +380,16 @@ static bool SalvarJogo() {
     salvamento.ultimoMovimentoOrigem[0] = ultimoMovimento.ultimoMovimentoOrigem[0];
     salvamento.ultimoMovimentoOrigem[1] = ultimoMovimento.ultimoMovimentoOrigem[1];
     salvamento.ultimoMovimentoDestino[0] = ultimoMovimento.ultimoMovimentoDestino[0];
+    salvamento.ultimoMovimentoDestino[1] = ultimoMovimento.ultimoMovimentoDestino[1];
+    
     memcpy(salvamento.jogadores, jogadores, sizeof(jogadores));
-    reiMoveu[0] = ultimoMovimento.EstadoRoque.reiMoveu[0];
-    reiMoveu[1] = ultimoMovimento.EstadoRoque.reiMoveu[1];
+
+    salvamento.reiMoveu[0] = ultimoMovimento.EstadoRoque.reiMoveu[0];
+    salvamento.reiMoveu[1] = ultimoMovimento.EstadoRoque.reiMoveu[1];
+    salvamento.torreEsquerdaMoveu[0] = ultimoMovimento.EstadoRoque.torreEsquerdaMoveu[0];
+    salvamento.torreEsquerdaMoveu[1] = ultimoMovimento.EstadoRoque.torreEsquerdaMoveu[1];
+    salvamento.torreDireitaMoveu[0] = ultimoMovimento.EstadoRoque.torreDireitaMoveu[0];
+    salvamento.torreDireitaMoveu[1] = ultimoMovimento.EstadoRoque.torreDireitaMoveu[1];
 
     fwrite(&salvamento, sizeof(salvamento), 1, arquivo);
     fclose(arquivo);
@@ -411,6 +418,12 @@ static bool CarregarJogo() {
     ultimoMovimento.ultimoMovimentoDestino[0] = salvamento.ultimoMovimentoDestino[0];
     ultimoMovimento.ultimoMovimentoDestino[1] = salvamento.ultimoMovimentoDestino[1];
     memcpy(jogadores, salvamento.jogadores, sizeof(jogadores));
+    ultimoMovimento.EstadoRoque.reiMoveu[0] = salvamento.reiMoveu[0];
+    ultimoMovimento.EstadoRoque.reiMoveu[1] = salvamento.reiMoveu[1];
+    ultimoMovimento.EstadoRoque.torreEsquerdaMoveu[0] = salvamento.torreEsquerdaMoveu[0];
+    ultimoMovimento.EstadoRoque.torreEsquerdaMoveu[1] = salvamento.torreEsquerdaMoveu[1];
+    ultimoMovimento.EstadoRoque.torreDireitaMoveu[0] = salvamento.torreDireitaMoveu[0];
+    ultimoMovimento.EstadoRoque.torreDireitaMoveu[1] = salvamento.torreDireitaMoveu[1];
     
     return true;
 }
@@ -453,6 +466,13 @@ static void reiniciarJogo(){
     ultimoMovimento.ultimoMovimentoOrigem[1] = -1;
     ultimoMovimento.ultimoMovimentoDestino[0] = -1;
     ultimoMovimento.ultimoMovimentoDestino[1] = -1;
+
+    ultimoMovimento.EstadoRoque.reiMoveu[0] = false;
+    ultimoMovimento.EstadoRoque.reiMoveu[1] = false;
+    ultimoMovimento.EstadoRoque.torreEsquerdaMoveu[0] = false;
+    ultimoMovimento.EstadoRoque.torreEsquerdaMoveu[1] = false;
+    ultimoMovimento.EstadoRoque.torreDireitaMoveu[0] = false;
+    ultimoMovimento.EstadoRoque.torreDireitaMoveu[1] = false;
 }
 
 int iniciarJogo(int opcao) {
