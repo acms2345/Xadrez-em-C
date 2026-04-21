@@ -5,7 +5,7 @@
 
 /*Note: The source code is entirely written in Portuguese now.*/
 
-// ✅ Ativa UTF-8 automaticamente no Windows
+// Ativa UTF-8 no Windows
 #ifdef _WIN32
     #include <windows.h>
 #endif
@@ -20,6 +20,9 @@ int main(){
     Lingua opcao_lingua;
     while(1){
         printf("Escolha a língua/Choose the language (0 = Português, 1 = English): ");
+
+        fflush(stdout);
+
         if(scanf("%d", &opcao_lingua) != 1 || opcao_lingua >= TOTAL_LINGUAS || opcao_lingua < 0){
             printf("Opcao inválida!/Invalid option!\n");
 
@@ -40,6 +43,8 @@ int main(){
         printf(Msg(MSG_MENU_OPCAO_AJUDA));
         printf(Msg(MSG_MENU_OPCAO_SAIR));
         printf(Msg(MSG_MENU_OPCAO_ESCOLHA_OPCAO));
+
+        fflush(stdout);
 
         if(scanf("%d", &opcao) != 1){
             printf(Msg(MSG_MENU_OPCAO_INVALIDA));

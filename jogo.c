@@ -149,6 +149,8 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
 
     while(1){
         printf(Msg(MSG_JOGO_DIGITE_JOGADA), jogadores[jogadorDaVez].nome);
+
+        fflush(stdout);
         
         char* retornoInput = fgets(input, sizeof(input), stdin);
         if(retornoInput == NULL){
@@ -197,6 +199,9 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
 
         if (strcmp(input, "empatar") == 0 || strcmp(input, "EMPATAR") == 0 || strcmp(input, "draw") == 0 || strcmp(input, "DRAW") == 0){
             printf(Msg(MSG_JOGO_EMPATE_SUGESTAO), jogadores[jogadorDaVez].nome, jogadores[1 - jogadorDaVez].nome);
+            
+            fflush(stdout);
+
             char resposta[4];
             char *inputResposta = fgets(resposta, sizeof(resposta), stdin);
 
@@ -306,6 +311,9 @@ Ela solicita a peça para a qual o usuário vai querer promover.*/
 static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) {
     char escolha;
     printf(Msg(MSG_JOGO_PROMOCAO_PEAO_ESCOLHA_PECA));
+
+    fflush(stdout);
+
     while (1) {
         scanf(" %c", &escolha);
         
@@ -427,6 +435,9 @@ int iniciarJogo(int opcao) {
     if (opcao == 1){
         for(int i = 0; i < 2; i++){
             printf(Msg(MSG_JOGO_DIGITE_JOGADOR), i + 1);
+            
+            fflush(stdout);
+            
             scanf("%19s", jogadores[i].nome);
             jogadores[i].pontos = 0;
         }
