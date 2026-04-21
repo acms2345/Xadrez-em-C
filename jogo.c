@@ -135,9 +135,9 @@ static void ExibirTabuleiro() {
             char* backgroundColor = ((conversaoLinha == ultimoMovimento.ultimoMovimentoOrigem[0] && j == ultimoMovimento.ultimoMovimentoOrigem[1]) ||
         (conversaoLinha == ultimoMovimento.ultimoMovimentoDestino[0] && j == ultimoMovimento.ultimoMovimentoDestino[1])) ? AMARELO_BACKGROUND :
             ((conversaoLinha + j) % 2 == 0 ? BRANCO_BACKGROUND : PRETO_BACKGROUND);
-            char* textColor = (conversaoLinha + j) % 2 == 0 ? AZUL_FOREGROUND : CIANO_FOREGROUND;
+            char* textColor = (islower(tabuleiro[conversaoLinha][j]))  ? PRETO_CLARO_FOREGROUND : BRANCO_CLARO_FOREGROUND;
             
-            printf("%s", backgroundColor);
+            printf("%s%s", backgroundColor, textColor);
             printf("%s ", ObterSimboloPeca(tabuleiro[conversaoLinha][j]));
             printf("%s", RESET);
         }

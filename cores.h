@@ -20,6 +20,8 @@
 #define AMARELO_FOREGROUND    "\x1b[33m"
 #define AZUL_FOREGROUND      "\x1b[34m"
 #define CIANO_FOREGROUND     "\x1b[36m"
+#define BRANCO_CLARO_FOREGROUND  "\x1b[97m"
+#define PRETO_CLARO_FOREGROUND   "\x1b[90m"
 
 #define COR_PECAS "\x1b[33m" //Amarelo/Yellow
 #define DESTAQUE "\x1b[46m" //Ciano/Cyan
