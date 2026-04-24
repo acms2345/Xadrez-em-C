@@ -95,6 +95,12 @@ static bool ganhou = false;
 static bool SalvarJogo();
 static bool CarregarJogo();
 
+typedef struct
+{
+    int linhaOrigem, colunaOrigem;
+    int linhaDestino, colunaDestino;
+} Movimento;
+
 // Histórico de movimentos durante o jogo
 static Movimento historicoMovimentos[MAX_HISTORICO];
 static int countHistoricoAtual = 0;
@@ -356,11 +362,7 @@ static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) 
     }
 }
 
-typedef struct
-{
-    int linhaOrigem, colunaOrigem;
-    int linhaDestino, colunaDestino;
-} Movimento;
+
 
 
 struct Salvamento
