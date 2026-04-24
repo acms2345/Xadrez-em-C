@@ -8,6 +8,9 @@
 #include "traducao.h"
 #include "cores.h"
 
+#define VERSAO_ATUAL_JOGO 2.0f
+#define MAX_HISTORICO 500
+
 /*Note: The source code is entirely written in Portuguese now.*/
 
 
@@ -91,6 +94,10 @@ static bool ganhou = false;
 
 static bool SalvarJogo();
 static bool CarregarJogo();
+
+// Histórico de movimentos durante o jogo
+static Movimento historicoMovimentos[MAX_HISTORICO];
+static int countHistoricoAtual = 0;
 
 
 //Esse é um sistema de conversão do formato de letras para os ícones do ANSI.
@@ -349,8 +356,16 @@ static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) 
     }
 }
 
+typedef struct
+{
+    int linhaOrigem, colunaOrigem;
+    int linhaDestino, colunaDestino;
+} Movimento;
+
+
 struct Salvamento
 {
+    float versao;
     char tabuleiro[8][8];
     int jogadorDaVez;
     int movimentosFeitos;
@@ -362,6 +377,11 @@ struct Salvamento
     bool reiMoveu[2]; 
     bool torreEsquerdaMoveu[2]; //esquerda = coluna a
     bool torreDireitaMoveu[2];
+
+    Movimento historico[MAX_HISTORICO];
+    int countHistorico;
+
+
 };
 
 static bool SalvarJogo() {
@@ -373,6 +393,9 @@ static bool SalvarJogo() {
     
     
     struct Salvamento salvamento;
+
+    salvamento.versao = VERSAO_ATUAL_JOGO;
+
     memcpy(salvamento.tabuleiro, tabuleiro, sizeof(tabuleiro));
     salvamento.jogadorDaVez = jogadorDaVez;
     salvamento.movimentosFeitos = movimentosFeitos;
@@ -391,11 +414,16 @@ static bool SalvarJogo() {
     salvamento.torreDireitaMoveu[0] = ultimoMovimento.EstadoRoque.torreDireitaMoveu[0];
     salvamento.torreDireitaMoveu[1] = ultimoMovimento.EstadoRoque.torreDireitaMoveu[1];
 
+    //Histórico de movimentos
+    salvamento.countHistorico = countHistoricoAtual;
+    memcpy(salvamento.historico, historicoMovimentos, sizeof(Movimento) * countHistoricoAtual);
+
     fwrite(&salvamento, sizeof(salvamento), 1, arquivo);
     fclose(arquivo);
     
     return true;
 }
+
 
 static bool CarregarJogo() {
     FILE *arquivo = fopen("salvamento.dat", "rb");
@@ -409,6 +437,12 @@ static bool CarregarJogo() {
     fread(&salvamento, sizeof(salvamento), 1, arquivo);
     fclose(arquivo);
     
+    if(salvamento.versao != VERSAO_ATUAL_JOGO){
+        printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_VERSAO_INCOMPATIVEL));
+
+        return false;
+    }
+
     memcpy(tabuleiro, salvamento.tabuleiro, sizeof(tabuleiro));
     jogadorDaVez = salvamento.jogadorDaVez;
     movimentosFeitos = salvamento.movimentosFeitos;
@@ -424,6 +458,9 @@ static bool CarregarJogo() {
     ultimoMovimento.EstadoRoque.torreEsquerdaMoveu[1] = salvamento.torreEsquerdaMoveu[1];
     ultimoMovimento.EstadoRoque.torreDireitaMoveu[0] = salvamento.torreDireitaMoveu[0];
     ultimoMovimento.EstadoRoque.torreDireitaMoveu[1] = salvamento.torreDireitaMoveu[1];
+
+    salvamento.countHistorico = countHistoricoAtual;
+    memcpy(historicoMovimentos, salvamento.historico, sizeof(Movimento) * countHistoricoAtual);
     
     return true;
 }

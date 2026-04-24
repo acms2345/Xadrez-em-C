@@ -251,14 +251,14 @@ struct Salvamento {
     int movimentosFeitos;
     int movimentosSemCapturaouPiao;
     Jogador jogadores[2];
+    
 };
 ```
 
 ## ⚠️ Known Limitations
 
-1.  **No castling**: This special move is not implemented.
-2.  **No repetition detection**: Draw by repetition is not implemented (but stalemate and 50-move rule are).
-3.  **No move history**: The game doesn't track individual moves, only move counters and the last move.
+1.  **No repetition detection**: Draw by repetition is not implemented (but stalemate and 50-move rule are).
+2.  **No move history**: The game doesn't track individual moves, only move counters and the last move.
 
 ## 📄 License
 
@@ -514,9 +514,8 @@ struct Salvamento {
 
 ## ⚠️ Limitações conhecidas
 
-1. **Sem roque**: Movimento especial não implementado
-2. **Sem detecção de repetição**: O empate por repetição não é detectado (mas afogamento e regra dos 50 lances são).
-3. **Sem histórico de movimentos**: O jogo não rastreia movimentos individuais, apenas contadores de movimentos e o último movimento.
+1. **Sem detecção de repetição**: O empate por repetição não é detectado (mas afogamento e regra dos 50 lances são).
+2. **Sem histórico de movimentos**: O jogo não rastreia movimentos individuais, apenas contadores de movimentos e o último movimento.
 
 ## 📄 Licença
 

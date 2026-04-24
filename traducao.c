@@ -140,6 +140,11 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "Nenhum jogo salvo encontrado.\n",
         "No saved game found.\n"
     },
+    {
+        "ERRO: Versão do salvamento incompatível com a do jogo.\n",
+        "ERROR: Save version incompatible with the game version.\n"
+    },
+
 
     {
         "Digite o nome do %d jogador: ",
