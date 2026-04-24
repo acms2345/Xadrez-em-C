@@ -535,9 +535,14 @@ int iniciarJogo(int opcao) {
         }
 
 
-        const char* resultadoJogadaValida = JogadaValida(tabuleiro, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, jogadorDaVez, ultimoMovimento.ultimoMovimentoOrigem, ultimoMovimento.ultimoMovimentoDestino);
+        const char* resultadoJogadaValida = 
+        JogadaValida(tabuleiro, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, 
+            jogadorDaVez, ultimoMovimento.ultimoMovimentoOrigem, ultimoMovimento.ultimoMovimentoDestino, 
+            ultimoMovimento.EstadoRoque.reiMoveu, ultimoMovimento.EstadoRoque.torreEsquerdaMoveu, ultimoMovimento.EstadoRoque.torreDireitaMoveu);
 
-        if((strcmp(resultadoJogadaValida, "OK") == 0) || (strcmp(resultadoJogadaValida, "OK_EN_PASSANT") == 0)){
+        if((strcmp(resultadoJogadaValida, "OK") == 0) || 
+        (strcmp(resultadoJogadaValida, "OK_EN_PASSANT") == 0) ||
+        (strcmp(resultadoJogadaValida, "OK_ROQUE") == 0)){
             
             movimentosFeitos++;
 
@@ -592,6 +597,33 @@ int iniciarJogo(int opcao) {
                 tabuleiro[linhaOrigem][colunaDestino] = ' ';
             }
 
+            //Tratamento de informações para roque:
+            if(toupper(tabuleiro[linhaDestino][colunaDestino]) == 'K'){
+                ultimoMovimento.EstadoRoque.reiMoveu[jogadorDaVez] = true;
+            }
+            if(toupper(tabuleiro[linhaDestino][colunaDestino]) == 'T'){
+                if(colunaOrigem == 0){
+                    ultimoMovimento.EstadoRoque.torreEsquerdaMoveu[jogadorDaVez] = true;
+                } else if(colunaOrigem == 7){
+                    ultimoMovimento.EstadoRoque.torreDireitaMoveu[jogadorDaVez] = true;
+                }
+            }
+
+            if(strcmp(resultadoJogadaValida, "OK_ROQUE") == 0){
+                //Mover a torre:
+                if(colunaDestino == 6){
+                    tabuleiro[linhaDestino][5] = tabuleiro[linhaDestino][7];
+                    tabuleiro[linhaDestino][7] = ' ';
+
+                    ultimoMovimento.EstadoRoque.torreDireitaMoveu[jogadorDaVez] = true;
+                } else if(colunaDestino == 2){
+                    tabuleiro[linhaDestino][3] = tabuleiro[linhaDestino][0];
+                    tabuleiro[linhaDestino][0] = ' ';
+
+                    ultimoMovimento.EstadoRoque.torreEsquerdaMoveu[jogadorDaVez] = true;
+                }
+            }
+
             if((tabuleiro[linhaDestino][colunaDestino] == 'p' && linhaDestino == 7) || (tabuleiro[linhaDestino][colunaDestino] == 'P' && linhaDestino == 0)){
                 tabuleiro[linhaDestino][colunaDestino] = PromocaoPeao(linhaDestino, colunaDestino, jogadorDaVez);
 
@@ -600,7 +632,7 @@ int iniciarJogo(int opcao) {
 
             jogadorDaVez = 1 - jogadorDaVez; // Alterna entre 0 e 1, trocando o jogador da vez
 
-            if(XequeMate(tabuleiro, jogadorDaVez, ultimoMovimento.ultimoMovimentoOrigem, ultimoMovimento.ultimoMovimentoDestino)){
+            if(XequeMate(tabuleiro, jogadorDaVez, ultimoMovimento.ultimoMovimentoOrigem, ultimoMovimento.ultimoMovimentoDestino, ultimoMovimento.EstadoRoque.reiMoveu, ultimoMovimento.EstadoRoque.torreEsquerdaMoveu, ultimoMovimento.EstadoRoque.torreDireitaMoveu)){
                 ganhou = true;
                 printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_JOGO_XEQUEMATE_TITULO));
                 printf(Msg(MSG_JOGO_XEQUEMATE_VENCEDOR), jogadores[1 - jogadorDaVez].nome);
@@ -608,7 +640,7 @@ int iniciarJogo(int opcao) {
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
                 break; // Sai do loop principal do jogo
             }
-            if(Afogamento(tabuleiro, jogadorDaVez, ultimoMovimento.ultimoMovimentoOrigem, ultimoMovimento.ultimoMovimentoDestino)){
+            if(Afogamento(tabuleiro, jogadorDaVez, ultimoMovimento.ultimoMovimentoOrigem, ultimoMovimento.ultimoMovimentoDestino, ultimoMovimento.EstadoRoque.reiMoveu, ultimoMovimento.EstadoRoque.torreEsquerdaMoveu, ultimoMovimento.EstadoRoque.torreDireitaMoveu)){
                 ganhou = true;
                 printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_JOGO_AFOGAMENTO_TITULO));
                 printf(Msg(MSG_JOGO_EMPATE_TEXTO));

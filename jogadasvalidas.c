@@ -203,7 +203,7 @@ bool ReiEmXeque(char tabuleiro[8][8], int jogadorDaVez){
 }
 
 /*A função verifica se há algum movimento em que o jogador possa impedir o xeque-mate.*/
-bool XequeMate(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrigem[2], int ultimoMovimentoDestino[2]){
+bool XequeMate(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrigem[2], int ultimoMovimentoDestino[2], bool reiSeMoveu[2], bool torreEsquerdaSeMoveu[2], bool torreDireitaSeMoveu[2]){
     // 1️⃣ Primeiro verifica se está em xeque
     if(!ReiEmXeque(tabuleiro, JogadorDaVez)){
         return false; //O rei pode ficar na posição, se protegendo de um xeque-mate.
@@ -223,7 +223,7 @@ bool XequeMate(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrigem
             {
                 for (int colunaDestino = 0; colunaDestino < 8; colunaDestino++)
                 {
-                    const char* resultado = JogadaValida(tabuleiro, linha, coluna, linhaDestino, colunaDestino, JogadorDaVez, ultimoMovimentoOrigem, ultimoMovimentoDestino);
+                    const char* resultado = JogadaValida(tabuleiro, linha, coluna, linhaDestino, colunaDestino, JogadorDaVez, ultimoMovimentoOrigem, ultimoMovimentoDestino, reiSeMoveu, torreEsquerdaSeMoveu, torreDireitaSeMoveu);
 
                     //Verifica se é um movimento válido.
                     if(strcmp(resultado, "OK") == 0){
@@ -241,7 +241,7 @@ bool XequeMate(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrigem
     return true; //É xeque-mate.
 }
 
-bool Afogamento(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrigem[2], int ultimoMovimentoDestino[2]){
+bool Afogamento(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrigem[2], int ultimoMovimentoDestino[2], bool reiSeMoveu[2], bool torreEsquerdaSeMoveu[2], bool torreDireitaSeMoveu[2]){
     // 1️⃣ Primeiro verifica se está em xeque
     if(ReiEmXeque(tabuleiro, JogadorDaVez)){
         return false; //O rei deveria poder ficar na mesma posição para ser um afogamento.
@@ -261,7 +261,7 @@ bool Afogamento(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrige
             {
                 for (int colunaDestino = 0; colunaDestino < 8; colunaDestino++)
                 {
-                    const char* resultado = JogadaValida(tabuleiro, linha, coluna, linhaDestino, colunaDestino, JogadorDaVez, ultimoMovimentoOrigem, ultimoMovimentoDestino);
+                    const char* resultado = JogadaValida(tabuleiro, linha, coluna, linhaDestino, colunaDestino, JogadorDaVez, ultimoMovimentoOrigem, ultimoMovimentoDestino, reiSeMoveu, torreEsquerdaSeMoveu, torreDireitaSeMoveu);
 
                     //Verifica se é um movimento válido.
                     if(strcmp(resultado, "OK") == 0){
@@ -279,13 +279,58 @@ bool Afogamento(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrige
     return true; //É afogamento.
 }
 
+bool Roque(char tabuleiro[8][8], int jogadorDaVez, int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino, bool reiSeMoveu[2], bool torreEsquerdaSeMoveu[2], bool torreDireitaSeMoveu[2]){
+    
+    //"O rei já se moveu?"
+    if(reiSeMoveu[jogadorDaVez]) return false;
+
+    //"O movimento ocorre na mesma linha?"
+    if(linhaOrigem != linhaDestino) return false;
+
+    char rei = (jogadorDaVez == 0) ? 'K' : 'k';
+    char torre = (jogadorDaVez == 0) ? 'T' : 't';
+
+    if(tabuleiro[linhaOrigem][colunaOrigem] != rei) return false;
+
+    if(ReiEmXeque(tabuleiro, jogadorDaVez)) return false;
+
+    if(colunaDestino == colunaOrigem + 2){
+        if(tabuleiro[linhaOrigem][7] != torre) return false;
+
+        if(tabuleiro[linhaOrigem][5] != ' ' || tabuleiro[linhaOrigem][6] != ' ') return false;
+        
+        if(torreDireitaSeMoveu[jogadorDaVez]) return false;
+
+        if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, 5) ||
+    movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, 6)) return false;
+
+    } else if (colunaDestino == colunaOrigem - 2){
+        if(tabuleiro[linhaOrigem][0] != torre) return false;
+
+
+        if(tabuleiro[linhaOrigem][3] != ' ' || 
+            tabuleiro[linhaOrigem][2] != ' ' ||
+        tabuleiro[linhaOrigem][1] != ' ') return false;
+
+        if(torreEsquerdaSeMoveu[jogadorDaVez]) return false;
+
+        if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, 3) ||
+        movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, 2)) return false;
+
+    } else{
+        return false;
+    }
+
+    return true;
+    
+}
 /*A função retorna alguns valores de acordo com o seu resultado:
     - "OK" para jogadas válidas;
     - Outros textos para jogadas inválidas, para mostrar ao usuário o erro dele
         (Por exemplo, "Peça do mesmo jogador" quando ocorre tentativa de capturar uma peça do mesmo jogador)
         
 */
-const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino, int jogadorDaVez, int ultimoMovimentoOrigem[2], int ultimoMovimentoDestino[2]) {
+const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino, int jogadorDaVez, int ultimoMovimentoOrigem[2], int ultimoMovimentoDestino[2], bool reiSeMoveu[2], bool torreEsquerdaSeMoveu[2], bool torreDireitaSeMoveu[2]) {
     char peca = tabuleiro[linhaOrigem][colunaOrigem];
 
     if(linhaOrigem == linhaDestino && colunaOrigem == colunaDestino) {
@@ -605,6 +650,10 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
 
         case 'K':
             /* Código para movimento do rei */
+
+            if(Roque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, reiSeMoveu, torreEsquerdaSeMoveu, torreDireitaSeMoveu)){
+                return "OK_ROQUE";
+            }
 
             if((linhaDestino == linhaOrigem + 1 || linhaDestino == linhaOrigem - 1 || linhaDestino == linhaOrigem) &&
                (colunaDestino == colunaOrigem + 1 || colunaDestino == colunaOrigem - 1 || colunaDestino == colunaOrigem)) {
