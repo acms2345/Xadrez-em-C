@@ -24,7 +24,13 @@ This code implements a local two-player chess game, inspired by the official rul
 - **Operating System**: Windows, Linux, or macOS
 - **Disk Space**: Less than 1 MB
 
-## 🚀 How to Install and Run
+## 🚀 Quick start
+The easiest way to get started:
+1. Download the latest release from [GitHub Releases](https://github.com/acms2345/Xadrez-em-C/releases)
+2. Extract the executable for your OS (Windows/Linux/macOS)
+3. Run it directly - no compilation needed!
+
+## How to Install and Use the Source Code
 
 ### 1. **Download the Project**
 
@@ -113,9 +119,11 @@ Xadrez-em-C/
 -   `CasaAtacada()`: Checks if a given square is under attack by opponent pieces (used for king safety validation).
     - Validates attacks from: pawns, knights, bishops, rooks, queens, and kings.
 -   `movimentoDeixaReiemXeque()`: Simulates a move and checks if it would leave the player's king in check (prevents illegal moves).
+-   `movimentoDeixaReiemXequeEnPassant()`: Almost similar to the above function, but specifically for en passant captures.
 -   `ReiEmXeque()`: Checks if the current player's king is in check.
 -   `XequeMate()`: Detects checkmate (king in check with no legal moves).
 -   `Afogamento()`: Detects stalemate (no legal moves but king not in check).
+- `Roque()`: Validates castling moves based on piece movement history and current board state.
 
 ## 📊 Scoring System
 
@@ -245,14 +253,33 @@ typedef struct {
 
 **Save file struct:**
 ```c
-struct Salvamento {
+struct Salvamento
+{
+    float versao; //For future compatibility checks
     char tabuleiro[8][8];
     int jogadorDaVez;
     int movimentosFeitos;
     int movimentosSemCapturaouPiao;
+    int ultimoMovimentoOrigem[2];
+    int ultimoMovimentoDestino[2];
     Jogador jogadores[2];
-    
+    // Castling flags
+    bool reiMoveu[2]; 
+    bool torreEsquerdaMoveu[2]; //left = column a
+    bool torreDireitaMoveu[2];
+
+    Movimento historico[MAX_HISTORICO];
+    int countHistorico;
 };
+```
+
+**Move History struct:**
+```c
+typedef struct {
+    int origem[2];      // [row, col]
+    int destino[2];     // [row, col]
+    EstadoRoque estadoRoque;  // Castling state after move
+} Movimento;
 ```
 
 ## ⚠️ Known Limitations
@@ -285,7 +312,13 @@ Tal código corresponde a um jogo de dois jogadores local, inspirado nas regras 
 - **Sistema Operacional**: Windows, Linux ou macOS
 - **Espaço em disco**: Menos de 1 MB
 
-## 🚀 Como Instalar e Executar
+## 🚀 Instalação rápida
+A maneira mais fácil de começar:
+1. Baixe a última versão em [GitHub Releases](https://github.com/acms2345/Xadrez-em-C/releases)
+2. Extraia o executável para seu sistema operacional (Windows/Linux/macOS)
+3. Execute-o diretamente - não é necessário compilar!
+
+## Como Instalar e Usar o Código-Fonte
 
 ### 1. **Baixar o Projeto**
 
@@ -370,9 +403,11 @@ Xadrez-em-C/
 - `CasaAtacada()`: Verifica se uma casa está sob ataque de peças do oponente.
   - Valida ataques de: peões, cavalos, bispos, torres, rainhas e reis.
 - `movimentoDeixaReiemXeque()`: Simula um movimento e verifica se o rei ficaria em xeque.
+- `movimentoDeixaReiemXequeEnPassant()`: Similar à função acima, mas especificamente para capturas en passant.
 - `ReiEmXeque()`: Verifica se o rei do jogador atual está em xeque.
 - `XequeMate()`: Detecta xeque-mate (rei em xeque sem movimentos legais).
 - `Afogamento()`: Detecta afogamento (nenhum movimento legal mas rei não em xeque).
+- `Roque()`: Valida movimentos de roque com base no histórico de movimentos das peças e estado atual do tabuleiro.
 
 
 ## 📊 Sistema de pontuação
@@ -503,14 +538,35 @@ typedef struct {
 
 **Estrutura do arquivo de salvamento:**
 ```c
-struct Salvamento {
+struct Salvamento
+{
+    float versao; //Para controle de versão do salvamento, caso haja mudanças futuras na estrutura
     char tabuleiro[8][8];
     int jogadorDaVez;
     int movimentosFeitos;
     int movimentosSemCapturaouPiao;
+    int ultimoMovimentoOrigem[2];
+    int ultimoMovimentoDestino[2];
     Jogador jogadores[2];
+    //Informações de roque
+    bool reiMoveu[2]; 
+    bool torreEsquerdaMoveu[2]; //esquerda = coluna a
+    bool torreDireitaMoveu[2];
+
+    Movimento historico[MAX_HISTORICO];
+    int countHistorico;
 };
 ```
+
+**Estrutura do histórico de movimentos:*
+```c
+typedef struct {
+    int origem[2];      // [linha, coluna]
+    int destino[2];     // [linha, coluna]
+    EstadoRoque estadoRoque;  // Estado do roque após o movimento
+} Movimento;
+```
+
 
 ## ⚠️ Limitações conhecidas
 
