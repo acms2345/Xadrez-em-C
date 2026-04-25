@@ -17,7 +17,7 @@ int main(){
     #endif
     
     int opcao;
-    Lingua opcao_lingua;
+    int opcao_lingua;
     while(1){
         printf("Escolha a língua/Choose the language (0 = Português, 1 = English): ");
 
