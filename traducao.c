@@ -155,12 +155,12 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "It's %s's turn!\n (%s)"
     },
     {
-        "MAIÚSCULAS - Pretas ♙",
-        "UPPERCASE - Blacks ♙"
+        "MAIÚSCULAS - Brancas ♙",
+        "UPPERCASE - Brancas ♙"
     },
     {
-        "minúsculas - Brancas ♟",
-        "lowercase - Whites ♟"
+        "minúsculas - Pretas ♟",
+        "lowercase - Pretas ♟"
     },
     {
         "Jogada inválida! Não há peça na posição de origem.\n",
