@@ -1,6 +1,6 @@
-#Project Architecture/Arquitetura do Projeto
+# Project Architecture/Arquitetura do Projeto
 
-#English version
+# English version
 
 ## Main Functions
 
