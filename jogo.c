@@ -381,6 +381,9 @@ struct Salvamento
     Movimento historico[MAX_HISTORICO];
     int countHistorico;
 
+    EstadoPosicao historicoPositoes[MAX_HISTORICO];
+    int countHistoricoPositoes;
+
 
 };
 
@@ -417,6 +420,12 @@ static bool SalvarJogo() {
     //Histórico de movimentos
     salvamento.countHistorico = countHistoricoAtual;
     memcpy(salvamento.historico, historicoMovimentos, sizeof(Movimento) * countHistoricoAtual);
+
+    // Salvar histórico de posições
+    EstadoPosicao* historicoPos = ObterHistoricoPositoes();
+    int countPos = ObterCountHistoricoPositoes();
+    salvamento.countHistoricoPositoes = countPos;
+    memcpy(salvamento.historicoPositoes, historicoPos, sizeof(EstadoPosicao) * countPos);
 
     fwrite(&salvamento, sizeof(salvamento), 1, arquivo);
     fclose(arquivo);
@@ -461,6 +470,11 @@ static bool CarregarJogo() {
 
     countHistoricoAtual = salvamento.countHistorico;
     memcpy(historicoMovimentos, salvamento.historico, sizeof(Movimento) * countHistoricoAtual);
+    
+    // Carregar histórico de posições
+    DefinirCountHistoricoPositoes(salvamento.countHistoricoPositoes);
+    EstadoPosicao* historicoPos = ObterHistoricoPositoes();
+    memcpy(historicoPos, salvamento.historicoPositoes, sizeof(EstadoPosicao) * salvamento.countHistoricoPositoes);
     
     return true;
 }
@@ -510,6 +524,8 @@ static void reiniciarJogo(){
     ultimoMovimento.EstadoRoque.torreEsquerdaMoveu[1] = false;
     ultimoMovimento.EstadoRoque.torreDireitaMoveu[0] = false;
     ultimoMovimento.EstadoRoque.torreDireitaMoveu[1] = false;
+
+    ReiniciarHistoricoPosicoes();
 }
 
 int iniciarJogo(int opcao) {
@@ -582,8 +598,13 @@ int iniciarJogo(int opcao) {
         (strcmp(resultadoJogadaValida, "OK_ROQUE") == 0)){
             
             movimentosFeitos++;
+            countHistoricoAtual++;
 
-            
+            historicoMovimentos[countHistoricoAtual].linhaOrigem = linhaOrigem;
+            historicoMovimentos[countHistoricoAtual].colunaOrigem = colunaOrigem;
+            historicoMovimentos[countHistoricoAtual].linhaDestino = linhaDestino;
+            historicoMovimentos[countHistoricoAtual].colunaDestino = colunaDestino;
+
             ultimoMovimento.ultimoMovimentoOrigem[0] = linhaOrigem;
             ultimoMovimento.ultimoMovimentoOrigem[1] = colunaOrigem;
             ultimoMovimento.ultimoMovimentoDestino[0] = linhaDestino;
@@ -677,6 +698,20 @@ int iniciarJogo(int opcao) {
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
                 break; // Sai do loop principal do jogo
             }
+
+            int repeticoesMovimento = VerificarRepetidaoPosicao(tabuleiro, jogadorDaVez, ultimoMovimento.EstadoRoque.reiMoveu, ultimoMovimento.EstadoRoque.torreEsquerdaMoveu, ultimoMovimento.EstadoRoque.torreDireitaMoveu);
+
+            if(repeticoesMovimento >= 2){
+                ganhou = true;
+                printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_JOGO_REPETICAO_TITULO));
+                printf(Msg(MSG_JOGO_EMPATE_TEXTO));
+                printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
+                break; // Sai do loop principal do jogo
+            }
+
+            AdicionarPosicaoAoHistorico(tabuleiro, jogadorDaVez, ultimoMovimento.EstadoRoque.reiMoveu, ultimoMovimento.EstadoRoque.torreEsquerdaMoveu, ultimoMovimento.EstadoRoque.torreDireitaMoveu);
+
             if(Afogamento(tabuleiro, jogadorDaVez, ultimoMovimento.ultimoMovimentoOrigem, ultimoMovimento.ultimoMovimentoDestino, ultimoMovimento.EstadoRoque.reiMoveu, ultimoMovimento.EstadoRoque.torreEsquerdaMoveu, ultimoMovimento.EstadoRoque.torreDireitaMoveu)){
                 ganhou = true;
                 printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_JOGO_AFOGAMENTO_TITULO));

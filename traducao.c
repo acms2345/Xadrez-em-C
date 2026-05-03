@@ -203,6 +203,12 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
     },
 
     {
+        "\n=== EMPATE POR REPETIÇÃO DE POSIÇÃO ===\n",
+        "\n=== DRAW BY POSITION REPETITION ===\n"
+    },
+    
+
+    {
         "Jogada inválida! %s.\n",
         "Invalid move! %s.\n"
     },

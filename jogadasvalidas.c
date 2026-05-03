@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+#define MAX_HISTORICO 500
+
 /*Note: The source code is entirely written in Portuguese now.*/
 
 bool CasaAtacada(char tabuleiro[8][8], int linha, int coluna, int oponente){
@@ -300,6 +302,102 @@ bool Roque(char tabuleiro[8][8], int jogadorDaVez, int linhaOrigem, int colunaOr
     return true;
     
 }
+
+bool RepeticaoMovimentos(){
+    //Verifica se houve repetição de movimentos (3 vezes a mesma posição)
+    //A implementação é feita comparando o estado atual do tabuleiro com os estados anteriores, armazenados em um histórico.
+    //Se o mesmo estado ocorrer 3 vezes, é considerado empate por repetição.
+
+    //Essa função pode ser chamada após cada movimento para verificar se a condição de empate por repetição foi atendida.
+
+    return true; //Implementação futura.
+}
+
+//Funções para salvamento de histórico e verificação de repetição de movimentos:
+
+EstadoPosicao historicoPositoes[MAX_HISTORICO];
+int countHistoricoPositoes = 0;
+
+EstadoPosicao* ObterHistoricoPositoes(void) {
+    return historicoPositoes;
+}
+
+int ObterCountHistoricoPositoes(void) {
+    return countHistoricoPositoes;
+}
+
+void DefinirCountHistoricoPositoes(int count) {
+    countHistoricoPositoes = count;
+}
+
+void AdicionarPosicaoAoHistorico(char tabuleiro[8][8], int jogadorDaVez, bool reiMoveu[2], bool torreEsquerdaMoveu[2], bool torreDireitaMoveu[2]){
+    if(countHistoricoPositoes < MAX_HISTORICO){
+        memcpy(historicoPositoes[countHistoricoPositoes].tabuleiro, tabuleiro, sizeof(char) *8*8);
+        memcpy(historicoPositoes[countHistoricoPositoes].reiMoveu, reiMoveu, sizeof(bool) *2);
+        memcpy(historicoPositoes[countHistoricoPositoes].torreEsquerdaMoveu, torreEsquerdaMoveu, sizeof(bool) *2);
+        memcpy(historicoPositoes[countHistoricoPositoes].torreDireitaMoveu, torreDireitaMoveu, sizeof(bool) *2);
+        historicoPositoes[countHistoricoPositoes].jogadorDaVez = jogadorDaVez;
+        
+        countHistoricoPositoes++;
+    }
+}
+
+static bool PosicoesIguais(const EstadoPosicao *pos1, const EstadoPosicao *pos2) {
+    if (memcmp(pos1->tabuleiro, pos2->tabuleiro, sizeof(pos1->tabuleiro)) != 0) {
+        return false;
+    }
+    
+    if (memcmp(pos1->reiMoveu, pos2->reiMoveu, sizeof(pos1->reiMoveu)) != 0) {
+        return false;
+    }
+    
+    if (memcmp(pos1->torreEsquerdaMoveu, pos2->torreEsquerdaMoveu, 
+               sizeof(pos1->torreEsquerdaMoveu)) != 0) {
+        return false;
+    }
+    
+    if (memcmp(pos1->torreDireitaMoveu, pos2->torreDireitaMoveu, 
+               sizeof(pos1->torreDireitaMoveu)) != 0) {
+        return false;
+    }
+    
+    if (pos1->jogadorDaVez != pos2->jogadorDaVez) {
+        return false;
+    }
+    
+    return true;
+}
+
+int VerificarRepetidaoPosicao(char tabuleiro[8][8], int jogadorDaVez, bool reiMoveu[2], bool torreEsquerdaMoveu[2], bool torreDireitaMoveu[2]){
+    EstadoPosicao posicaoAtual;
+
+    posicaoAtual.jogadorDaVez = jogadorDaVez;
+    memcpy(posicaoAtual.tabuleiro, tabuleiro, sizeof(char) *8*8);
+    for (int i = 0; i < 2; i++)
+    {
+        posicaoAtual.reiMoveu[i] = reiMoveu[i];
+        posicaoAtual.torreEsquerdaMoveu[i] = torreEsquerdaMoveu[i];
+        posicaoAtual.torreDireitaMoveu[i] = torreDireitaMoveu[i];
+    }
+
+    int contagemRepeticoes = 0;
+
+    for (int i = 0; i < countHistoricoPositoes; i++)
+    {
+        if(PosicoesIguais(&posicaoAtual, &historicoPositoes[i])){
+            contagemRepeticoes++;
+        }
+    }
+
+    return contagemRepeticoes;
+    
+    
+}
+
+void ReiniciarHistoricoPosicoes(void){
+    countHistoricoPositoes = 0;
+}
+
 /*A função retorna alguns valores de acordo com o seu resultado:
     - "OK" para jogadas válidas;
     - Outros textos para jogadas inválidas, para mostrar ao usuário o erro dele
