@@ -11,6 +11,7 @@
 #define VERSAO_ATUAL_JOGO 22
 #define MAX_HISTORICO 500
 
+#define TAMANHO_TABULEIRO 8
 #define LIMITE_REGRA_50_MOVIMENTOS 100
 
 /*Note: The source code is entirely written in Portuguese now.*/
@@ -46,7 +47,7 @@ void trim(char *str){
 
 
 
-static const char TABULEIRO_INICIAL[8][8] = {
+static const char TABULEIRO_INICIAL[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO] = {
     {'t', 'c', 'b', 'q', 'k', 'b', 'c', 't'},
     {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -73,7 +74,7 @@ typedef struct {
 
 EstadoJogo ultimoMovimento;
 
-static char tabuleiro[8][8];
+static char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
 
 static int jogadorDaVez = 0; // 0 para o Jogador 1 (maiúsculas), 1 para o Jogador 2 (minúsculas)
 
@@ -138,11 +139,11 @@ static void ExibirTabuleiro() {
     printf("  ╔═════════════════╗\n");
     printf("  ║ a b c d e f g h ║\n");
     printf("  ╠═════════════════╣\n");
-    for (int i = 8; i >= 1; i--) {
-        int conversaoLinha = 8 - i;
+    for (int i = TAMANHO_TABULEIRO; i >= 1; i--) {
+        int conversaoLinha = TAMANHO_TABULEIRO - i;
         printf("%d ║ ", i);
         
-        for (int j = 0; j < 8; j++) {
+        for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
             char* backgroundColor = ((conversaoLinha == ultimoMovimento.ultimoMovimentoOrigem[0] && j == ultimoMovimento.ultimoMovimentoOrigem[1]) ||
         (conversaoLinha == ultimoMovimento.ultimoMovimentoDestino[0] && j == ultimoMovimento.ultimoMovimentoDestino[1])) ? AMARELO_BACKGROUND :
             ((conversaoLinha + j) % 2 == 0 ? BRANCO_BACKGROUND : PRETO_BACKGROUND);
@@ -265,7 +266,7 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             }
             
             int conversaoLinhaOrigem = input[1] - '0';
-            *linhaOrigem = 8 - conversaoLinhaOrigem;
+            *linhaOrigem = TAMANHO_TABULEIRO - conversaoLinhaOrigem;
 
             if(tolower(input[2]) < 'a' || tolower(input[2]) > 'h'){
                 printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_COLUNA_DESTINO_INVALIDA));
@@ -280,7 +281,7 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             
             
             int conversaoLinhaDestino = input[3] - '0';
-            *linhaDestino = 8 - conversaoLinhaDestino;
+            *linhaDestino = TAMANHO_TABULEIRO - conversaoLinhaDestino;
                 
             
             break;
@@ -303,7 +304,7 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             }
             
             int conversaoLinhaOrigem = input[1] - '0';
-            *linhaOrigem = 8 - conversaoLinhaOrigem;
+            *linhaOrigem = TAMANHO_TABULEIRO - conversaoLinhaOrigem;
 
             if(tolower(input[3]) < 'a' || tolower(input[3]) > 'h'){
                 printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_COLUNA_DESTINO_INVALIDA));
@@ -318,7 +319,7 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             
             
             int conversaoLinhaDestino = input[4] - '0';
-            *linhaDestino = 8 - conversaoLinhaDestino;
+            *linhaDestino = TAMANHO_TABULEIRO - conversaoLinhaDestino;
                 
             
             break;
@@ -366,7 +367,7 @@ static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) 
 struct Salvamento
 {
     int versao;
-    char tabuleiro[8][8];
+    char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
     int jogadorDaVez;
     int movimentosFeitos;
     int movimentosSemCapturaouPiao;
@@ -534,7 +535,7 @@ int iniciarJogo(int opcao) {
 
     reiniciarJogo();
 
-    printf("--------------------------------------------\n\n");
+    printf(Msg(STR_SEPARACAO));
 
     if (opcao == 1){
         for(int i = 0; i < 2; i++){
@@ -593,17 +594,19 @@ int iniciarJogo(int opcao) {
             jogadorDaVez, ultimoMovimento.ultimoMovimentoOrigem, ultimoMovimento.ultimoMovimentoDestino, 
             ultimoMovimento.EstadoRoque.reiMoveu, ultimoMovimento.EstadoRoque.torreEsquerdaMoveu, ultimoMovimento.EstadoRoque.torreDireitaMoveu);
 
-        if((strcmp(resultadoJogadaValida, "OK") == 0) || 
-        (strcmp(resultadoJogadaValida, "OK_EN_PASSANT") == 0) ||
-        (strcmp(resultadoJogadaValida, "OK_ROQUE") == 0)){
+        if((strcmp(resultadoJogadaValida, Msg(MSG_JOGADA_VALIDA)) == 0) || 
+        (strcmp(resultadoJogadaValida, Msg(MSG_JOGADA_VALIDA_EN_PASSANT)) == 0) ||
+        (strcmp(resultadoJogadaValida, Msg(MSG_JOGADA_VALIDA_ROQUE)) == 0)){
             
             movimentosFeitos++;
-            countHistoricoAtual++;
+            
 
             historicoMovimentos[countHistoricoAtual].linhaOrigem = linhaOrigem;
             historicoMovimentos[countHistoricoAtual].colunaOrigem = colunaOrigem;
             historicoMovimentos[countHistoricoAtual].linhaDestino = linhaDestino;
             historicoMovimentos[countHistoricoAtual].colunaDestino = colunaDestino;
+            
+            countHistoricoAtual++;
 
             ultimoMovimento.ultimoMovimentoOrigem[0] = linhaOrigem;
             ultimoMovimento.ultimoMovimentoOrigem[1] = colunaOrigem;
@@ -651,7 +654,7 @@ int iniciarJogo(int opcao) {
             tabuleiro[linhaDestino][colunaDestino] = tabuleiro[linhaOrigem][colunaOrigem];
             tabuleiro[linhaOrigem][colunaOrigem] = ' ';
 
-            if(strcmp(resultadoJogadaValida, "OK_EN_PASSANT") == 0){
+            if(strcmp(resultadoJogadaValida, Msg(MSG_JOGADA_VALIDA_EN_PASSANT)) == 0){
                 tabuleiro[linhaOrigem][colunaDestino] = ' ';
             }
 
@@ -667,7 +670,7 @@ int iniciarJogo(int opcao) {
                 }
             }
 
-            if(strcmp(resultadoJogadaValida, "OK_ROQUE") == 0){
+            if(strcmp(resultadoJogadaValida, Msg(MSG_JOGADA_VALIDA_ROQUE)) == 0){
                 //Mover a torre:
                 if(colunaDestino == 6){
                     tabuleiro[linhaDestino][5] = tabuleiro[linhaDestino][7];
@@ -738,7 +741,7 @@ int iniciarJogo(int opcao) {
 
     }
     
-    printf("-----------------------------------------------\n\n");
+    printf(Msg(STR_SEPARACAO));
 
     return 0;
 }

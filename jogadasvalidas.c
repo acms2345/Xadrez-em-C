@@ -325,6 +325,11 @@ bool materialInsuficiente(char tabuleiro[8][8]){
             else if(islower(peca)) {
                 if(peca != 'k') pecasJogador1++;
             }
+
+            if(peca == 'B') bisposJogador0++;
+            if(peca == 'b') bisposJogador1++;
+            if(peca == 'C') cavalosJogador0++;
+            if(peca == 'c') cavalosJogador1++;
         }
     }
 
@@ -491,7 +496,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                             return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                         }
 
-                        return "OK_EN_PASSANT";
+                        return Msg(MSG_JOGADA_VALIDA_EN_PASSANT);
                     }
                 }
             }
@@ -501,22 +506,22 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK"; // Movimento diagonal para capturar
+                    return Msg(MSG_JOGADA_VALIDA); // Movimento diagonal para capturar
                 } else if ((linhaDestino == linhaOrigem - 1 && colunaDestino == colunaOrigem + 1 && tabuleiro[linhaDestino][colunaDestino] != ' ')) {
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK"; // Movimento diagonal para capturar
+                    return Msg(MSG_JOGADA_VALIDA); // Movimento diagonal para capturar
                 } else if (linhaDestino == linhaOrigem - 1 && colunaDestino == colunaOrigem && tabuleiro[linhaDestino][colunaDestino] == ' '){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK"; // Movimento para frente
+                    return Msg(MSG_JOGADA_VALIDA); // Movimento para frente
                 } else if (linhaOrigem == 6 && linhaDestino == linhaOrigem - 2 && colunaDestino == colunaOrigem && tabuleiro[linhaDestino + 1][colunaDestino] == ' ' && tabuleiro[linhaDestino][colunaDestino] == ' ') {
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK"; // Movimento de início para frente (duas casas)
+                    return Msg(MSG_JOGADA_VALIDA); // Movimento de início para frente (duas casas)
                 } else {
                     return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_PEAO); // Movimento inválido para o peão
                 }
@@ -525,22 +530,22 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK"; // Movimento diagonal para capturar
+                    return Msg(MSG_JOGADA_VALIDA); // Movimento diagonal para capturar
                 } else if ((linhaDestino == linhaOrigem + 1 && colunaDestino == colunaOrigem + 1 && tabuleiro[linhaDestino][colunaDestino] != ' ')) {
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK"; // Movimento diagonal para capturar
+                    return Msg(MSG_JOGADA_VALIDA); // Movimento diagonal para capturar
                 } else if (linhaDestino == linhaOrigem + 1 && colunaDestino == colunaOrigem && tabuleiro[linhaDestino][colunaDestino] == ' '){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK"; // Movimento para frente
+                    return Msg(MSG_JOGADA_VALIDA); // Movimento para frente
                 } else if (linhaOrigem == 1 && linhaDestino == linhaOrigem + 2 && colunaDestino == colunaOrigem && tabuleiro[linhaDestino - 1][colunaDestino] == ' ' && tabuleiro[linhaDestino][colunaDestino] == ' ') {
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK"; // Movimento de início para frente (duas casas)
+                    return Msg(MSG_JOGADA_VALIDA); // Movimento de início para frente (duas casas)
                 } else {
                     return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_PEAO); // Movimento inválido para o peão
                 }
@@ -558,7 +563,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
                     break;
                 } 
@@ -568,7 +573,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
                     break;
                 }
@@ -578,7 +583,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem][colunaOrigem + i] != ' '){
                     break;
                 }
@@ -588,7 +593,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem][colunaOrigem + i] != ' '){
                     break;
                 }
@@ -602,42 +607,42 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                     return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
-                return "OK"; // Movimento em "L" em pé para sudoeste
+                return Msg(MSG_JOGADA_VALIDA); // Movimento em "L" em pé para sudoeste
             } else if (linhaDestino == linhaOrigem - 2 && colunaDestino == colunaOrigem - 1){
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                     return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
-                return "OK"; // Movimento em "L" em pé para noroeste
+                return Msg(MSG_JOGADA_VALIDA); // Movimento em "L" em pé para noroeste
             } else if(linhaDestino == linhaOrigem + 2 && colunaDestino == colunaOrigem + 1){
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                     return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
-                return "OK"; // Movimento em "L" em pé para sudeste
+                return Msg(MSG_JOGADA_VALIDA); // Movimento em "L" em pé para sudeste
             } else if (linhaDestino == linhaOrigem - 2 && colunaDestino == colunaOrigem + 1){
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                     return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
-                return "OK"; // Movimento em "L" em pé para nordeste
+                return Msg(MSG_JOGADA_VALIDA); // Movimento em "L" em pé para nordeste
             } else if(linhaDestino == linhaOrigem + 1 && colunaDestino == colunaOrigem - 2){
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                     return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
-                return "OK"; // Movimento em "L" deitado para sudoeste
+                return Msg(MSG_JOGADA_VALIDA); // Movimento em "L" deitado para sudoeste
             } else if (linhaDestino == linhaOrigem - 1 && colunaDestino == colunaOrigem - 2){
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                     return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
-                return "OK"; // Movimento em "L" deitado para noroeste
+                return Msg(MSG_JOGADA_VALIDA); // Movimento em "L" deitado para noroeste
             } else if(linhaDestino == linhaOrigem + 1 && colunaDestino == colunaOrigem + 2){
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                     return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
-                return "OK"; // Movimento em "L" deitado para sudeste
+                return Msg(MSG_JOGADA_VALIDA); // Movimento em "L" deitado para sudeste
             } else if (linhaDestino == linhaOrigem - 1 && colunaDestino == colunaOrigem + 2){
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                     return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
-                return "OK"; // Movimento em "L" deitado para nordeste
+                return Msg(MSG_JOGADA_VALIDA); // Movimento em "L" deitado para nordeste
             } else {
                 return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_CAVALO); // Movimento inválido para o cavalo
             }
@@ -652,7 +657,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem + i] != ' '){
                     break;
                 }
@@ -662,7 +667,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem - i][colunaOrigem + i] != ' '){
                     break;
                 }
@@ -672,7 +677,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem - i] != ' '){
                     break;
                 }
@@ -682,7 +687,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem - i][colunaOrigem - i] != ' '){
                     break;
                 }
@@ -701,7 +706,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
                     break;
                 }
@@ -711,7 +716,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
                     break;
                 }
@@ -721,7 +726,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem][colunaOrigem + i] != ' '){
                     break;
                 }
@@ -731,7 +736,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem][colunaOrigem + i] != ' '){
                     break;
                 }
@@ -743,7 +748,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem + i] != ' '){
                     break;
                 }
@@ -753,7 +758,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem - i][colunaOrigem + i] != ' '){
                     break;
                 }
@@ -763,7 +768,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem + i][colunaOrigem - i] != ' '){
                     break;
                 }
@@ -773,7 +778,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                     }
-                    return "OK";
+                    return Msg(MSG_JOGADA_VALIDA);
                 } else if (tabuleiro[linhaOrigem - i][colunaOrigem - i] != ' '){
                     break;
                 }
@@ -785,7 +790,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             /* Código para movimento do rei */
 
             if(Roque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, reiSeMoveu, torreEsquerdaSeMoveu, torreDireitaSeMoveu)){
-                return "OK_ROQUE";
+                return Msg(MSG_JOGADA_VALIDA_ROQUE);
             }
 
             if((linhaDestino == linhaOrigem + 1 || linhaDestino == linhaOrigem - 1 || linhaDestino == linhaOrigem) &&
@@ -797,7 +802,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)){
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE); // Movimento colocaria o rei em xeque
                     } else {
-                        return "OK"; // Movimento válido
+                        return Msg(MSG_JOGADA_VALIDA); // Movimento válido
                     }
                 }
                     

@@ -4,6 +4,11 @@
 static Lingua linguaAtual = PORTUGUES;
 
 static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
+    {
+        "-----------------------------------------------\n\n",
+        "-----------------------------------------------\n\n"
+    },
+    
     //menu.c
     {
         "==============================================\n            XADREZ EM C\n==============================================",
@@ -218,7 +223,18 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
 
 
     //jogadasvalidas.c
-
+    {
+        "Movimento válido.",
+        "Valid move."
+    },
+    {
+        "Movimento válido (en passant).",
+        "Valid move (en passant)."
+    },
+    {
+        "Movimento válido (roque).",
+        "Valid move (castling)."
+    },
     {
         "Movimento para a mesma posição",
         "Move to the same position"
