@@ -8,8 +8,10 @@
 #include "traducao.h"
 #include "cores.h"
 
-#define VERSAO_ATUAL_JOGO 2.0f
+#define VERSAO_ATUAL_JOGO 22
 #define MAX_HISTORICO 500
+
+#define LIMITE_REGRA_50_MOVIMENTOS 100
 
 /*Note: The source code is entirely written in Portuguese now.*/
 
@@ -54,10 +56,6 @@ static const char TABULEIRO_INICIAL[8][8] = {
     {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
     {'T', 'C', 'B', 'Q', 'K', 'B', 'C', 'T'}
 };
-
-typedef struct {
-    bool moveu; // se a peça já se moveu
-} Peca;
 
 typedef struct {
     bool reiMoveu[2]; 
@@ -208,8 +206,8 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
 
         
 
-        if(strcmp(input, "salvar") == 0 || strcmp(input, "SALVAR") == 0 || 
-        strcmp(input, "save") == 0 || strcmp(input, "SAVE") == 0){
+        if(strcasecmp(input, "salvar") == 0 || 
+        strcasecmp(input, "save") == 0){
             if(SalvarJogo()){
                 printfColor(VERDE_FOREGROUND, Msg(MSG_JOGO_SALVAR_SUCESSO));
             } else {
@@ -218,13 +216,13 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             continue;
         }
 
-        if(strcmp(input, "desistir") == 0 || strcmp(input, "DESISTIR") == 0 || strcmp(input, "resign") == 0 || strcmp(input, "RESIGN") == 0){
+        if(strcasecmp(input, "desistir") == 0 || strcasecmp(input, "resign") == 0){
             printf(Msg(MSG_JOGO_DESISTENCIA), jogadores[jogadorDaVez].nome, jogadores[1 - jogadorDaVez].nome);
             ganhou = true;
             return false;
         }
 
-        if (strcmp(input, "empatar") == 0 || strcmp(input, "EMPATAR") == 0 || strcmp(input, "draw") == 0 || strcmp(input, "DRAW") == 0){
+        if (strcasecmp(input, "empatar") == 0 || strcasecmp(input, "draw") == 0){
             printf(Msg(MSG_JOGO_EMPATE_SUGESTAO), jogadores[jogadorDaVez].nome, jogadores[1 - jogadorDaVez].nome);
             
             fflush(stdout);
@@ -367,7 +365,7 @@ static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) 
 
 struct Salvamento
 {
-    float versao;
+    int versao;
     char tabuleiro[8][8];
     int jogadorDaVez;
     int movimentosFeitos;
@@ -461,7 +459,7 @@ static bool CarregarJogo() {
     ultimoMovimento.EstadoRoque.torreDireitaMoveu[0] = salvamento.torreDireitaMoveu[0];
     ultimoMovimento.EstadoRoque.torreDireitaMoveu[1] = salvamento.torreDireitaMoveu[1];
 
-    salvamento.countHistorico = countHistoricoAtual;
+    countHistoricoAtual = salvamento.countHistorico;
     memcpy(historicoMovimentos, salvamento.historico, sizeof(Movimento) * countHistoricoAtual);
     
     return true;
@@ -615,7 +613,7 @@ int iniciarJogo(int opcao) {
                 movimentosSemCapturaouPiao++;
             }
 
-            if(movimentosSemCapturaouPiao >= 100){
+            if(movimentosSemCapturaouPiao >= LIMITE_REGRA_50_MOVIMENTOS){
                 printf(Msg(MSG_JOGO_EMPATE_50MOVIMENTOS_TITULO));
                 printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);

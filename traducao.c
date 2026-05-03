@@ -147,8 +147,8 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
 
 
     {
-        "Digite o nome do %d jogador: ",
-        "Enter the name of player %d: "
+        "Digite o nome do %d jogador (máximo de 20 caracteres): ",
+        "Enter the name of player %d (maximum 20 characters): "
     },
     {
         "E a vez de %s!\n (%s)",
@@ -156,11 +156,11 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
     },
     {
         "MAIÚSCULAS - Brancas ♙",
-        "UPPERCASE - Brancas ♙"
+        "UPPERCASE - Whites ♙"
     },
     {
         "minúsculas - Pretas ♟",
-        "lowercase - Pretas ♟"
+        "lowercase - Blacks ♟"
     },
     {
         "Jogada inválida! Não há peça na posição de origem.\n",
