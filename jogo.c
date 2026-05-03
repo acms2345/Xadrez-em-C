@@ -721,7 +721,7 @@ int iniciarJogo(int opcao) {
                 break; // Sai do loop principal do jogo
             }
 
-            if(VerificarMaterialInsuficiente(tabuleiro)){
+            if(materialInsuficiente(tabuleiro)){
                 ganhou = true;
                 printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_JOGO_MATERIAL_INSUFICIENTE_TITULO));
                 printf(Msg(MSG_JOGO_EMPATE_TEXTO));
