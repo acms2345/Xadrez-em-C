@@ -45,6 +45,14 @@ void trim(char *str){
     }
 }
 
+// Função portável para comparação case-insensitive
+int comparar_case_insensitive(const char *str1, const char *str2) {
+    #ifdef _WIN32
+        return _stricmp(str1, str2);
+    #else
+        return strcasecmp(str1, str2);
+    #endif
+}
 
 
 static const char TABULEIRO_INICIAL[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO] = {
@@ -207,8 +215,8 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
 
         
 
-        if(_stricmp(input, "salvar") == 0 || 
-        _stricmp(input, "save") == 0){
+        if(comparar_case_insensitive(input, "salvar") == 0 || 
+        comparar_case_insensitive(input, "save") == 0){
             if(SalvarJogo()){
                 printfColor(VERDE_FOREGROUND, Msg(MSG_JOGO_SALVAR_SUCESSO));
             } else {
@@ -217,13 +225,13 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             continue;
         }
 
-        if(_stricmp(input, "desistir") == 0 || _stricmp(input, "resign") == 0){
+        if(comparar_case_insensitive(input, "desistir") == 0 || comparar_case_insensitive(input, "resign") == 0){
             printf(Msg(MSG_JOGO_DESISTENCIA), jogadores[jogadorDaVez].nome, jogadores[1 - jogadorDaVez].nome);
             ganhou = true;
             return false;
         }
 
-        if (_stricmp(input, "empatar") == 0 || _stricmp(input, "draw") == 0){
+        if (comparar_case_insensitive(input, "empatar") == 0 || comparar_case_insensitive(input, "draw") == 0){
             printf(Msg(MSG_JOGO_EMPATE_SUGESTAO), jogadores[jogadorDaVez].nome, jogadores[1 - jogadorDaVez].nome);
             
             fflush(stdout);
