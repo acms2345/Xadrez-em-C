@@ -721,6 +721,15 @@ int iniciarJogo(int opcao) {
                 break; // Sai do loop principal do jogo
             }
 
+            if(VerificarMaterialInsuficiente(tabuleiro)){
+                ganhou = true;
+                printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_JOGO_MATERIAL_INSUFICIENTE_TITULO));
+                printf(Msg(MSG_JOGO_EMPATE_TEXTO));
+                printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
+                break; // Sai do loop principal do jogo
+            }
+
         } else {
             printf("%s", VERMELHO_FOREGROUND);
             printf(Msg(MSG_JOGO_JOGADA_INVALIDA), resultadoJogadaValida);

@@ -303,14 +303,68 @@ bool Roque(char tabuleiro[8][8], int jogadorDaVez, int linhaOrigem, int colunaOr
     
 }
 
-bool RepeticaoMovimentos(){
-    //Verifica se houve repetição de movimentos (3 vezes a mesma posição)
-    //A implementação é feita comparando o estado atual do tabuleiro com os estados anteriores, armazenados em um histórico.
-    //Se o mesmo estado ocorrer 3 vezes, é considerado empate por repetição.
+bool materialInsuficiente(char tabuleiro[8][8]){
+    int pecasJogador0 = 0;
+    int pecasJogador1 = 0;
+    int bisposJogador0 = 0;
+    int bisposJogador1 = 0;
+    int cavalosJogador0 = 0;
+    int cavalosJogador1 = 0;
 
-    //Essa função pode ser chamada após cada movimento para verificar se a condição de empate por repetição foi atendida.
+    for(int i = 0; i < 8; i++) {
+        for(int j = 0; j < 8; j++) {
+            char peca = tabuleiro[i][j];
+            
+            if(peca == ' ') continue;  // Ignora casas vazias
+            
+            // Se é maiúscula (Jogador 0)
+            if(isupper(peca)) {
+                if(peca != 'K') pecasJogador0++;  // Conta, mas exclui rei
+            }
+            // Se é minúscula (Jogador 1)
+            else if(islower(peca)) {
+                if(peca != 'k') pecasJogador1++;
+            }
+        }
+    }
 
-    return true; //Implementação futura.
+    // CASO 1: Rei vs Rei
+    if(pecasJogador0 == 0 && pecasJogador1 == 0) {
+        return true;
+    }
+    
+    // CASO 2: Um tem 1 bispo, o outro tem nada
+    if(pecasJogador0 == 1 && bisposJogador0 == 1 && pecasJogador1 == 0) {
+        return true;
+    }
+    if(pecasJogador1 == 1 && bisposJogador1 == 1 && pecasJogador0 == 0) {
+        return true;
+    }
+    
+    // CASO 3: Um tem 1 cavalo, o outro tem nada
+    if(pecasJogador0 == 1 && cavalosJogador0 == 1 && pecasJogador1 == 0) {
+        return true;
+    }
+    if(pecasJogador1 == 1 && cavalosJogador1 == 1 && pecasJogador0 == 0) {
+        return true;
+    }
+
+    //CASO 4: Um tem 2 bispos do mesmo lado, o outro tem nada
+    if(pecasJogador0 == 2 && bisposJogador0 == 2 && pecasJogador1 == 0) {
+        return true;
+    }
+    if(pecasJogador1 == 2 && bisposJogador1 == 2 && pecasJogador0 == 0) {
+        return true;
+    }
+
+    if(pecasJogador0 == 2 && cavalosJogador0 == 2 && pecasJogador1 == 0) {
+        return true;
+    }
+    if(pecasJogador1 == 2 && cavalosJogador1 == 2 && pecasJogador0 == 0) {
+        return true;
+    }
+
+    return false; // Se não se encaixar em nenhum dos casos, o material é suficiente para um xeque-mate.
 }
 
 //Funções para salvamento de histórico e verificação de repetição de movimentos:
@@ -397,6 +451,8 @@ int VerificarRepetidaoPosicao(char tabuleiro[8][8], int jogadorDaVez, bool reiMo
 void ReiniciarHistoricoPosicoes(void){
     countHistoricoPositoes = 0;
 }
+
+
 
 /*A função retorna alguns valores de acordo com o seu resultado:
     - "OK" para jogadas válidas;
