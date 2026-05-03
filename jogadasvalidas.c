@@ -490,7 +490,7 @@ const char* JogadaValida(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], i
                 if(ultimoMovimentoDestino[0] == linhaOrigem && ultimoMovimentoDestino[1] == colunaDestino){
                     char peaoInimigo = (jogadorDaVez == 0) ? 'p' : 'P';
                     if(tabuleiro[linhaOrigem][colunaDestino] == peaoInimigo){
-                        if((jogadorDaVez == 0 &&linhaDestino == linhaOrigem - 1) || (jogadorDaVez == 1 && linhaDestino == linhaOrigem + 1)){ {
+                        if((jogadorDaVez == 0 &&linhaDestino == linhaOrigem - 1) || (jogadorDaVez == 1 && linhaDestino == linhaOrigem + 1)) {
                             //En passant QUASE válido. Exceto:
                             enPassant = true; //Flag para a função movimentoDeixaReiemXeque, para que ela saiba que deve remover a peça do meio.
                             if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)){
