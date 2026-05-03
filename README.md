@@ -172,8 +172,7 @@ To resume a saved game, you must choose the "Load Saved Game" option from the ma
 
 ## ⚠️ Known Limitations
 
-1.  **No repetition detection**: Draw by repetition is not implemented (but stalemate and 50-move rule are).
-2.  **No move history**: The game doesn't track individual moves, only move counters and the last move.
+1.  **No moves replay**: The game track individual moves, but doesn't allow replaying them.
 
 ## 📄 License
 
@@ -346,8 +345,7 @@ Para retomar a partida salva, você deve escolher a opção de "Carregar Partida
 
 ## ⚠️ Limitações conhecidas
 
-1. **Sem detecção de repetição**: O empate por repetição não é detectado (mas afogamento e regra dos 50 lances são).
-2. **Sem histórico de movimentos**: O jogo não rastreia movimentos individuais, apenas contadores de movimentos e o último movimento.
+1. **Sem replay de movimentos**: O jogo rastreia movimentos individuais, mas não permite reproduzi-los.
 
 ## 📄 Licença
 

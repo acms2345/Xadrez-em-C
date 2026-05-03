@@ -8,7 +8,7 @@
 #include "traducao.h"
 #include "cores.h"
 
-#define VERSAO_ATUAL_JOGO 22
+#define VERSAO_ATUAL_JOGO 30
 #define MAX_HISTORICO 500
 
 #define TAMANHO_TABULEIRO 8
