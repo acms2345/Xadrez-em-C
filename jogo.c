@@ -11,7 +11,7 @@
 #define VERSAO_ATUAL_JOGO 30
 #define MAX_HISTORICO 500
 
-#define TAMANHO_TABULEIRO 8
+
 #define LIMITE_REGRA_50_MOVIMENTOS 100
 
 /*Note: The source code is entirely written in Portuguese now.*/
@@ -207,8 +207,8 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
 
         
 
-        if(strcasecmp(input, "salvar") == 0 || 
-        strcasecmp(input, "save") == 0){
+        if(_stricmp(input, "salvar") == 0 || 
+        _stricmp(input, "save") == 0){
             if(SalvarJogo()){
                 printfColor(VERDE_FOREGROUND, Msg(MSG_JOGO_SALVAR_SUCESSO));
             } else {
@@ -217,13 +217,13 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             continue;
         }
 
-        if(strcasecmp(input, "desistir") == 0 || strcasecmp(input, "resign") == 0){
+        if(_stricmp(input, "desistir") == 0 || _stricmp(input, "resign") == 0){
             printf(Msg(MSG_JOGO_DESISTENCIA), jogadores[jogadorDaVez].nome, jogadores[1 - jogadorDaVez].nome);
             ganhou = true;
             return false;
         }
 
-        if (strcasecmp(input, "empatar") == 0 || strcasecmp(input, "draw") == 0){
+        if (_stricmp(input, "empatar") == 0 || _stricmp(input, "draw") == 0){
             printf(Msg(MSG_JOGO_EMPATE_SUGESTAO), jogadores[jogadorDaVez].nome, jogadores[1 - jogadorDaVez].nome);
             
             fflush(stdout);
@@ -428,7 +428,12 @@ static bool SalvarJogo() {
     salvamento.countHistoricoPositoes = countPos;
     memcpy(salvamento.historicoPositoes, historicoPos, sizeof(EstadoPosicao) * countPos);
 
-    fwrite(&salvamento, sizeof(salvamento), 1, arquivo);
+    if(fwrite(&salvamento, sizeof(salvamento), 1, arquivo) == 0) {
+        printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_SALVAR_ERRO_ABERTURA_ARQUIVO));
+        fclose(arquivo);
+        return false;
+
+    }
     fclose(arquivo);
     
     return true;
@@ -444,7 +449,11 @@ static bool CarregarJogo() {
     
     struct Salvamento salvamento;
 
-    fread(&salvamento, sizeof(salvamento), 1, arquivo);
+    if(fread(&salvamento, sizeof(salvamento), 1, arquivo) == 0) {
+        printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_CARREGAR_ERRO));
+        fclose(arquivo);
+        return false;
+    }
     fclose(arquivo);
     
     if(salvamento.versao != VERSAO_ATUAL_JOGO){

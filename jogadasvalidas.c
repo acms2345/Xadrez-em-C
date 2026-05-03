@@ -8,21 +8,21 @@
 
 /*Note: The source code is entirely written in Portuguese now.*/
 
-bool CasaAtacada(char tabuleiro[8][8], int linha, int coluna, int oponente){
+bool CasaAtacada(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], int linha, int coluna, int oponente){
     //Verificação de ataque de peões
     if(oponente == 0){
-        if(linha + 1 < 8 && coluna - 1 >= 0 && tabuleiro[linha + 1][coluna - 1] == 'P') return true;
-        if(linha + 1 < 8 && coluna + 1 < 8 && tabuleiro[linha + 1][coluna + 1] == 'P') return true;
+        if(linha + 1 < TAMANHO_TABULEIRO && coluna - 1 >= 0 && tabuleiro[linha + 1][coluna - 1] == 'P') return true;
+        if(linha + 1 < TAMANHO_TABULEIRO && coluna + 1 < TAMANHO_TABULEIRO && tabuleiro[linha + 1][coluna + 1] == 'P') return true;
     } else{
         if(linha - 1 >= 0 && coluna - 1 >= 0 && tabuleiro[linha - 1][coluna - 1] == 'p') return true;
-        if(linha - 1 >= 0 && coluna + 1 < 8 && tabuleiro[linha - 1][coluna + 1] == 'p') return true;
+        if(linha - 1 >= 0 && coluna + 1 < TAMANHO_TABULEIRO && tabuleiro[linha - 1][coluna + 1] == 'p') return true;
     }
 
     char torre = (oponente == 0) ? 'T': 't';
     char rainha = (oponente == 0) ? 'Q' : 'q';
 
     //Verificação de ataques verticais (Torre ou rainha)
-    for(int i = linha + 1; i < 8; i++){// Ataque de cima
+    for(int i = linha + 1; i < TAMANHO_TABULEIRO; i++){// Ataque de cima
         char peca = tabuleiro[i][coluna];
         if(peca != ' '){
             if (peca == torre || peca == rainha) return true;
@@ -37,7 +37,7 @@ bool CasaAtacada(char tabuleiro[8][8], int linha, int coluna, int oponente){
         }
     }
     //Verificação de ataques horizontais (Torre ou rainha)
-    for(int i = coluna + 1; i < 8; i++){// Ataque da direita
+    for(int i = coluna + 1; i < TAMANHO_TABULEIRO; i++){// Ataque da direita
         char peca = tabuleiro[linha][i];
         if(peca != ' '){
             if (peca == torre || peca == rainha) return true;
@@ -62,11 +62,11 @@ bool CasaAtacada(char tabuleiro[8][8], int linha, int coluna, int oponente){
 
     /*Verifica as 8 possíveis posições de um cavalo,
     com base em movimentosCavalo[8][2]*/
-    for(int i = 0; i < 8; i++){
+    for(int i = 0; i < TAMANHO_TABULEIRO; i++){
         int linhaNova = linha + movimentosCavalo[i][0];
         int colunaNova = coluna + movimentosCavalo[i][1];
 
-        if(linhaNova >= 0 && linhaNova < 8 && colunaNova >= 0 && colunaNova < 8){
+        if(linhaNova >= 0 && linhaNova < TAMANHO_TABULEIRO && colunaNova >= 0 && colunaNova < TAMANHO_TABULEIRO){
             if (tabuleiro[linhaNova][colunaNova] == cavalo){
                 return true;
             }
@@ -77,21 +77,21 @@ bool CasaAtacada(char tabuleiro[8][8], int linha, int coluna, int oponente){
 
     char bispo = (oponente == 0) ? 'B' : 'b';
 
-    for(int i = 1; linha + i < 8 && coluna + i < 8; i++){//Para ver ataque a sudeste
+    for(int i = 1; linha + i < TAMANHO_TABULEIRO && coluna + i < TAMANHO_TABULEIRO; i++){//Para ver ataque a sudeste
         char peca = tabuleiro[linha + i][coluna + i];
         if(peca != ' '){
             if(peca == bispo || peca == rainha) return true;
             break;
         }
     }
-    for(int i = 1; linha - i >= 0 && coluna + i < 8; i++){//Para ver ataque a nordeste
+    for(int i = 1; linha - i >= 0 && coluna + i < TAMANHO_TABULEIRO; i++){//Para ver ataque a nordeste
         char peca = tabuleiro[linha - i][coluna + i];
         if(peca != ' '){
             if(peca == bispo || peca == rainha) return true;
             break;
         }
     }
-    for(int i = 1; linha + i < 8 && coluna - i >= 0; i++){//Para ver movimento para sudoeste
+    for(int i = 1; linha + i < TAMANHO_TABULEIRO && coluna - i >= 0; i++){//Para ver movimento para sudoeste
         char peca = tabuleiro[linha + i][coluna - i];
         if(peca != ' '){
             if(peca == bispo || peca == rainha) return true;
@@ -117,11 +117,11 @@ bool CasaAtacada(char tabuleiro[8][8], int linha, int coluna, int oponente){
 
     /*Verifica as 8 possíveis posições de um rei,
     com base em movimentosRei[8][2]*/
-    for(int i = 0; i < 8; i++){
+    for(int i = 0; i < TAMANHO_TABULEIRO; i++){
         int linhaNova = linha + movimentosRei[i][0];
         int colunaNova = coluna + movimentosRei[i][1];
 
-        if(linhaNova >= 0 && linhaNova < 8 && colunaNova >= 0 && colunaNova < 8){
+        if(linhaNova >= 0 && linhaNova < TAMANHO_TABULEIRO && colunaNova >= 0 && colunaNova < TAMANHO_TABULEIRO){
             if (tabuleiro[linhaNova][colunaNova] == reiInimigo){
                 return true;
             }
@@ -132,9 +132,9 @@ bool CasaAtacada(char tabuleiro[8][8], int linha, int coluna, int oponente){
     //Caso nenhuma das condições acima se aplicarem...
     return false; 
 }
-bool movimentoDeixaReiemXeque(char tabuleiro[8][8], int jogadorDaVez, int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino, bool enPassant){
-    char tabuleiroTemp[8][8];
-    memcpy(tabuleiroTemp, tabuleiro, sizeof(char) * 8 * 8);
+bool movimentoDeixaReiemXeque(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], int jogadorDaVez, int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino, bool enPassant){
+    char tabuleiroTemp[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
+    memcpy(tabuleiroTemp, tabuleiro, sizeof(char) * TAMANHO_TABULEIRO * TAMANHO_TABULEIRO);
 
     tabuleiroTemp[linhaDestino][colunaDestino] = tabuleiroTemp[linhaOrigem][colunaOrigem];
     tabuleiroTemp[linhaOrigem][colunaOrigem] = ' ';
@@ -148,8 +148,8 @@ bool movimentoDeixaReiemXeque(char tabuleiro[8][8], int jogadorDaVez, int linhaO
     int CoordenadaLinhaRei = -1;
     int CoordenadaColunaRei = -1;
 
-    for(int i = 0; i < 8; i++){
-        for(int j = 0; j < 8; j++){
+    for(int i = 0; i < TAMANHO_TABULEIRO; i++){
+        for(int j = 0; j < TAMANHO_TABULEIRO; j++){
             if (tabuleiroTemp[i][j] == ReiDoJogador){
                 CoordenadaLinhaRei = i;
                 CoordenadaColunaRei = j;
@@ -163,14 +163,14 @@ bool movimentoDeixaReiemXeque(char tabuleiro[8][8], int jogadorDaVez, int linhaO
 }
 
 
-bool ReiEmXeque(char tabuleiro[8][8], int jogadorDaVez){
+bool ReiEmXeque(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], int jogadorDaVez){
     char ReiDoJogador = (jogadorDaVez == 0) ? 'K' : 'k';
 
     int CoordenadaLinhaRei = -1;
     int CoordenadaColunaRei = -1;
 
-    for(int i = 0; i < 8; i++){
-        for(int j = 0; j < 8; j++){
+    for(int i = 0; i < TAMANHO_TABULEIRO; i++){
+        for(int j = 0; j < TAMANHO_TABULEIRO; j++){
             if (tabuleiro[i][j] == ReiDoJogador){
                 CoordenadaLinhaRei = i;
                 CoordenadaColunaRei = j;
@@ -181,15 +181,15 @@ bool ReiEmXeque(char tabuleiro[8][8], int jogadorDaVez){
 }
 
 /*A função verifica se há algum movimento em que o jogador possa impedir o xeque-mate.*/
-bool XequeMate(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrigem[2], int ultimoMovimentoDestino[2], bool reiSeMoveu[2], bool torreEsquerdaSeMoveu[2], bool torreDireitaSeMoveu[2]){
+bool XequeMate(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], int JogadorDaVez, int ultimoMovimentoOrigem[2], int ultimoMovimentoDestino[2], bool reiSeMoveu[2], bool torreEsquerdaSeMoveu[2], bool torreDireitaSeMoveu[2]){
     // 1️⃣ Primeiro verifica se está em xeque
     if(!ReiEmXeque(tabuleiro, JogadorDaVez)){
         return false; //O rei pode ficar na posição, se protegendo de um xeque-mate.
     }
     
     //Verifica todas as peças e possíveis movimentos.
-    for(int linha = 0; linha < 8; linha++){
-        for(int coluna = 0; coluna < 8; coluna++){
+    for(int linha = 0; linha < TAMANHO_TABULEIRO; linha++){
+        for(int coluna = 0; coluna < TAMANHO_TABULEIRO; coluna++){
             char peca = tabuleiro[linha][coluna];
 
             if(peca == ' ') continue;
@@ -197,14 +197,14 @@ bool XequeMate(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrigem
             if((JogadorDaVez == 0 && !isupper(peca)) || (JogadorDaVez == 1 && isupper(peca)))
                 continue;
             
-            for (int linhaDestino = 0; linhaDestino < 8; linhaDestino++)
+            for (int linhaDestino = 0; linhaDestino < TAMANHO_TABULEIRO; linhaDestino++)
             {
-                for (int colunaDestino = 0; colunaDestino < 8; colunaDestino++)
+                for (int colunaDestino = 0; colunaDestino < TAMANHO_TABULEIRO; colunaDestino++)
                 {
                     const char* resultado = JogadaValida(tabuleiro, linha, coluna, linhaDestino, colunaDestino, JogadorDaVez, ultimoMovimentoOrigem, ultimoMovimentoDestino, reiSeMoveu, torreEsquerdaSeMoveu, torreDireitaSeMoveu);
 
                     //Verifica se é um movimento válido.
-                    if(strcmp(resultado, "OK") == 0){
+                    if(strcmp(resultado, Msg(MSG_JOGADA_VALIDA)) == 0 || strcmp(resultado, Msg(MSG_JOGADA_VALIDA_EN_PASSANT)) == 0 || strcmp(resultado, Msg(MSG_JOGADA_VALIDA_ROQUE)) == 0){
                         //Verifica se esse movimento ESCAPA do xeque
                         if(!movimentoDeixaReiemXeque(tabuleiro, JogadorDaVez, linha, coluna, linhaDestino, colunaDestino, false)){
                             return false; //Tal movimento não deixa o rei em xeque-mate
@@ -219,15 +219,15 @@ bool XequeMate(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrigem
     return true; //É xeque-mate.
 }
 
-bool Afogamento(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrigem[2], int ultimoMovimentoDestino[2], bool reiSeMoveu[2], bool torreEsquerdaSeMoveu[2], bool torreDireitaSeMoveu[2]){
+bool Afogamento(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], int JogadorDaVez, int ultimoMovimentoOrigem[2], int ultimoMovimentoDestino[2], bool reiSeMoveu[2], bool torreEsquerdaSeMoveu[2], bool torreDireitaSeMoveu[2]){
     // 1️⃣ Primeiro verifica se está em xeque
     if(ReiEmXeque(tabuleiro, JogadorDaVez)){
         return false; //O rei deveria poder ficar na mesma posição para ser um afogamento.
     }
     
     //Verifica todas as peças e possíveis movimentos.
-    for(int linha = 0; linha < 8; linha++){
-        for(int coluna = 0; coluna < 8; coluna++){
+    for(int linha = 0; linha < TAMANHO_TABULEIRO; linha++){
+        for(int coluna = 0; coluna < TAMANHO_TABULEIRO; coluna++){
             char peca = tabuleiro[linha][coluna];
 
             if(peca == ' ') continue;
@@ -235,14 +235,14 @@ bool Afogamento(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrige
             if((JogadorDaVez == 0 && !isupper(peca)) || (JogadorDaVez == 1 && isupper(peca)))
                 continue;
             
-            for (int linhaDestino = 0; linhaDestino < 8; linhaDestino++)
+            for (int linhaDestino = 0; linhaDestino < TAMANHO_TABULEIRO; linhaDestino++)
             {
-                for (int colunaDestino = 0; colunaDestino < 8; colunaDestino++)
+                for (int colunaDestino = 0; colunaDestino < TAMANHO_TABULEIRO; colunaDestino++)
                 {
                     const char* resultado = JogadaValida(tabuleiro, linha, coluna, linhaDestino, colunaDestino, JogadorDaVez, ultimoMovimentoOrigem, ultimoMovimentoDestino, reiSeMoveu, torreEsquerdaSeMoveu, torreDireitaSeMoveu);
 
                     //Verifica se é um movimento válido.
-                    if(strcmp(resultado, "OK") == 0){
+                    if(strcmp(resultado, Msg(MSG_JOGADA_VALIDA)) == 0 || strcmp(resultado, Msg(MSG_JOGADA_VALIDA_EN_PASSANT)) == 0 || strcmp(resultado, Msg(MSG_JOGADA_VALIDA_ROQUE)) == 0){
                         //Verifica se esse movimento ESCAPA do xeque
                         if(!movimentoDeixaReiemXeque(tabuleiro, JogadorDaVez, linha, coluna, linhaDestino, colunaDestino, false)){
                             return false; //Tal movimento não deixa o rei em xeque-mate
@@ -257,7 +257,7 @@ bool Afogamento(char tabuleiro[8][8], int JogadorDaVez, int ultimoMovimentoOrige
     return true; //É afogamento.
 }
 
-bool Roque(char tabuleiro[8][8], int jogadorDaVez, int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino, bool reiSeMoveu[2], bool torreEsquerdaSeMoveu[2], bool torreDireitaSeMoveu[2]){
+bool Roque(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], int jogadorDaVez, int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino, bool reiSeMoveu[2], bool torreEsquerdaSeMoveu[2], bool torreDireitaSeMoveu[2]){
     
     //"O rei já se moveu?"
     if(reiSeMoveu[jogadorDaVez]) return false;
@@ -303,7 +303,7 @@ bool Roque(char tabuleiro[8][8], int jogadorDaVez, int linhaOrigem, int colunaOr
     
 }
 
-bool materialInsuficiente(char tabuleiro[8][8]){
+bool materialInsuficiente(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO]){
     int pecasJogador0 = 0;
     int pecasJogador1 = 0;
     int bisposJogador0 = 0;
@@ -311,8 +311,8 @@ bool materialInsuficiente(char tabuleiro[8][8]){
     int cavalosJogador0 = 0;
     int cavalosJogador1 = 0;
 
-    for(int i = 0; i < 8; i++) {
-        for(int j = 0; j < 8; j++) {
+    for(int i = 0; i < TAMANHO_TABULEIRO; i++) {
+        for(int j = 0; j < TAMANHO_TABULEIRO; j++) {
             char peca = tabuleiro[i][j];
             
             if(peca == ' ') continue;  // Ignora casas vazias
@@ -389,9 +389,9 @@ void DefinirCountHistoricoPositoes(int count) {
     countHistoricoPositoes = count;
 }
 
-void AdicionarPosicaoAoHistorico(char tabuleiro[8][8], int jogadorDaVez, bool reiMoveu[2], bool torreEsquerdaMoveu[2], bool torreDireitaMoveu[2]){
+void AdicionarPosicaoAoHistorico(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], int jogadorDaVez, bool reiMoveu[2], bool torreEsquerdaMoveu[2], bool torreDireitaMoveu[2]){
     if(countHistoricoPositoes < MAX_HISTORICO){
-        memcpy(historicoPositoes[countHistoricoPositoes].tabuleiro, tabuleiro, sizeof(char) *8*8);
+        memcpy(historicoPositoes[countHistoricoPositoes].tabuleiro, tabuleiro, sizeof(char) *TAMANHO_TABULEIRO*TAMANHO_TABULEIRO);
         memcpy(historicoPositoes[countHistoricoPositoes].reiMoveu, reiMoveu, sizeof(bool) *2);
         memcpy(historicoPositoes[countHistoricoPositoes].torreEsquerdaMoveu, torreEsquerdaMoveu, sizeof(bool) *2);
         memcpy(historicoPositoes[countHistoricoPositoes].torreDireitaMoveu, torreDireitaMoveu, sizeof(bool) *2);
@@ -427,11 +427,11 @@ static bool PosicoesIguais(const EstadoPosicao *pos1, const EstadoPosicao *pos2)
     return true;
 }
 
-int VerificarRepetidaoPosicao(char tabuleiro[8][8], int jogadorDaVez, bool reiMoveu[2], bool torreEsquerdaMoveu[2], bool torreDireitaMoveu[2]){
+int VerificarRepetidaoPosicao(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], int jogadorDaVez, bool reiMoveu[2], bool torreEsquerdaMoveu[2], bool torreDireitaMoveu[2]){
     EstadoPosicao posicaoAtual;
 
     posicaoAtual.jogadorDaVez = jogadorDaVez;
-    memcpy(posicaoAtual.tabuleiro, tabuleiro, sizeof(char) *8*8);
+    memcpy(posicaoAtual.tabuleiro, tabuleiro, sizeof(char) *TAMANHO_TABULEIRO*TAMANHO_TABULEIRO);
     for (int i = 0; i < 2; i++)
     {
         posicaoAtual.reiMoveu[i] = reiMoveu[i];
@@ -460,12 +460,12 @@ void ReiniciarHistoricoPosicoes(void){
 
 
 /*A função retorna alguns valores de acordo com o seu resultado:
-    - "OK" para jogadas válidas;
+    - MSG_JOGADA_VALIDA para jogadas válidas;
     - Outros textos para jogadas inválidas, para mostrar ao usuário o erro dele
         (Por exemplo, "Peça do mesmo jogador" quando ocorre tentativa de capturar uma peça do mesmo jogador)
         
 */
-const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino, int jogadorDaVez, int ultimoMovimentoOrigem[2], int ultimoMovimentoDestino[2], bool reiSeMoveu[2], bool torreEsquerdaSeMoveu[2], bool torreDireitaSeMoveu[2]) {
+const char* JogadaValida(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino, int jogadorDaVez, int ultimoMovimentoOrigem[2], int ultimoMovimentoDestino[2], bool reiSeMoveu[2], bool torreEsquerdaSeMoveu[2], bool torreDireitaSeMoveu[2]) {
     char peca = tabuleiro[linhaOrigem][colunaOrigem];
 
     bool enPassant = false;
@@ -490,13 +490,16 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                 if(ultimoMovimentoDestino[0] == linhaOrigem && ultimoMovimentoDestino[1] == colunaDestino){
                     char peaoInimigo = (jogadorDaVez == 0) ? 'p' : 'P';
                     if(tabuleiro[linhaOrigem][colunaDestino] == peaoInimigo){
-                        //En passant QUASE válido. Exceto:
-                        enPassant = true; //Flag para a função movimentoDeixaReiemXeque, para que ela saiba que deve remover a peça do meio.
-                        if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)){
-                            return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                        }
+                        if((jogadorDaVez == 0 &&linhaDestino == linhaOrigem - 1) || (jogadorDaVez == 1 && linhaDestino == linhaOrigem + 1)){ {
+                            //En passant QUASE válido. Exceto:
+                            enPassant = true; //Flag para a função movimentoDeixaReiemXeque, para que ela saiba que deve remover a peça do meio.
+                            if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)){
+                                return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
+                            }
 
-                        return Msg(MSG_JOGADA_VALIDA_EN_PASSANT);
+
+                            return Msg(MSG_JOGADA_VALIDA_EN_PASSANT);
+                        }
                     }
                 }
             }
@@ -558,7 +561,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
         case 'T':
             /* Código para movimento da torre */
 
-            for(int i = 1; i + linhaOrigem < 8; i++){ //verifica se é movimento para baixo
+            for(int i = 1; i + linhaOrigem < TAMANHO_TABULEIRO; i++){ //verifica se é movimento para baixo
                 if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
@@ -578,7 +581,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     break;
                 }
             }
-            for(int i = 1; i + colunaOrigem < 8; i++){ //verifica se é movimento para direita
+            for(int i = 1; i + colunaOrigem < TAMANHO_TABULEIRO; i++){ //verifica se é movimento para direita
                 if(colunaDestino == colunaOrigem + i && linhaDestino == linhaOrigem){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
@@ -652,7 +655,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
         case 'B':
             /* Código para movimento do bispo */
             
-            for(int i = 1; linhaOrigem + i < 8 && colunaOrigem + i < 8; i++){//Para ver movimento para sudeste
+            for(int i = 1; linhaOrigem + i < TAMANHO_TABULEIRO && colunaOrigem + i < TAMANHO_TABULEIRO; i++){//Para ver movimento para sudeste
                 if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem + i){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
@@ -662,7 +665,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     break;
                 }
             }
-            for(int i = 1; linhaOrigem - i >= 0 && colunaOrigem + i < 8; i++){//Para ver movimento para nordeste
+            for(int i = 1; linhaOrigem - i >= 0 && colunaOrigem + i < TAMANHO_TABULEIRO; i++){//Para ver movimento para nordeste
                 if(linhaDestino == linhaOrigem - i && colunaDestino == colunaOrigem + i){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
@@ -672,7 +675,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     break;
                 }
             }
-            for(int i = 1; linhaOrigem + i < 8 && colunaOrigem - i >= 0; i++){//Para ver movimento para sudoeste
+            for(int i = 1; linhaOrigem + i < TAMANHO_TABULEIRO && colunaOrigem - i >= 0; i++){//Para ver movimento para sudoeste
                 if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem - i){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
@@ -701,7 +704,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             //Junção dos movimentos da torre e do bispo
 
             // Movimento da torre
-            for(int i = 1; i + linhaOrigem < 8; i++){ //verifica se é movimento para baixo
+            for(int i = 1; i + linhaOrigem < TAMANHO_TABULEIRO; i++){ //verifica se é movimento para baixo
                 if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
@@ -721,7 +724,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     break;
                 }
             }
-            for(int i = 1; i + colunaOrigem < 8; i++){ //verifica se é movimento para direita
+            for(int i = 1; i + colunaOrigem < TAMANHO_TABULEIRO; i++){ //verifica se é movimento para direita
                 if(colunaDestino == colunaOrigem + i && linhaDestino == linhaOrigem){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
@@ -743,7 +746,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
             }
 
             // Movimento do bispo
-            for(int i = 1; linhaOrigem + i < 8 && colunaOrigem + i < 8; i++){//Para ver movimento para sudeste
+            for(int i = 1; linhaOrigem + i < TAMANHO_TABULEIRO && colunaOrigem + i < TAMANHO_TABULEIRO; i++){//Para ver movimento para sudeste
                 if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem + i){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
@@ -753,7 +756,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     break;
                 }
             }
-            for(int i = 1; linhaOrigem - i >= 0 && colunaOrigem + i < 8; i++){//Para ver movimento para nordeste
+            for(int i = 1; linhaOrigem - i >= 0 && colunaOrigem + i < TAMANHO_TABULEIRO; i++){//Para ver movimento para nordeste
                 if(linhaDestino == linhaOrigem - i && colunaDestino == colunaOrigem + i){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
@@ -763,7 +766,7 @@ const char* JogadaValida(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem
                     break;
                 }
             }
-            for(int i = 1; linhaOrigem + i < 8 && colunaOrigem - i >= 0; i++){//Para ver movimento para sudoeste
+            for(int i = 1; linhaOrigem + i < TAMANHO_TABULEIRO && colunaOrigem - i >= 0; i++){//Para ver movimento para sudoeste
                 if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem - i){
                     if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                         return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
