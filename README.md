@@ -84,13 +84,16 @@ Xadrez-em-C/
 ├── jogo.c             # Main code (interface, game loop)
 ├── jogo.h             # Header that links jogo.c to menu.c
 ├── jogadasvalidas.c   # Move validation logic
-├── jogadasvalidas.h   # Header with prototypes
+├── jogadasvalidas.h   # Header with prototypes and data structures
 ├── traducao.c         # Message translation functions (i18n system)
 ├── traducao.h         # Header with prototypes
 ├── cores.h            # Terminal color definitions (ANSI codes)
+├── Makefile           # Build rules
 ├── LICENSE            # MIT License file
 └── README.md          # This file
 ```
+
+> **Note**: `salvamento.dat` is generated at runtime when a game is saved; it is not part of the source tree.
 
 
 
@@ -118,61 +121,74 @@ Xadrez-em-C/
     -   Second number: destination row (1-8);
     -   Type "save" to save the game.
     -   Type "resign" to forfeit the game and give victory to your opponent.
+    -   Type "draw" to propose a draw to your opponent (the opponent can accept with `y`/`s` or decline with `n`).
 4.  The game includes a draw system based on the 50-move rule (100 moves - or half moves - without a capture or pawn move).
+5.  The game also detects draws by **threefold repetition** (same position occurring 3 times) and **insufficient mating material** (e.g., King vs King).
 
 - If you wish, in the game there is a Help option, in which there are some quick instructions about the game.
 
 ### Example of a Move
 
 ```
-  a b c d e f g h
-8 ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜
-7 ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟
-6                
-5                
-4                
-3                
-2 ♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙
-1 ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖
+  ╔═════════════════╗
+  ║ a b c d e f g h ║
+  ╠═════════════════╣
+8 ║ ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜ ║
+7 ║ ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟ ║
+6 ║                 ║
+5 ║                 ║
+4 ║                 ║
+3 ║                 ║
+2 ║ ♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙ ║
+1 ║ ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖ ║
+  ╚═════════════════╝
 
 Player1, enter your move in algebraic notation (ex: e2e4): e2e4
 
-  a b c d e f g h
-8 ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜
-7 ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟
-6                
-5                
-4            ♙       
-3                
-2 ♙ ♙ ♙ ♙   ♙ ♙ ♙
-1 ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖
+  ╔═════════════════╗
+  ║ a b c d e f g h ║
+  ╠═════════════════╣
+8 ║ ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜ ║
+7 ║ ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟ ║
+6 ║                 ║
+5 ║                 ║
+4 ║         ♙       ║
+3 ║                 ║
+2 ║ ♙ ♙ ♙ ♙   ♙ ♙ ♙ ║
+1 ║ ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖ ║
+  ╚═════════════════╝
 
 Player2, enter your move in algebraic notation (ex: e2e4): e7e5
 
-  a b c d e f g h
-8 ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜
-7 ♟ ♟ ♟ ♟   ♟ ♟ ♟
-6                
-5            ♟      
-4            ♙             
-3                
-2 ♙ ♙ ♙ ♙   ♙ ♙ ♙
-1 ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖
+  ╔═════════════════╗
+  ║ a b c d e f g h ║
+  ╠═════════════════╣
+8 ║ ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜ ║
+7 ║ ♟ ♟ ♟ ♟   ♟ ♟ ♟ ║
+6 ║                 ║
+5 ║         ♟       ║
+4 ║         ♙       ║
+3 ║                 ║
+2 ║ ♙ ♙ ♙ ♙   ♙ ♙ ♙ ║
+1 ║ ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖ ║
+  ╚═════════════════╝
 
 ...
 ```
 
 ### 💾 About Saving and Loading Games
 
-During the game, when prompted to enter the next move, you can also type "salvar" to save the current game state to the `salvamento.dat` file.
+During the game, when prompted to enter the next move, you can also type "salvar"/"save" to save the current game state to the `salvamento.dat` file.
 To resume a saved game, you must choose the "Load Saved Game" option from the main menu.
 
-> The `salvamento.dat` file is binary and should not be edited manually.
+> The `salvamento.dat` file is binary and should not be edited manually. Only one game can be saved at a time — saving overwrites the previous file.
 
 
 ## ⚠️ Known Limitations
 
-1.  **No moves replay**: The game track individual moves, but doesn't allow replaying them.
+1.  **No moves replay**: The game tracks individual moves, but doesn't allow replaying them.
+2.  **Single save slot**: Only one game can be saved at a time (`salvamento.dat` is overwritten on each save).
+3.  **No network play**: Local two-player only; no AI or online opponent.
 
 ## 📄 License
 
@@ -254,14 +270,16 @@ Xadrez-em-C/
 ├── jogo.c           # Código principal (interface, loop do jogo)
 ├── jogo.h             # Header que interliga jogo.c a menu.c
 ├── jogadasvalidas.c   # Lógica de validação de movimentos
-├── jogadasvalidas.h   # Header com protótipos
+├── jogadasvalidas.h   # Header com protótipos e estruturas de dados
 ├── traducao.c         # Funções de tradução de mensagens
 ├── traducao.h          # Header com protótipos
 ├── cores.h            # Definição de cores para o terminal
-├── salvamento.dat      # Arquivo binário para salvar o estado do jogo
+├── Makefile           # Regras de compilação
 ├── LICENSE             # Licença do projeto
 └── README.md          # Este arquivo
 ```
+
+> **Nota**: `salvamento.dat` é gerado em tempo de execução quando uma partida é salva; não faz parte do código-fonte.
 
 
 
@@ -290,62 +308,75 @@ Xadrez-em-C/
   - Segundo número: linha de destino (1-8);
   - Digite "salvar" para salvar o jogo.
   - Digite "desistir" para desistir do jogo e dar a vitória a seu oponente.
+  - Digite "empatar" para propor empate ao oponente (o oponente pode aceitar com `y`/`s` ou recusar com `n`).
 
 4. O jogo possui o sistema de empate por 50 lances (100 movimentos - ou seja, meias-jogadas - sem captura ou movimento de peão).
+5. O jogo também detecta empate por **repetição tripla** (mesma posição ocorrendo 3 vezes) e por **material insuficiente** (ex: Rei vs Rei).
 
 - Caso você queira, no jogo há a opção de Ajuda, na qual há algumas instruções rápidas sobre o jogo.
 
 ### Exemplo de jogada
 
 ```
-  a b c d e f g h
-8 t c b k q b c t
-7 p p p p p p p p
-6                
-5                
-4                
-3                
-2 P P P P P P P P
-1 T C B K Q B C T
+  ╔═════════════════╗
+  ║ a b c d e f g h ║
+  ╠═════════════════╣
+8 ║ ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜ ║
+7 ║ ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟ ║
+6 ║                 ║
+5 ║                 ║
+4 ║                 ║
+3 ║                 ║
+2 ║ ♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙ ║
+1 ║ ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖ ║
+  ╚═════════════════╝
 
-Jogador1, digite a jogada em notacao algebrica (ex: e2e4):  e2e4
+Jogador1, digite a jogada em notação algébrica (ex: e2e4): e2e4
 
-  a b c d e f g h
-8 t c b k q b c t
-7 p p p p p p p p
-6                
-5                
-4         P       
-3                
-2 P P P P   P P P
-1 T C B K Q B C T
+  ╔═════════════════╗
+  ║ a b c d e f g h ║
+  ╠═════════════════╣
+8 ║ ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜ ║
+7 ║ ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟ ║
+6 ║                 ║
+5 ║                 ║
+4 ║         ♙       ║
+3 ║                 ║
+2 ║ ♙ ♙ ♙ ♙   ♙ ♙ ♙ ║
+1 ║ ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖ ║
+  ╚═════════════════╝
 
-Jogador2, digite a jogada em notacao algebrica (ex: e2e4):  e7e5
+Jogador2, digite a jogada em notação algébrica (ex: e2e4): e7e5
 
-  a b c d e f g h
-8 t c b k q b c t
-7 p p p p   p p p
-6                
-5         p      
-4         P       
-3                
-2 P P P P   P P P
-1 T C B K Q B C T
+  ╔═════════════════╗
+  ║ a b c d e f g h ║
+  ╠═════════════════╣
+8 ║ ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜ ║
+7 ║ ♟ ♟ ♟ ♟   ♟ ♟ ♟ ║
+6 ║                 ║
+5 ║         ♟       ║
+4 ║         ♙       ║
+3 ║                 ║
+2 ║ ♙ ♙ ♙ ♙   ♙ ♙ ♙ ║
+1 ║ ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖ ║
+  ╚═════════════════╝
 
 ...
 ```
 
 ### 💾 Sobre o salvamento e carregamento de partidas
 
-Durante o jogo, quando solicitado para digitar o próximo movimento da peça, você também pode digitar "salvar" para salvar a partida atual no arquivo `salvamento.dat`.
+Durante o jogo, quando solicitado para digitar o próximo movimento da peça, você também pode digitar "salvar"/"save" para salvar a partida atual no arquivo `salvamento.dat`.
 Para retomar a partida salva, você deve escolher a opção de "Carregar Partida Salva" presente no menu. 
-> O arquivo `salvamento.dat` é binário e não deve ser editado manualmente.
+> O arquivo `salvamento.dat` é binário e não deve ser editado manualmente. Apenas uma partida pode ser salva por vez — salvar sobrescreve o arquivo anterior.
 
 
 
 ## ⚠️ Limitações conhecidas
 
 1. **Sem replay de movimentos**: O jogo rastreia movimentos individuais, mas não permite reproduzi-los.
+2. **Apenas um slot de salvamento**: Somente uma partida pode ser salva por vez (`salvamento.dat` é sobrescrito a cada salvamento).
+3. **Sem jogo em rede**: Apenas dois jogadores locais; sem IA ou oponente online.
 
 ## 📄 Licença
 
