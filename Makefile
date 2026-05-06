@@ -1,6 +1,7 @@
 # Nome do compilador e opções
 CC = gcc
-CFLAGS = -Wall -Werror -std=c99 -pedantic -O2
+CFLAGS = -Wall -Werror -std=c99 -pedantic -O2 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2
+LDFLAGS = -fPIE
 
 # Arquivos fonte e objeto
 SRCS = menu.c jogo.c jogadasvalidas.c traducao.c
