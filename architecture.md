@@ -6,27 +6,35 @@
 
 #### In `jogo.c`:
 -   `iniciarJogo(int opcao)`: Initializes a new game or loads a saved one based on the option.
--   `ExibirTabuleiro()`: Prints the current state of the board with Unicode chess piece symbols.
+-   `ExibirTabuleiro()`: Prints the current state of the board with Unicode chess piece symbols and box-drawing borders.
 -   `SalvarJogo()`: Saves the complete game state to a binary file named `salvamento.dat`.
 -   `CarregarJogo()`: Loads the game state from `salvamento.dat`.
 -   `obterCoordenada()`: Reads and validates algebraic notation input (supports `e2e4` or `e2-e4` format).
     - Handles special commands: `"salvar"`/`"save"` (save game), `"desistir"`/`"resign"` (resign), `"empatar"`/`"draw"` (propose draw)
 -   `PromocaoPeao()`: Prompts player to choose a piece for pawn promotion (Q, C, B, T).
 -   `atualizarPontuacao()`: Updates player score when a piece is captured.
+-   `reiniciarJogo()`: Resets all game state variables to their initial values (called at the start of each new game).
 -   **Helper functions**:
     - `limpezaBuffer()`: Clears input buffer to prevent issues with multiple inputs.
     - `trim()`: Removes leading/trailing whitespace and newline characters.
+    - `comparar_case_insensitive()`: Portable case-insensitive string comparison (uses `_stricmp` on Windows, `strcasecmp` on POSIX).
 
 #### In `jogadasvalidas.c`:
 -   `JogadaValida()`: Main validation function that checks all move rules and returns error messages if invalid.
 -   `CasaAtacada()`: Checks if a given square is under attack by opponent pieces (used for king safety validation).
     - Validates attacks from: pawns, knights, bishops, rooks, queens, and kings.
--   `movimentoDeixaReiemXeque()`: Simulates a move and checks if it would leave the player's king in check (prevents illegal moves).
--   `movimentoDeixaReiemXequeEnPassant()`: Almost similar to the above function, but specifically for en passant captures.
+-   `movimentoDeixaReiemXeque()`: Simulates a move and checks if it would leave the player's king in check (prevents illegal moves). Accepts a `bool enPassant` parameter to handle en passant captures correctly.
 -   `ReiEmXeque()`: Checks if the current player's king is in check.
 -   `XequeMate()`: Detects checkmate (king in check with no legal moves).
 -   `Afogamento()`: Detects stalemate (no legal moves but king not in check).
-- `Roque()`: Validates castling moves based on piece movement history and current board state.
+-   `Roque()`: Validates castling moves based on piece movement history and current board state.
+-   `materialInsuficiente()`: Detects draw by insufficient mating material (e.g., King vs King, King+Bishop vs King).
+-   `AdicionarPosicaoAoHistorico()`: Records the current board position (including castling rights and active player) in a history array for repetition detection.
+-   `VerificarRepetidaoPosicao()`: Counts how many times the current position has occurred in the history; returns 2 or more to trigger a threefold-repetition draw.
+-   `ReiniciarHistoricoPosicoes()`: Clears the position history at the start of a new game.
+-   `ObterHistoricoPositoes()`: Returns a pointer to the position history array (used by save/load).
+-   `ObterCountHistoricoPositoes()`: Returns the current count of recorded positions (used by save/load).
+-   `DefinirCountHistoricoPositoes()`: Sets the position history count when loading a saved game.
 
 
 #### Save File Structure
@@ -37,6 +45,9 @@ The save file stores a binary `Salvamento` struct containing:
 - `movimentosFeitos`: Total moves made
 - `movimentosSemCapturaouPiao`: Move counter for the 50-move rule
 - `jogadores[2]`: Player names and scores
+- `reiMoveu[2]`, `torreEsquerdaMoveu[2]`, `torreDireitaMoveu[2]`: Castling flags for each player
+- `historico[MAX_HISTORICO]` / `countHistorico`: Move history (for en passant and castling checks)
+- `historicoPositoes[MAX_HISTORICO]` / `countHistoricoPositoes`: Position history (for threefold repetition detection)
 
 ## 🔧 Technical Architecture
 
@@ -50,8 +61,8 @@ The game supports two languages: Portuguese and English. The translation system 
 
 #### 2. **Terminal Color System**
 The `cores.h` header provides ANSI color codes for:
-- Background colors: Black, white, blue, magenta
-- Foreground colors: Black, white, green, red, yellow
+- Background colors: Black, white, yellow, blue, magenta
+- Foreground colors: Black, white, green, red, yellow, magenta, blue, cyan, bright white, dark gray
 - Text styles: Bold, underlined
 - Macros for easy colored output: `printfColor()`, `printfSColor()`
 
@@ -69,6 +80,8 @@ The game automatically detects:
 - **Checkmate**: King is under attack with no legal moves (game ends)
 - **Stalemate**: No legal moves and king is not under attack (draw)
 - **50-Move Rule**: No captures or pawn moves for 100 half-moves (draw)
+- **Threefold Repetition**: The same board position (including castling rights and active player) occurs 3 times (draw)
+- **Insufficient Material**: Neither side has enough pieces to force checkmate (e.g., King vs King, King+Bishop vs King) (draw)
 
 ### Data Structures
 
@@ -84,7 +97,7 @@ typedef struct {
 ```c
 struct Salvamento
 {
-    float versao; //For future compatibility checks
+    int versao; //Version number for compatibility checks (current: VERSAO_ATUAL_JOGO)
     char tabuleiro[8][8];
     int jogadorDaVez;
     int movimentosFeitos;
@@ -99,46 +112,67 @@ struct Salvamento
 
     Movimento historico[MAX_HISTORICO];
     int countHistorico;
+
+    EstadoPosicao historicoPositoes[MAX_HISTORICO]; //Position history for threefold repetition
+    int countHistoricoPositoes;
 };
 ```
 
 **Move History struct:**
 ```c
 typedef struct {
-    int origem[2];      // [row, col]
-    int destino[2];     // [row, col]
-    EstadoRoque estadoRoque;  // Castling state after move
+    int linhaOrigem, colunaOrigem;
+    int linhaDestino, colunaDestino;
 } Movimento;
 ```
 
+**Position History struct:**
+```c
+typedef struct {
+    char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
+    bool reiMoveu[2];
+    bool torreEsquerdaMoveu[2];
+    bool torreDireitaMoveu[2];
+    int jogadorDaVez;
+} EstadoPosicao;
+```
 
-#Versão em português
+
+# Versão em português
 
 ### Principais funções
 
 #### Em `jogo.c`:
 - `iniciarJogo(int opcao)`: Inicia um novo jogo ou carrega um salvo baseado na opção.
-- `ExibirTabuleiro()`: Imprime o estado atual do tabuleiro com símbolos Unicode.
+- `ExibirTabuleiro()`: Imprime o estado atual do tabuleiro com símbolos Unicode e bordas em box-drawing.
 - `SalvarJogo()`: Salva as informações completas da partida em arquivo binário `salvamento.dat`.
 - `CarregarJogo()`: Carrega as informações salvas de `salvamento.dat`.
 - `obterCoordenada()`: Lê e valida entrada de notação algébrica (aceita `e2e4` ou `e2-e4`).
   - Trata comandos especiais: `"salvar"`/`"save"` (salvar jogo), `"desistir"`/`"resign"` (desistir), `"empatar"`/`"draw"` (propor empate)
 - `PromocaoPeao()`: Permite escolher peça na promoção de peão (Q, C, B, T).
 - `atualizarPontuacao()`: Verifica se houve captura e atualiza a pontuação do jogador.
+- `reiniciarJogo()`: Reinicia todas as variáveis de estado do jogo para os valores iniciais (chamada no início de cada nova partida).
 - **Funções auxiliares**:
   - `limpezaBuffer()`: Limpa o buffer de entrada para evitar problemas com múltiplas entradas.
   - `trim()`: Remove espaços em branco iniciais/finais e quebras de linha.
+  - `comparar_case_insensitive()`: Comparação de strings sem distinção de maiúsculas/minúsculas portável (usa `_stricmp` no Windows, `strcasecmp` no POSIX).
 
 #### Em `jogadasvalidas.c`:
 - `JogadaValida()`: Função principal de validação que verifica todas as regras de movimento.
 - `CasaAtacada()`: Verifica se uma casa está sob ataque de peças do oponente.
   - Valida ataques de: peões, cavalos, bispos, torres, rainhas e reis.
-- `movimentoDeixaReiemXeque()`: Simula um movimento e verifica se o rei ficaria em xeque.
-- `movimentoDeixaReiemXequeEnPassant()`: Similar à função acima, mas especificamente para capturas en passant.
+- `movimentoDeixaReiemXeque()`: Simula um movimento e verifica se o rei ficaria em xeque. Aceita parâmetro `bool enPassant` para tratar capturas en passant corretamente.
 - `ReiEmXeque()`: Verifica se o rei do jogador atual está em xeque.
 - `XequeMate()`: Detecta xeque-mate (rei em xeque sem movimentos legais).
 - `Afogamento()`: Detecta afogamento (nenhum movimento legal mas rei não em xeque).
 - `Roque()`: Valida movimentos de roque com base no histórico de movimentos das peças e estado atual do tabuleiro.
+- `materialInsuficiente()`: Detecta empate por material insuficiente (ex: Rei vs Rei, Rei+Bispo vs Rei).
+- `AdicionarPosicaoAoHistorico()`: Registra a posição atual do tabuleiro (incluindo direitos de roque e jogador ativo) em um array de histórico para detecção de repetição.
+- `VerificarRepetidaoPosicao()`: Conta quantas vezes a posição atual ocorreu no histórico; retorna 2 ou mais para acionar empate por repetição tripla.
+- `ReiniciarHistoricoPosicoes()`: Limpa o histórico de posições ao início de uma nova partida.
+- `ObterHistoricoPositoes()`: Retorna ponteiro para o array de histórico de posições (usado pelo salvamento/carregamento).
+- `ObterCountHistoricoPositoes()`: Retorna o count atual de posições registradas (usado pelo salvamento/carregamento).
+- `DefinirCountHistoricoPositoes()`: Define o count do histórico de posições ao carregar um jogo salvo.
 
 #### Estrutura do arquivo de salvamento
 
@@ -148,6 +182,9 @@ O arquivo de salvamento armazena uma estrutura `Salvamento` contendo:
 - `movimentosFeitos`: Total de movimentos realizados
 - `movimentosSemCapturaouPiao`: Contador de movimentos para a regra dos 50 lances
 - `jogadores[2]`: Nomes e pontuação dos jogadores
+- `reiMoveu[2]`, `torreEsquerdaMoveu[2]`, `torreDireitaMoveu[2]`: Flags de roque para cada jogador
+- `historico[MAX_HISTORICO]` / `countHistorico`: Histórico de movimentos (para en passant e roque)
+- `historicoPositoes[MAX_HISTORICO]` / `countHistoricoPositoes`: Histórico de posições (para detecção de repetição tripla)
 
 ## 🔧 Arquitetura Técnica
 
@@ -161,8 +198,8 @@ O jogo suporta dois idiomas: Português e English. O sistema de tradução é im
 
 #### 2. **Sistema de Cores de Terminal**
 O header `cores.h` fornece códigos de cor ANSI para:
-- Cores de fundo: Preto, branco, azul, magenta
-- Cores de texto: Preto, branco, verde, vermelho, amarelo
+- Cores de fundo: Preto, branco, amarelo, azul, magenta
+- Cores de texto: Preto, branco, verde, vermelho, amarelo, magenta, azul, ciano, branco claro, cinza escuro
 - Estilos de texto: Negrito, sublinhado
 - Macros para saída colorida facilitada: `printfColor()`, `printfSColor()`
 
@@ -180,6 +217,8 @@ O jogo detecta automaticamente:
 - **Xeque-mate**: Rei está sob ataque sem movimentos legais (jogo termina)
 - **Afogamento**: Nenhum movimento legal e rei não está sob ataque (empate)
 - **Regra dos 50 lances**: Nenhuma captura ou movimento de peão por 100 meias-jogadas (empate)
+- **Repetição tripla**: A mesma posição (incluindo direitos de roque e jogador ativo) ocorre 3 vezes (empate)
+- **Material insuficiente**: Nenhum dos lados tem peças suficientes para forçar xeque-mate (ex: Rei vs Rei, Rei+Bispo vs Rei) (empate)
 
 ### Estruturas de Dados
 
@@ -195,7 +234,7 @@ typedef struct {
 ```c
 struct Salvamento
 {
-    float versao; //Para controle de versão do salvamento, caso haja mudanças futuras na estrutura
+    int versao; //Para controle de versão do salvamento (valor atual: VERSAO_ATUAL_JOGO)
     char tabuleiro[8][8];
     int jogadorDaVez;
     int movimentosFeitos;
@@ -210,14 +249,27 @@ struct Salvamento
 
     Movimento historico[MAX_HISTORICO];
     int countHistorico;
+
+    EstadoPosicao historicoPositoes[MAX_HISTORICO]; //Histórico de posições para repetição tripla
+    int countHistoricoPositoes;
 };
 ```
 
-**Estrutura do histórico de movimentos:*
+**Estrutura do histórico de movimentos:**
 ```c
 typedef struct {
-    int origem[2];      // [linha, coluna]
-    int destino[2];     // [linha, coluna]
-    EstadoRoque estadoRoque;  // Estado do roque após o movimento
+    int linhaOrigem, colunaOrigem;
+    int linhaDestino, colunaDestino;
 } Movimento;
+```
+
+**Estrutura do histórico de posições:**
+```c
+typedef struct {
+    char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
+    bool reiMoveu[2];
+    bool torreEsquerdaMoveu[2];
+    bool torreDireitaMoveu[2];
+    int jogadorDaVez;
+} EstadoPosicao;
 ```
