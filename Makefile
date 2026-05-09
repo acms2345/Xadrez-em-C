@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -Wall -Werror -std=c99 -pedantic -O2
 
 # Arquivos fonte e objeto
-SRCS = menu.c jogo.c jogadasvalidas.c traducao.c
+SRCS = menu.c jogo.c jogadasvalidas.c traducao.c replay.c
 OBJS = $(SRCS:.c=.o)
 
 # Nome do executável gerado

@@ -27,16 +27,20 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "3. Help\n"
     },
     {
-        "4. Sair\n\n",
-        "4. Exit\n\n"
+        "4. Replay\n",
+        "4. Replay\n"
+    },
+    {
+        "5. Sair\n\n",
+        "5. Exit\n\n"
     },
     {
         "Escolha uma opção: ",
         "Choose an option: "
     },
     {
-        "Opção inválida! Por favor, insira um número entre 1 e 4: ",
-        "Invalid option! Please enter a number between 1 and 4: "
+        "Opção inválida! Por favor, insira um número entre 1 e 5: ",
+        "Invalid option! Please enter a number between 1 and 5: "
     },
     {
         "Fechando o programa...\n",

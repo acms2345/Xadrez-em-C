@@ -9,7 +9,7 @@
 #include "cores.h"
 
 #define VERSAO_ATUAL_JOGO 30
-#define MAX_HISTORICO 500
+
 
 
 #define LIMITE_REGRA_50_MOVIMENTOS 100
@@ -102,15 +102,15 @@ static bool ganhou = false;
 static bool SalvarJogo();
 static bool CarregarJogo();
 
-typedef struct
-{
-    int linhaOrigem, colunaOrigem;
-    int linhaDestino, colunaDestino;
-} Movimento;
 
 // Histórico de movimentos durante o jogo
 static Movimento historicoMovimentos[MAX_HISTORICO];
 static int countHistoricoAtual = 0;
+
+void obterHistoricoMovimentos(Movimento* historico, int* count) {
+    memcpy(historico, historicoMovimentos, sizeof(Movimento) * countHistoricoAtual);
+    *count = countHistoricoAtual;
+}
 
 
 //Esse é um sistema de conversão do formato de letras para os ícones do ANSI.
