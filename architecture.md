@@ -22,7 +22,6 @@
 -   `CasaAtacada()`: Checks if a given square is under attack by opponent pieces (used for king safety validation).
     - Validates attacks from: pawns, knights, bishops, rooks, queens, and kings.
 -   `movimentoDeixaReiemXeque()`: Simulates a move and checks if it would leave the player's king in check (prevents illegal moves).
--   `movimentoDeixaReiemXequeEnPassant()`: Almost similar to the above function, but specifically for en passant captures.
 -   `ReiEmXeque()`: Checks if the current player's king is in check.
 -   `XequeMate()`: Detects checkmate (king in check with no legal moves).
 -   `Afogamento()`: Detects stalemate (no legal moves but king not in check).
