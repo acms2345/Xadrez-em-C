@@ -7,9 +7,10 @@
 #include "jogo.h"
 #include "traducao.h"
 #include "cores.h"
+#include "utils.h"
 
 #define VERSAO_ATUAL_JOGO 30
-#define MAX_HISTORICO 500
+
 
 
 #define LIMITE_REGRA_50_MOVIMENTOS 100
@@ -17,42 +18,7 @@
 /*Note: The source code is entirely written in Portuguese now.*/
 
 
-//Função auxiliar
-void limpezaBuffer(){
-    int ch;
-    while ((ch = getchar()) != '\n' && ch != EOF);
-}
 
-//Função auxiliar: limpa os espaços no começo e final da string.
-void trim(char *str){
-    str[strcspn(str, "\n\r")] = '\0'; //Tira o newline
-
-    int contagemInicio = 0;
-    while(str[contagemInicio] == ' ' || str[contagemInicio] == '\t') contagemInicio++;
-    /*O while acima conta onde realmente começa o texto da string.
-    Por exemplo, na string " desistir", haverá uma contagem até onde realmente começa o texto
-    (que é o caractere 'd').
-    OBS: '\t' = caractere Tab.*/
-
-    int contagemFinal = (int)strlen(str) - 1;
-    while(contagemFinal >= contagemInicio && (str[contagemFinal] == ' ' || str[contagemFinal] == '\t')) contagemFinal--;
-
-    if (contagemInicio <= contagemFinal){ //Ou seja, se houver algum texto (não-espaço) na string:
-        memmove(str, &str[contagemInicio], contagemFinal - contagemInicio + 1);
-        str[contagemFinal - contagemInicio + 1] = '\0';
-    } else{
-        str[0] = '\0'; //String vazia.
-    }
-}
-
-// Função portável para comparação case-insensitive
-int comparar_case_insensitive(const char *str1, const char *str2) {
-    #ifdef _WIN32
-        return _stricmp(str1, str2);
-    #else
-        return strcasecmp(str1, str2);
-    #endif
-}
 
 
 static const char TABULEIRO_INICIAL[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO] = {
@@ -102,43 +68,18 @@ static bool ganhou = false;
 static bool SalvarJogo();
 static bool CarregarJogo();
 
-typedef struct
-{
-    int linhaOrigem, colunaOrigem;
-    int linhaDestino, colunaDestino;
-} Movimento;
 
 // Histórico de movimentos durante o jogo
 static Movimento historicoMovimentos[MAX_HISTORICO];
 static int countHistoricoAtual = 0;
 
-
-//Esse é um sistema de conversão do formato de letras para os ícones do ANSI.
-static const char* ObterSimboloPeca(char peca) {
-    static const char* simbolos[] = {
-        ['P'] = "♙",
-        ['T'] = "♖",
-        ['C'] = "♘",
-        ['B'] = "♗",
-        ['Q'] = "♕",
-        ['K'] = "♔",
-
-        ['p'] = "♟",
-        ['t'] = "♜",
-        ['c'] = "♞",
-        ['b'] = "♝",
-        ['q'] = "♛",
-        ['k'] = "♚",
-
-        [' '] = " "
-    };
-
-    int ConversorIndice = (int)peca;
-    if(ConversorIndice < sizeof(simbolos) / sizeof(simbolos[0]) && simbolos[ConversorIndice] != NULL){
-        return simbolos[ConversorIndice];
-    }
-    return " "; // Caso de segurança
+void obterHistoricoMovimentos(Movimento* historico, int* count) {
+    memcpy(historico, historicoMovimentos, sizeof(Movimento) * countHistoricoAtual);
+    *count = countHistoricoAtual;
 }
+
+
+
 /*A função exibe o tabuleiro:
     - As casas a-h;
     - Exibe as peças, colocando o backgruond com a coloração do tabuleiro do xadrez;

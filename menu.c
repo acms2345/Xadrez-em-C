@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "jogo.h"
+#include "replay.h"
 #include "traducao.h"
 #include "cores.h"
 
@@ -41,6 +42,7 @@ int main(){
         printf(Msg(MSG_MENU_OPCAO_NOVA_PARTIDA));
         printf(Msg(MSG_MENU_OPCAO_CARREGAR_PARTIDA));
         printf(Msg(MSG_MENU_OPCAO_AJUDA));
+        printf(Msg(MSG_MENU_OPCAO_REPLAY));
         printf(Msg(MSG_MENU_OPCAO_SAIR));
         printf(Msg(MSG_MENU_OPCAO_ESCOLHA_OPCAO));
 
@@ -55,9 +57,9 @@ int main(){
             continue;
         }
 
-        if(opcao < 1 || opcao > 4){
+        if(opcao < 1 || opcao > 5){
             printf(Msg(MSG_MENU_OPCAO_INVALIDA));
-        } else if(opcao == 4){
+        } else if(opcao == 5){
             printf(Msg(MSG_MENU_FECHANDO_PROGRAMA));
             return 0;
         } else if (opcao == 3)
@@ -69,7 +71,11 @@ int main(){
             printf(Msg(MSG_MENU_AJUDA_LINHA4));
             printf(Msg(MSG_MENU_AJUDA_LINHA5));
             printf(Msg(MSG_MENU_AJUDA_LINHA6));
-        } else{
+        } else if (opcao == 4)
+        {
+            ExibirReplay();
+        }
+        else{
             iniciarJogo(opcao);
         }
     }

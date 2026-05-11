@@ -1,5 +1,8 @@
-#define printfColor(cor, msg) printf("%s%s%s", cor, msg, RESET)
-#define printfSColor(estilo, cor, msg) printf("%s%s%s%s", estilo, cor, msg, RESET)
+#ifndef CORES_H
+#define CORES_H
+
+#include <stdio.h>
+#include <stdarg.h>
 
 #define RESET  "\x1b[0m"
 
@@ -29,3 +32,31 @@
 // Estilos/Styles
 #define NEGRITO       "\x1b[1m"
 #define SUBLINHADO    "\x1b[4m"
+
+/**
+ * Imprime texto colorido (com cor de foreground)
+ * Uso: printfColor(VERMELHO_FOREGROUND, "Erro: %d", codigo_erro);
+ */
+static inline void printfColor(const char *cor, const char *fmt, ...) {
+    printf("%s", cor);
+    va_list args;
+    va_start(args, fmt);
+    vprintf(fmt, args);
+    va_end(args);
+    printf("%s", RESET);
+}
+
+/**
+ * Imprime texto colorido com estilo (estilo + cor + mensagem)
+ * Uso: printfSColor(NEGRITO, VERDE_FOREGROUND, "Sucesso: %s", mensagem);
+ */
+static inline void printfSColor(const char *estilo, const char *cor, const char *fmt, ...) {
+    printf("%s%s", estilo, cor);
+    va_list args;
+    va_start(args, fmt);
+    vprintf(fmt, args);
+    va_end(args);
+    printf("%s", RESET);
+}
+
+#endif // CORES_H

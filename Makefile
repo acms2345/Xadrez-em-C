@@ -4,7 +4,7 @@ CFLAGS = -Wall -Werror -std=c99 -pedantic -O2 -fPIE -fstack-protector-strong -D_
 LDFLAGS = -fPIE
 
 # Arquivos fonte e objeto
-SRCS = menu.c jogo.c jogadasvalidas.c traducao.c
+SRCS = menu.c jogo.c jogadasvalidas.c traducao.c replay.c utils.c
 OBJS = $(SRCS:.c=.o)
 
 # Nome do executável gerado
