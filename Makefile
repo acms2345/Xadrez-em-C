@@ -4,11 +4,17 @@ CFLAGS = -Wall -Werror -std=c99 -pedantic -O2 -fPIE -fstack-protector-strong -D_
 LDFLAGS = -fPIE
 
 # Arquivos fonte e objeto
-SRCS = menu.c jogo.c jogadasvalidas.c traducao.c replay.c utils.c
+SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
 
 # Nome do executável gerado
 TARGET = xadrez
+ifeq ($(OS),Windows_NT)
+    TARGET = xadrez.exe
+    RM = del /Q
+else
+    RM = rm -f
+endif
 
 # Alvo padrão
 all: $(TARGET)
