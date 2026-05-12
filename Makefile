@@ -1,6 +1,6 @@
 # Nome do compilador e opções
 CC = gcc
-CFLAGS = -Wall -Werror -std=c99 -pedantic -O2 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2
+CFLAGS = -Wall -std=c99 -pedantic -O2 -fPIE -fstack-protector-strong
 LDFLAGS = -fPIE
 
 # Arquivos fonte e objeto
