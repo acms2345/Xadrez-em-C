@@ -6,4 +6,5 @@ int comparar_case_insensitive(const char *str1, const char *str2);
 void trim(char *str);
 const char* ObterSimboloPeca(char peca);
 void limpezaBuffer();
+void limparTela();
 #endif // UTILS_H

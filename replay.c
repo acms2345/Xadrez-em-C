@@ -41,6 +41,7 @@ static void ExibirTabuleiroReplay(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABU
 
 
 void ExibirReplay(){
+    
     EstadoPosicao* historicoPos = ObterHistoricoPositoes();
     int countPos = ObterCountHistoricoPositoes();
 
@@ -54,6 +55,8 @@ void ExibirReplay(){
 
     while (1)
     {
+        limparTela();
+        
         int origem[2] = {-1, -1};
         int destino[2] = {-1, -1};
         if(contagemReplay > 0 && contagemReplay <= countMovimentos){
@@ -101,6 +104,7 @@ void ExibirReplay(){
             }
         }
         else if (comparar_case_insensitive(input, "s") == 0) {
+            limparTela();
             break;
         }
         

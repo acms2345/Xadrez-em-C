@@ -523,6 +523,8 @@ int iniciarJogo(int opcao) {
 
 
     while(!ganhou){
+        limparTela();
+        
         capturaOuPiao = false;
         
         printf("\n");

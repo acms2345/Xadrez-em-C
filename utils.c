@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdarg.h>
+
+#ifdef _WIN32
+    #include <windows.h>
+#endif
 
 #include "utils.h"
 
@@ -62,4 +67,27 @@ const char* ObterSimboloPeca(char peca) {
 void limpezaBuffer(){
     int ch;
     while ((ch = getchar()) != '\n' && ch != EOF);
+}
+
+
+
+void limparTela() {
+    #ifdef _WIN32
+        // Windows: usar API nativa (mais confiável)
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        if (hConsole != INVALID_HANDLE_VALUE) {
+            COORD coord = {0, 0};
+            DWORD written;
+            CONSOLE_SCREEN_BUFFER_INFO csbi;
+            
+            GetConsoleScreenBufferInfo(hConsole, &csbi);
+            FillConsoleOutputCharacter(hConsole, ' ', 
+                csbi.dwSize.X * csbi.dwSize.Y, coord, &written);
+            SetConsoleCursorPosition(hConsole, coord);
+        }
+    #else
+        // Linux/Mac: ANSI funciona normalmente
+        printf("\033[2J\033[H");
+        fflush(stdout);
+    #endif
 }
