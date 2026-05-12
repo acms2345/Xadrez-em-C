@@ -7,4 +7,5 @@ void trim(char *str);
 const char* ObterSimboloPeca(char peca);
 void limpezaBuffer();
 void limparTela();
+void pausa();
 #endif // UTILS_H

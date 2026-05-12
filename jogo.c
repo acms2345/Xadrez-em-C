@@ -139,14 +139,20 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
                 printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_JOGADA_INVALIDA));
 
                 clearerr(stdin); // Limpa o estado de erro do stream
+
                 
                 limpezaBuffer();
+
+                pausa();
                 
                 continue;
             }
 
             //O bloco abaixo serve como caso anômalo
             printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_JOGADA_INVALIDA));
+
+            pausa();
+
             continue;
 
         }  
@@ -160,8 +166,10 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
         comparar_case_insensitive(input, "save") == 0){
             if(SalvarJogo()){
                 printfColor(VERDE_FOREGROUND, Msg(MSG_JOGO_SALVAR_SUCESSO));
+                pausa();
             } else {
                 printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_SALVAR_ERRO));
+                pausa();
             }
             continue;
         }
@@ -169,6 +177,9 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
         if(comparar_case_insensitive(input, "desistir") == 0 || comparar_case_insensitive(input, "resign") == 0){
             printf(Msg(MSG_JOGO_DESISTENCIA), jogadores[jogadorDaVez].nome, jogadores[1 - jogadorDaVez].nome);
             ganhou = true;
+
+            pausa();
+
             return false;
         }
 
@@ -191,10 +202,16 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
                     continue;
                 } else {
                     printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_JOGADA_INVALIDA));
+
+                    pausa();
+
                     continue;
                 }
             } else{
                 printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_JOGADA_INVALIDA));
+
+                pausa();
+                
                 continue;
             }
             continue; //Impede que caia para a verificação de casas.
@@ -205,12 +222,14 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
         if(strlen(input) == 4){
             if(tolower(input[0]) < 'a' || tolower(input[0]) > 'h'){
                 printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_COLUNA_ORIGEM_INVALIDA));
+                pausa();
                 continue;
             }
             *colunaOrigem = tolower(input[0]) - 'a';
         
             if(input[1] < '1' || input[1] > '8'){
                 printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_LINHA_ORIGEM_INVALIDA));
+                pausa();
                 continue;
             }
             
@@ -219,12 +238,14 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
 
             if(tolower(input[2]) < 'a' || tolower(input[2]) > 'h'){
                 printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_COLUNA_DESTINO_INVALIDA));
+                pausa();
                 continue;
             }
             *colunaDestino = tolower(input[2]) - 'a';
 
             if(input[3] < '1' || input[3] > '8'){
                 printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_LINHA_DESTINO_INVALIDA));
+                pausa();
                 continue;
             }
             
@@ -239,16 +260,19 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
         else if (strlen(input) == 5){
             if ((input[2] != ' ') && (input[2] != '-')){
                 printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_SEPARADOR_COORDENADAS_INVALIDO));
+                pausa();
                 continue;
             }
             if(tolower(input[0]) < 'a' || tolower(input[0]) > 'h'){
                 printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_COLUNA_ORIGEM_INVALIDA));
+                pausa();
                 continue;
             }
             *colunaOrigem = tolower(input[0]) - 'a';
         
             if(input[1] < '1' || input[1] > '8'){
                 printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_LINHA_ORIGEM_INVALIDA));
+                pausa();
                 continue;
             }
             
@@ -257,12 +281,14 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
 
             if(tolower(input[3]) < 'a' || tolower(input[3]) > 'h'){
                 printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_COLUNA_DESTINO_INVALIDA));
+                pausa();
                 continue;
             }
             *colunaDestino = tolower(input[3]) - 'a';
 
             if(input[4] < '1' || input[4] > '8'){
                 printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_LINHA_DESTINO_INVALIDA));
+                pausa();
                 continue;
             }
             
@@ -274,6 +300,7 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             break;
         } else{
             printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_FORMATO_COORDENADAS_INVALIDO));
+            pausa();
             continue;
         }
         
@@ -286,10 +313,16 @@ Ela solicita a peça para a qual o usuário vai querer promover, e o usuário fi
 não responder.
 Após a resposta, é feita a troca de peças.*/
 static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) {
-    char escolha;
+    limparTela();  // ← Adicionar isto
+    printf("  ╔════════════════════════╗\n");
+    printf("  ║  PROMOÇÃO DE PEÃO      ║\n");
+    printf("  ║  Escolha (Q/C/B/T):    ║\n");
+    printf("  ╚════════════════════════╝\n\n");
     printf(Msg(MSG_JOGO_PROMOCAO_PEAO_ESCOLHA_PECA));
 
     fflush(stdout);
+
+    char escolha;
 
     while (1) {
         scanf(" %c", &escolha);
@@ -306,6 +339,7 @@ static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) 
             return escolha;
         } else {
             printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_PROMOCAO_PEAO_PECA_INVALIDA));
+            pausa();
         }
     }
 }
@@ -341,6 +375,9 @@ static bool SalvarJogo() {
     FILE *arquivo = fopen("salvamento.dat", "wb");
     if (arquivo == NULL) {
         printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_SALVAR_ERRO_ABERTURA_ARQUIVO));
+
+        pausa();
+
         return false;
     }
     
@@ -380,6 +417,9 @@ static bool SalvarJogo() {
     if(fwrite(&salvamento, sizeof(salvamento), 1, arquivo) == 0) {
         printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_SALVAR_ERRO_ABERTURA_ARQUIVO));
         fclose(arquivo);
+
+        pausa();
+
         return false;
 
     }
@@ -393,6 +433,9 @@ static bool CarregarJogo() {
     FILE *arquivo = fopen("salvamento.dat", "rb");
     if (arquivo == NULL) {
         printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_CARREGAR_ERRO));
+
+        pausa();
+
         return false;
     }
     
@@ -401,12 +444,17 @@ static bool CarregarJogo() {
     if(fread(&salvamento, sizeof(salvamento), 1, arquivo) == 0) {
         printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_CARREGAR_ERRO));
         fclose(arquivo);
+
+        pausa();
+
         return false;
     }
     fclose(arquivo);
     
     if(salvamento.versao != VERSAO_ATUAL_JOGO){
         printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_VERSAO_INCOMPATIVEL));
+        
+        pausa();
 
         return false;
     }
@@ -526,6 +574,12 @@ int iniciarJogo(int opcao) {
         limparTela();
         
         capturaOuPiao = false;
+
+        printf("═══════════════════════════════════\n");
+        printf("  %s (MAIÚS): %d pts  |  %s (minús): %d pts\n", 
+       jogadores[0].nome, jogadores[0].pontos,
+       jogadores[1].nome, jogadores[1].pontos);
+        printf("═══════════════════════════════════\n\n");
         
         printf("\n");
         ExibirTabuleiro();
@@ -586,6 +640,9 @@ int iniciarJogo(int opcao) {
                 printf(Msg(MSG_JOGO_XEQUEMATE_VENCEDOR), jogadores[jogadorDaVez].nome);
                 printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
+                
+                pausa();
+                
                 break; // Sai do loop principal do jogo
             }
             
@@ -601,7 +658,11 @@ int iniciarJogo(int opcao) {
                 printf(Msg(MSG_JOGO_EMPATE_50MOVIMENTOS_TITULO));
                 printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
+                
                 ganhou = true;
+                
+                pausa();
+
                 break; // Sai do loop principal do jogo
             }
             
@@ -659,6 +720,9 @@ int iniciarJogo(int opcao) {
                 printf(Msg(MSG_JOGO_XEQUEMATE_VENCEDOR), jogadores[1 - jogadorDaVez].nome);
                 printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
+                
+                pausa();
+                
                 break; // Sai do loop principal do jogo
             }
 
@@ -670,6 +734,9 @@ int iniciarJogo(int opcao) {
                 printf(Msg(MSG_JOGO_EMPATE_TEXTO));
                 printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
+                
+                pausa();
+                
                 break; // Sai do loop principal do jogo
             }
 
@@ -681,6 +748,9 @@ int iniciarJogo(int opcao) {
                 printf(Msg(MSG_JOGO_EMPATE_TEXTO));
                 printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
+                
+                pausa();
+                
                 break; // Sai do loop principal do jogo
             }
 
@@ -690,6 +760,9 @@ int iniciarJogo(int opcao) {
                 printf(Msg(MSG_JOGO_EMPATE_TEXTO));
                 printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
+                
+                pausa();
+
                 break; // Sai do loop principal do jogo
             }
 
@@ -697,6 +770,8 @@ int iniciarJogo(int opcao) {
             printf("%s", VERMELHO_FOREGROUND);
             printf(Msg(MSG_JOGO_JOGADA_INVALIDA), resultadoJogadaValida);
             printf("%s", RESET);
+
+            pausa();
         }
 
     }

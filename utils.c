@@ -91,3 +91,9 @@ void limparTela() {
         fflush(stdout);
     #endif
 }
+
+void pausa() {
+    printf("\nPressione ENTER para continuar...");
+    fflush(stdout);
+    getchar();
+}

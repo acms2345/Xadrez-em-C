@@ -3,6 +3,7 @@
 #include "replay.h"
 #include "traducao.h"
 #include "cores.h"
+#include "utils.h"
 
 /*Note: The source code is entirely written in Portuguese now.*/
 
@@ -36,6 +37,8 @@ int main(){
         definirIdioma(opcao_lingua);
         break;
     }
+
+
     printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_MENU_TITULO));
 
     while (1){
