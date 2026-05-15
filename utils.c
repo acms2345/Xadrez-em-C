@@ -6,6 +6,8 @@
 
 #ifdef _WIN32
     #include <windows.h>
+#else
+    #include <strings.h>
 #endif
 
 #include "utils.h"
@@ -13,8 +15,7 @@
 int comparar_case_insensitive(const char *str1, const char *str2) {
     #ifdef _WIN32
         return _stricmp(str1, str2);
-    #else
-    #include <strings.h>    
+    #else    
     
     return strcasecmp(str1, str2);
     #endif
