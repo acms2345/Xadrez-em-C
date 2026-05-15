@@ -45,6 +45,12 @@ void ExibirReplay(){
     EstadoPosicao* historicoPos = ObterHistoricoPositoes();
     int countPos = ObterCountHistoricoPositoes();
 
+    if(!(countPos > 0)){
+        printfColor(VERMELHO_FOREGROUND, Msg(MSG_REPLAY_SEM_HISTORICO));
+        pausa();
+        return;
+    }
+
     Movimento historicoMovimentos[MAX_HISTORICO];
     int countMovimentos;
     obterHistoricoMovimentos(historicoMovimentos, &countMovimentos);

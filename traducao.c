@@ -286,6 +286,13 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
     {
         "Peça inválida",
         "Invalid piece"
+    },
+
+
+    //replay.c
+    {
+        "Nenhum histórico de movimentos encontrado para replay.",
+        "No move history found for replay."
     }
 };
 

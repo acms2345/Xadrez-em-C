@@ -83,7 +83,9 @@ typedef enum {
     MSG_JOGADAS_MOVIMENTO_INVALIDO_REI,
     MSG_JOGADAS_PECA_INVALIDA,
 
+    //replay.c
 
+    MSG_REPLAY_SEM_HISTORICO,
 
     TOTAL_STRINGS //Apenas um indicador da quantidade.
 
