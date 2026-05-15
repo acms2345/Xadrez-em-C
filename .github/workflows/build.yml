@@ -21,8 +21,8 @@ jobs:
     steps:
     - uses: actions/checkout@v6
     
-    - name: Compile on ${{ matrix.os }}
-      run: gcc -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2 menu.c jogo.c jogadasvalidas.c traducao.c utils.c replay.c -o ${{ matrix.output }}
+    - name: Build with Make
+      run: make
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v7
