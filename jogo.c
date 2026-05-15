@@ -767,9 +767,7 @@ int iniciarJogo(int opcao) {
             }
 
         } else {
-            printf("%s", VERMELHO_FOREGROUND);
-            printf(Msg(MSG_JOGO_JOGADA_INVALIDA), resultadoJogadaValida);
-            printf("%s", RESET);
+            printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_JOGADA_INVALIDA), resultadoJogadaValida);
 
             pausa();
         }
