@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include "cores.h"
 
 #ifdef _WIN32
     #include <windows.h>
@@ -72,8 +73,11 @@ void limpezaBuffer(){
 
 
 void limparTela() {
+    printf("%s", RESET); // Reseta as cores antes de limpar a tela
+    fflush(stdout); // Garante que tudo seja impresso antes de limpar
+    
     #ifdef _WIN32
-        // Windows: usar API nativa (mais confiável)
+        // Windows: usa API nativa
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
         if (hConsole != INVALID_HANDLE_VALUE) {
             COORD coord = {0, 0};
