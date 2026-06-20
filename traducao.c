@@ -81,6 +81,22 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
 
     //jogo.c
     {
+        "Rainha",
+        "Queen"
+    },
+    {
+        "Cavalo",
+        "Horse"
+    },
+    {
+        "Bispo",
+        "Bishop"
+    },
+    {
+        "Torre",
+        "Rook"
+    },
+    {
         "\n%s, digite a jogada em notação algébrica (ex: e2e4): ",
         "\n%s, enter your move in algebraic notation (e.g., e2e4): "
     },
@@ -174,6 +190,11 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
     {
         "Jogada inválida! Não há peça na posição de origem.\n",
         "Invalid move! There is no piece at the source position.\n"
+    },
+
+    {
+        "PROMOÇÃO DE PEÃO",
+        "PAWN PROMOTION  "
     },
 
     {

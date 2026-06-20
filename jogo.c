@@ -313,10 +313,11 @@ Ela solicita a peça para a qual o usuário vai querer promover, e o usuário fi
 não responder.
 Após a resposta, é feita a troca de peças.*/
 static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) {
-    limparTela();  // ← Adicionar isto
+    limparTela();
     printf("  ╔════════════════════════╗\n");
-    printf("  ║  PROMOÇÃO DE PEÃO      ║\n");
-    printf("  ║  Escolha (Q/C/B/T):    ║\n");
+    printf("  ║  %s      ║\n", Msg(MSG_JOGO_PROMOCAO_TITULO));
+    printf("  ║  Escolha (Q = %s/C = %s/B = %s/T = %s):    ║\n",
+    Msg(MSG_JOGO_RAINHA), Msg(MSG_JOGO_CAVALO), Msg(MSG_JOGO_BISPO), Msg(MSG_JOGO_TORRE));
     printf("  ╚════════════════════════╝\n\n");
     printf(Msg(MSG_JOGO_PROMOCAO_PEAO_ESCOLHA_PECA));
 
@@ -329,18 +330,19 @@ static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) 
         
         limpezaBuffer();
 
-        if(jogadorDaVez == 0) {
-            escolha = toupper(escolha);
-        } else {
-            escolha = tolower(escolha);
-        }
-        if (((escolha == 'Q' || escolha == 'C' || escolha == 'B' || escolha == 'T') && jogadorDaVez == 0) ||
-            ((escolha == 'q' || escolha == 'c' || escolha == 'b' || escolha == 't') && jogadorDaVez == 1)) {
+        if ((toupper(escolha) == 'Q' || toupper(escolha) == 'C' || toupper(escolha) == 'B' || toupper(escolha) == 'T')) {
             return escolha;
         } else {
             printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_PROMOCAO_PEAO_PECA_INVALIDA));
             pausa();
         }
+
+        if(jogadorDaVez == 0) {
+            escolha = toupper(escolha);
+        } else {
+            escolha = tolower(escolha);
+        }
+        
     }
 }
 
@@ -576,9 +578,13 @@ int iniciarJogo(int opcao) {
         capturaOuPiao = false;
 
         printf("═══════════════════════════════════\n");
-        printf("  %s (MAIÚS): %d pts  |  %s (minús): %d pts\n", 
-       jogadores[0].nome, jogadores[0].pontos,
-       jogadores[1].nome, jogadores[1].pontos);
+        printf("  %s (%s): %d pts  |  %s (%s): %d pts\n", 
+       jogadores[0].nome, 
+       Msg(MSG_JOGO_MAIUSCULAS),
+       jogadores[0].pontos,
+       jogadores[1].nome, 
+       Msg(MSG_JOGO_MINUSCULAS),
+       jogadores[1].pontos);
         printf("═══════════════════════════════════\n\n");
         
         printf("\n");
