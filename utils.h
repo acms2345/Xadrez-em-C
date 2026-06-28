@@ -8,4 +8,5 @@ const char* ObterSimboloPeca(char peca);
 void limpezaBuffer();
 void limparTela();
 void pausa();
+void printfBox(const char **linhas, int quantidadeLinhas);
 #endif // UTILS_H

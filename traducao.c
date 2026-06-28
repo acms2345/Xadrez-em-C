@@ -8,6 +8,10 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "-----------------------------------------------\n\n",
         "-----------------------------------------------\n\n"
     },
+    {
+        "Pressione ENTER para continuar",
+        "Press ENTER to continue"
+    },
     
     //menu.c
     {
@@ -149,8 +153,8 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "ERROR: Invalid format. Use 4 characters (e.g., e2e4) or use 5 characters (e.g., e2-e4)\n"
     },
     {
-        "Seu peão chegou na última linha! Escolha a peça para promover (Q, C, B, T): ",
-        "Your pawn has reached the last row! Choose the piece to promote to (Q, C, B, T): "
+        "Escolha a peça para promover seu peão (Q=Rainha, C=Cavalo, B=Bispo, T=Torre): ",
+        "Choose the piece to promote your pawn (Q=Queen, C=Horse, B=Bishop, T=Tower): "
     },
     {
         "Escolha inválida. Por favor, escolha entre Q, C, B, T: ",

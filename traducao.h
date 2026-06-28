@@ -3,6 +3,7 @@
 
 typedef enum {
     STR_SEPARACAO,
+    MSG_PAUSA,
     
     //menu.c
     MSG_MENU_TITULO,

@@ -314,12 +314,7 @@ não responder.
 Após a resposta, é feita a troca de peças.*/
 static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) {
     limparTela();
-    printf("  ╔════════════════════════╗\n");
-    printf("  ║  %s      ║\n", Msg(MSG_JOGO_PROMOCAO_TITULO));
-    printf("  ║  Escolha (Q = %s/C = %s/B = %s/T = %s):    ║\n",
-    Msg(MSG_JOGO_RAINHA), Msg(MSG_JOGO_CAVALO), Msg(MSG_JOGO_BISPO), Msg(MSG_JOGO_TORRE));
-    printf("  ╚════════════════════════╝\n\n");
-    printf(Msg(MSG_JOGO_PROMOCAO_PEAO_ESCOLHA_PECA));
+    printfBox((const char *[]){Msg(MSG_JOGO_PROMOCAO_TITULO), Msg(MSG_JOGO_PROMOCAO_PEAO_ESCOLHA_PECA)}, 2);
 
     fflush(stdout);
 
@@ -577,7 +572,7 @@ int iniciarJogo(int opcao) {
         
         capturaOuPiao = false;
 
-        printf("═══════════════════════════════════\n");
+        /*printf("═══════════════════════════════════\n");
         printf("  %s (%s): %d pts  |  %s (%s): %d pts\n", 
        jogadores[0].nome, 
        Msg(MSG_JOGO_MAIUSCULAS),
@@ -585,7 +580,15 @@ int iniciarJogo(int opcao) {
        jogadores[1].nome, 
        Msg(MSG_JOGO_MINUSCULAS),
        jogadores[1].pontos);
-        printf("═══════════════════════════════════\n\n");
+        printf("═══════════════════════════════════\n\n");*/
+        char linha1[100];
+        snprintf(linha1, sizeof(linha1), "  %s (%s): %d pts  |  %s (%s): %d pts\n", jogadores[0].nome, 
+       Msg(MSG_JOGO_MAIUSCULAS),
+       jogadores[0].pontos,
+       jogadores[1].nome, 
+       Msg(MSG_JOGO_MINUSCULAS),
+       jogadores[1].pontos);
+       printfBox((const char *[]){ linha1 }, 1);
         
         printf("\n");
         ExibirTabuleiro();
