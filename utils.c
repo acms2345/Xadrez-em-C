@@ -136,7 +136,7 @@ int contarTamanhoString(const char *string){
     
 }
 
-void repetirChar(char *ch, int quantidade){
+void repetirChar(const char *ch, int quantidade){
     for(int i = 0; i < quantidade; i++) fputs(ch, stdout);
 }
 
