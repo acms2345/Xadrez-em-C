@@ -92,6 +92,7 @@ void limparTela() {
             FillConsoleOutputCharacter(hConsole, ' ', 
                 csbi.dwSize.X * csbi.dwSize.Y, coord, &written);
             SetConsoleCursorPosition(hConsole, coord);
+            SetConsoleTextAttribute(hConsole, csbi.wAttributes);
         }
     #else
         // Linux/Mac

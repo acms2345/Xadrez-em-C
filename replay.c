@@ -80,14 +80,14 @@ void ExibirReplay(){
             int origemLinha = 8 - origem[0];
             int destLinha = 8 - destino[0];
             
-            printfSColor(NEGRITO, VERDE_FOREGROUND, "Movimento %d: ", contagemReplay);
+            printfSColor(NEGRITO, VERDE_FOREGROUND, Msg(MSG_REPLAY_MOVIMENTO_NUM), contagemReplay);
             printf("%c%d → %c%d\n\n", origemCol, origemLinha, destCol, destLinha);
         } else {
-            printfSColor(NEGRITO, VERDE_FOREGROUND, "Posição Inicial\n\n");
+            printfSColor(NEGRITO, VERDE_FOREGROUND, Msg(MSG_REPLAY_POSICAO_INICIAL));
         }
 
-        printfSColor(NEGRITO, AMARELO_FOREGROUND, "Opções:\n");
-        printf("  [P] Anterior   [N] Próximo   [I] Ir para   [S] Sair\n");
+        printfSColor(NEGRITO, AMARELO_FOREGROUND, "Opções/Options:\n");
+        printf(Msg(MSG_REPLAY_OPCOES));
         printf("> ");
         fflush(stdout);
         

@@ -94,6 +94,9 @@ typedef enum {
     //replay.c
 
     MSG_REPLAY_SEM_HISTORICO,
+    MSG_REPLAY_MOVIMENTO_NUM,
+    MSG_REPLAY_POSICAO_INICIAL,
+    MSG_REPLAY_OPCOES,
 
     TOTAL_STRINGS //Apenas um indicador da quantidade.
 

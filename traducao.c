@@ -318,6 +318,18 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
     {
         "Nenhum histórico de movimentos encontrado para replay.",
         "No move history found for replay."
+    },
+    {
+        "Movimento %d: ",
+        "%d move:"
+    },
+    {
+        "Posição Inicial\n\n",
+        "Initial position\n\n"
+    },
+    {
+        "  [P] Anterior   [N] Próximo   [I] Ir para   [S] Sair\n",
+        "  [P] Previous   [N] Next   [I] Go to   [S] Leave\n"
     }
 };
 
