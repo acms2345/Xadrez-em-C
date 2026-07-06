@@ -9,4 +9,5 @@ void limpezaBuffer();
 void limparTela();
 void pausa();
 void printfBox(const char **linhas, int quantidadeLinhas);
+void printfBoxFmt(int tamanhoMaximo, const char *fmt, ...);
 #endif // UTILS_H

@@ -117,16 +117,16 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "Error saving the game.\n"
     },
     {
-        "%s desistiu do jogo. %s é o vencedor!\n",
-        "%s resigned from the game. %s is the winner!\n"
+        "%s desistiu do jogo. %s é o vencedor!",
+        "%s resigned from the game. %s is the winner!"
     },
     {
        "%s deseja um empate. %s aceita? (s/n): ",
         "%s offers a draw. Does %s accept? (y/n): "
     },
     {
-        "%s aceitou o empate. O jogo termina empatado!\n",
-        "%s accepted the draw. The game ends in a draw!\n"
+        "%s aceitou o empate. O jogo termina empatado!",
+        "%s accepted the draw. The game ends in a draw!"
     },
     {
         "ERRO: Coluna origem inválida. Use letras de a-h.\n",
@@ -198,7 +198,7 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
 
     {
         "PROMOÇÃO DE PEÃO",
-        "PAWN PROMOTION  "
+        "PAWN PROMOTION"
     },
 
     {
@@ -232,8 +232,8 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
     },
 
     {
-        "Houve um empate! Nenhum jogador tem movimentos válidos, mas o rei não está em xeque.\n",
-        "It's a draw! Neither player has valid moves, but the king is not in check.\n"
+        "Houve um empate! Nenhum jogador tem movimentos válidos, mas o rei não está em xeque.",
+        "It's a draw! Neither player has valid moves, but the king is not in check."
     },
 
     {

@@ -4,4 +4,5 @@
 *.out
 salvamento.dat
 xadrez
-
+xadrez_teste
+teste.c

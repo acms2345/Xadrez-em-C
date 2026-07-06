@@ -32,6 +32,7 @@
 // Estilos/Styles
 #define NEGRITO       "\x1b[1m"
 #define SUBLINHADO    "\x1b[4m"
+#define RESET_NEGRITO "\033[22m"  // Remove só o negrito, mantém cor
 
 /**
  * Imprime texto colorido (com cor de foreground)

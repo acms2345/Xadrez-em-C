@@ -125,11 +125,11 @@ int contarTamanhoString(const char *string){
     
     while (*string != '\0')
     {
-        if((*string & 0xC0) != 0x80){
-            continue;
-        } else{
+        if(((unsigned char)*string & 0xC0) != 0x80){
             tamanhoString++;
         }
+        
+        string++;
     }
 
     return tamanhoString;
@@ -184,4 +184,49 @@ void printfBox(const char **linhas, int quantidadeLinhas){
     fputs("╚", stdout); repetirChar("═", tamanhoInterno); fputs("╝", stdout);
 
 
+}
+
+#include <stdarg.h>
+
+void printfBoxFmt(int tamanhoMaximo, const char *fmt, ...) {
+    char buffer[1024];
+    va_list ap;
+    va_start(ap, fmt);
+    vsnprintf(buffer, sizeof(buffer), fmt, ap);
+    va_end(ap);
+
+    // separa em palavras e faz wrap por largura em "caracteres visíveis" (UTF-8 aware)
+    #define MAX_LINES 64
+    #define LINE_BUF 256
+    char lines[MAX_LINES][LINE_BUF];
+    for(int i=0;i<MAX_LINES;i++) lines[i][0] = '\0';
+
+    int lineIdx = 0;
+    int curLen = 0;
+    char *tok = strtok(buffer, " ");
+    while(tok && lineIdx < MAX_LINES) {
+        int tokLen = contarTamanhoString(tok);
+        if(curLen == 0) {
+            strncpy(lines[lineIdx], tok, LINE_BUF-1);
+            lines[lineIdx][LINE_BUF-1] = '\0';
+            curLen = tokLen;
+        } else if(curLen + 1 + tokLen <= tamanhoMaximo) {
+            strncat(lines[lineIdx], " ", LINE_BUF - strlen(lines[lineIdx]) - 1);
+            strncat(lines[lineIdx], tok, LINE_BUF - strlen(lines[lineIdx]) - 1);
+            curLen += 1 + tokLen;
+        } else {
+            lineIdx++;
+            if(lineIdx >= MAX_LINES) break;
+            strncpy(lines[lineIdx], tok, LINE_BUF-1);
+            lines[lineIdx][LINE_BUF-1] = '\0';
+            curLen = tokLen;
+        }
+        tok = strtok(NULL, " ");
+    }
+    int count = (lineIdx==0 && lines[0][0]=='\0') ? 0 : lineIdx + 1;
+    if(count == 0) return;
+
+    const char *ptrs[MAX_LINES];
+    for(int i=0;i<count;i++) ptrs[i] = lines[i];
+    printfBox(ptrs, count);
 }
