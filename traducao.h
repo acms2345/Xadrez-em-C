@@ -23,6 +23,7 @@ typedef enum {
     MSG_MENU_AJUDA_LINHA4,
     MSG_MENU_AJUDA_LINHA5,
     MSG_MENU_AJUDA_LINHA6,
+    MSG_MENU_AJUDA_LINHA7,
 
 
     //jogo.c
