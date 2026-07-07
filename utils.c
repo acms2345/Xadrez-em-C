@@ -88,11 +88,16 @@ void limparTela() {
             DWORD written;
             CONSOLE_SCREEN_BUFFER_INFO csbi;
             
-            GetConsoleScreenBufferInfo(hConsole, &csbi);
-            FillConsoleOutputCharacter(hConsole, ' ', 
-                csbi.dwSize.X * csbi.dwSize.Y, coord, &written);
-            SetConsoleCursorPosition(hConsole, coord);
-            SetConsoleTextAttribute(hConsole, csbi.wAttributes);
+            if(GetConsoleScreenBufferInfo(hConsole, &csbi)){
+                DWORD cellCount = (DWORD)csbi.dwSize.X * (DWORD)csbi.dwSize.Y;
+                
+                FillConsoleOutputCharacter(hConsole, ' ', 
+                    csbi.dwSize.X * csbi.dwSize.Y, coord, &written);
+                SetConsoleCursorPosition(hConsole, coord);
+                FillConsoleOutputAttribute(hConsole, csbi.wAttributes, cellCount, coord, &written);
+                SetConsoleTextAttribute(hConsole, csbi.wAttributes);
+            }
+            
         }
     #else
         // Linux/Mac
