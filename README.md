@@ -1,4 +1,6 @@
-# Documentação do projeto de Xadrez em C
+![Hackatime statistics of time](https://hackatime.hackclub.com/api/v1/badge/acms2345/acms2345/Xadrez-em-C)
+
+# Xadrez em C / Chess in C
 
 [Versão em português abaixo/ Portuguese version below](#versão-em-português)
 
