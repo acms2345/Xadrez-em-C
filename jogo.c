@@ -50,7 +50,7 @@ EstadoJogo ultimoMovimento;
 
 static char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
 
-static int jogadorDaVez = 0; // 0 para o Jogador 1 (maiúsculas), 1 para o Jogador 2 (minúsculas)
+static int jogadorDaVez = PECAS_BRANCAS; // 0 para o Jogador 1 (maiúsculas), 1 para o Jogador 2 (minúsculas)
 
 static int movimentosSemCapturaouPiao = 0;
 
@@ -332,7 +332,7 @@ static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) 
             pausa();
         }
 
-        if(jogadorDaVez == 0) {
+        if(jogadorDaVez == PECAS_BRANCAS) {
             escolha = toupper(escolha);
         } else {
             escolha = tolower(escolha);
@@ -354,6 +354,7 @@ struct Salvamento
     int ultimoMovimentoOrigem[2];
     int ultimoMovimentoDestino[2];
     Jogador jogadores[2];
+    
     //Informações de roque
     bool reiMoveu[2]; 
     bool torreEsquerdaMoveu[2]; //esquerda = coluna a
@@ -511,7 +512,7 @@ static void atualizarPontuacao(int *pontos, char pecaCapturada){
 
 static void reiniciarJogo(){
     memcpy(tabuleiro, TABULEIRO_INICIAL, sizeof(TABULEIRO_INICIAL));
-    jogadorDaVez = 0;
+    jogadorDaVez = PECAS_BRANCAS;
     movimentosSemCapturaouPiao = 0;
     movimentosFeitos = 0;
     capturaOuPiao = false;
@@ -573,18 +574,18 @@ int iniciarJogo(int opcao) {
         capturaOuPiao = false;
 
         char linha1[100];
-        snprintf(linha1, sizeof(linha1), "%s (%s): %d pts  |  %s (%s): %d pts", jogadores[0].nome, 
+        snprintf(linha1, sizeof(linha1), "%s (%s): %d pts  |  %s (%s): %d pts", jogadores[PECAS_BRANCAS].nome, 
        Msg(MSG_JOGO_MAIUSCULAS),
-       jogadores[0].pontos,
-       jogadores[1].nome, 
+       jogadores[PECAS_BRANCAS].pontos,
+       jogadores[PECAS_PRETAS].nome, 
        Msg(MSG_JOGO_MINUSCULAS),
-       jogadores[1].pontos);
+       jogadores[PECAS_PRETAS].pontos);
        printfBox((const char *[]){ linha1 }, 1);
         
         printf("\n");
         ExibirTabuleiro();
 
-        printf(Msg(MSG_JOGO_VEZ_JOGADOR), jogadores[jogadorDaVez].nome, (jogadorDaVez == 0) 
+        printf(Msg(MSG_JOGO_VEZ_JOGADOR), jogadores[jogadorDaVez].nome, (jogadorDaVez == PECAS_BRANCAS) 
         ? Msg(MSG_JOGO_MAIUSCULAS) : Msg(MSG_JOGO_MINUSCULAS));
 
         int linhaOrigem, colunaOrigem, linhaDestino, colunaDestino;
@@ -638,7 +639,7 @@ int iniciarJogo(int opcao) {
                 ganhou = true;
                 printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_JOGO_XEQUEMATE_REI_CAPTURADO_TITULO));
                 printf(Msg(MSG_JOGO_XEQUEMATE_VENCEDOR), jogadores[jogadorDaVez].nome);
-                printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[PECAS_BRANCAS].nome, jogadores[PECAS_BRANCAS].pontos, jogadores[PECAS_PRETAS].nome, jogadores[PECAS_PRETAS].pontos);
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
                 
                 pausa();
@@ -656,7 +657,7 @@ int iniciarJogo(int opcao) {
 
             if(movimentosSemCapturaouPiao >= LIMITE_REGRA_50_MOVIMENTOS){
                 printf(Msg(MSG_JOGO_EMPATE_50MOVIMENTOS_TITULO));
-                printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[PECAS_BRANCAS].nome, jogadores[PECAS_BRANCAS].pontos, jogadores[PECAS_PRETAS].nome, jogadores[PECAS_PRETAS].pontos);
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
                 
                 ganhou = true;
@@ -718,7 +719,7 @@ int iniciarJogo(int opcao) {
                 ganhou = true;
                 printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_JOGO_XEQUEMATE_TITULO));
                 printf(Msg(MSG_JOGO_XEQUEMATE_VENCEDOR), jogadores[1 - jogadorDaVez].nome);
-                printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[PECAS_BRANCAS].nome, jogadores[PECAS_BRANCAS].pontos, jogadores[PECAS_PRETAS].nome, jogadores[PECAS_PRETAS].pontos);
                 printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
                 
                 pausa();
@@ -733,7 +734,7 @@ int iniciarJogo(int opcao) {
 
                 printf("%s", AMARELO_FOREGROUND);
                 char linhaPlacar[100];
-                snprintf(linhaPlacar, sizeof(linhaPlacar), Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                snprintf(linhaPlacar, sizeof(linhaPlacar), Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[PECAS_BRANCAS].nome, jogadores[PECAS_BRANCAS].pontos, jogadores[PECAS_PRETAS].nome, jogadores[PECAS_PRETAS].pontos);
 
                 char linhaTotalMovimentos[50];
                 snprintf(linhaTotalMovimentos, sizeof(linhaTotalMovimentos), Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
@@ -752,15 +753,10 @@ int iniciarJogo(int opcao) {
             if(Afogamento(tabuleiro, jogadorDaVez, ultimoMovimento.ultimoMovimentoOrigem, ultimoMovimento.ultimoMovimentoDestino, ultimoMovimento.EstadoRoque.reiMoveu, ultimoMovimento.EstadoRoque.torreEsquerdaMoveu, ultimoMovimento.EstadoRoque.torreDireitaMoveu)){
                 ganhou = true;
 
-                
-                /*printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_JOGO_AFOGAMENTO_TITULO));
-                printf(Msg(MSG_JOGO_EMPATE_TEXTO));
-                printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
-                printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);*/
 
                 printf("%s", AMARELO_FOREGROUND);
                 char linhaPlacar[100];
-                snprintf(linhaPlacar, sizeof(linhaPlacar), Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                snprintf(linhaPlacar, sizeof(linhaPlacar), Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[PECAS_BRANCAS].nome, jogadores[PECAS_BRANCAS].pontos, jogadores[PECAS_PRETAS].nome, jogadores[PECAS_PRETAS].pontos);
 
                 char linhaTotalMovimentos[50];
                 snprintf(linhaTotalMovimentos, sizeof(linhaTotalMovimentos), Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
@@ -779,7 +775,7 @@ int iniciarJogo(int opcao) {
 
                 printf("%s", AMARELO_FOREGROUND);
                 char linhaPlacar[100];
-                snprintf(linhaPlacar, sizeof(linhaPlacar), Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[0].nome, jogadores[0].pontos, jogadores[1].nome, jogadores[1].pontos);
+                snprintf(linhaPlacar, sizeof(linhaPlacar), Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[PECAS_BRANCAS].nome, jogadores[PECAS_BRANCAS].pontos, jogadores[PECAS_PRETAS].nome, jogadores[PECAS_PRETAS].pontos);
 
                 char linhaTotalMovimentos[50];
                 snprintf(linhaTotalMovimentos, sizeof(linhaTotalMovimentos), Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
