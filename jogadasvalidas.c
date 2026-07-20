@@ -485,7 +485,6 @@ bool verificarMovimentoDiagonal(char tabuleiro[8][8], int linhaOrigem, int colun
     for(int i = 1; linhaOrigem - i >= 0 && colunaOrigem - i >= 0; i++){//Para ver movimento para noroeste
         if(linhaDestino == linhaOrigem - i && colunaDestino == colunaOrigem - i){
             return true;
-            return Msg(MSG_JOGADA_VALIDA);
         } else if (tabuleiro[linhaOrigem - i][colunaOrigem - i] != ' '){
             break;
         }
@@ -715,6 +714,7 @@ const char* JogadaValida(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], i
                 if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
                     return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
+                return Msg(MSG_JOGADA_VALIDA);
             } else {
                 return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_RAINHA);
             }
