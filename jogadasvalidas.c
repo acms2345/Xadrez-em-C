@@ -458,9 +458,82 @@ void ReiniciarHistoricoPosicoes(void){
     countHistoricoPositoes = 0;
 }
 
+/*Essa função verifica os movimentos do bispo e da rainha
+(e impede muita repetição de código entre esses).*/
+bool verificarMovimentoDiagonal(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino){
+    for(int i = 1; linhaOrigem + i < TAMANHO_TABULEIRO && colunaOrigem + i < TAMANHO_TABULEIRO; i++){//Para ver movimento para sudeste
+        if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem + i){
+            return true;
+        } else if (tabuleiro[linhaOrigem + i][colunaOrigem + i] != ' '){
+            break;
+        }
+    }
+    for(int i = 1; linhaOrigem - i >= 0 && colunaOrigem + i < TAMANHO_TABULEIRO; i++){//Para ver movimento para nordeste
+        if(linhaDestino == linhaOrigem - i && colunaDestino == colunaOrigem + i){
+            return true;
+        } else if (tabuleiro[linhaOrigem - i][colunaOrigem + i] != ' '){
+            break;
+        }
+    }
+    for(int i = 1; linhaOrigem + i < TAMANHO_TABULEIRO && colunaOrigem - i >= 0; i++){//Para ver movimento para sudoeste
+        if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem - i){
+            return true;
+        } else if (tabuleiro[linhaOrigem + i][colunaOrigem - i] != ' '){
+            break;
+        }
+    }
+    for(int i = 1; linhaOrigem - i >= 0 && colunaOrigem - i >= 0; i++){//Para ver movimento para noroeste
+        if(linhaDestino == linhaOrigem - i && colunaDestino == colunaOrigem - i){
+            return true;
+            return Msg(MSG_JOGADA_VALIDA);
+        } else if (tabuleiro[linhaOrigem - i][colunaOrigem - i] != ' '){
+            break;
+        }
+    }
+    //Se nada acima for válido... É movimento inválido.
+    return false;
+}
 
+/*Essa função verifica os movimentos da torre e da rainha
+(e impede muita repetição de código entre esses).
+Ela não verifica se o movimento deixa o rei em xeque.
+*/
+bool verificarMovimentoRetilineo(char tabuleiro[8][8], int linhaOrigem, int colunaOrigem, int linhaDestino, int colunaDestino){
+    for(int i = 1; i + linhaOrigem < TAMANHO_TABULEIRO; i++){ //verifica se é movimento para baixo
+        if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem){
+            return true;
+        } else if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
+            break;
+        } 
+    }
+    for(int i = -1; i + linhaOrigem >= 0; i--){ //verifica se é movimento para cima
+        if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem){
+            return true;
+        } else if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
+            break;
+        }
+    }
+    for(int i = 1; i + colunaOrigem < TAMANHO_TABULEIRO; i++){ //verifica se é movimento para direita
+        if(colunaDestino == colunaOrigem + i && linhaDestino == linhaOrigem){
+            return true;
+        } else if (tabuleiro[linhaOrigem][colunaOrigem + i] != ' '){
+            break;
+        }
+    }
+    for(int i = -1; i + colunaOrigem >= 0; i--){ //verifica se é movimento para esquerda
+        if(colunaDestino == colunaOrigem + i && linhaDestino == linhaOrigem){
+            return true;
+        } else if (tabuleiro[linhaOrigem][colunaOrigem + i] != ' '){
+            break;
+        }
+    }
+    //Se nenhuma acima der certo, é movimento inválido.
+    return false;
+}
 
-/*A função retorna alguns valores de acordo com o seu resultado:
+/*
+Essa é a função principal para verificar se uma jogada é válida ou não.
+A função retorna alguns valores (strings) de acordo com o seu resultado:
     - MSG_JOGADA_VALIDA para jogadas válidas;
     - Outros textos para jogadas inválidas, para mostrar ao usuário o erro dele
         (Por exemplo, "Peça do mesmo jogador" quando ocorre tentativa de capturar uma peça do mesmo jogador)
@@ -472,7 +545,7 @@ const char* JogadaValida(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], i
     bool enPassant = false;
 
     if(linhaOrigem == linhaDestino && colunaOrigem == colunaDestino) {
-        return Msg(MSG_JOGADAS_MOVIMENTO_MESMA_POSICAO); // Movimento para a mesma posição
+        return Msg(MSG_JOGADAS_MOVIMENTO_MESMA_POSICAO); // Movimento para a mesma posição (ex.: e2e2)
 
     } else if((jogadorDaVez == PECAS_BRANCAS && isupper(tabuleiro[linhaDestino][colunaDestino])) || ((jogadorDaVez == PECAS_PRETAS && islower(tabuleiro[linhaDestino][colunaDestino])))) {
         return Msg(MSG_JOGADAS_PECA_MESMO_JOGADOR); // Tentativa de capturar uma peça do mesmo jogador
@@ -563,47 +636,15 @@ const char* JogadaValida(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], i
         case 'T':
             /* Código para movimento da torre */
 
-            for(int i = 1; i + linhaOrigem < TAMANHO_TABULEIRO; i++){ //verifica se é movimento para baixo
-                if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
-                    break;
-                } 
-            }
-            for(int i = -1; i + linhaOrigem >= 0; i--){ //verifica se é movimento para cima
-                if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
-                    break;
+            if(verificarMovimentoRetilineo(tabuleiro, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)){
+                if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
+                    return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
+                return Msg(MSG_JOGADA_VALIDA);
+            } else {
+                return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_TORRE); 
             }
-            for(int i = 1; i + colunaOrigem < TAMANHO_TABULEIRO; i++){ //verifica se é movimento para direita
-                if(colunaDestino == colunaOrigem + i && linhaDestino == linhaOrigem){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem][colunaOrigem + i] != ' '){
-                    break;
-                }
-            }
-            for(int i = -1; i + colunaOrigem >= 0; i--){ //verifica se é movimento para esquerda
-                if(colunaDestino == colunaOrigem + i && linhaDestino == linhaOrigem){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem][colunaOrigem + i] != ' '){
-                    break;
-                }
-            }
-            return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_TORRE); // Movimento inválido para a torre
+
         
         case 'C':
             /* Código para movimento do cavalo */
@@ -657,139 +698,26 @@ const char* JogadaValida(char tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], i
         case 'B':
             /* Código para movimento do bispo */
             
-            for(int i = 1; linhaOrigem + i < TAMANHO_TABULEIRO && colunaOrigem + i < TAMANHO_TABULEIRO; i++){//Para ver movimento para sudeste
-                if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem + i){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem + i][colunaOrigem + i] != ' '){
-                    break;
+            if(verificarMovimentoDiagonal(tabuleiro, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)){
+                if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
+                    return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
+                return Msg(MSG_JOGADA_VALIDA);
+            } else {
+                return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_BISPO);
             }
-            for(int i = 1; linhaOrigem - i >= 0 && colunaOrigem + i < TAMANHO_TABULEIRO; i++){//Para ver movimento para nordeste
-                if(linhaDestino == linhaOrigem - i && colunaDestino == colunaOrigem + i){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem - i][colunaOrigem + i] != ' '){
-                    break;
-                }
-            }
-            for(int i = 1; linhaOrigem + i < TAMANHO_TABULEIRO && colunaOrigem - i >= 0; i++){//Para ver movimento para sudoeste
-                if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem - i){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem + i][colunaOrigem - i] != ' '){
-                    break;
-                }
-            }
-            for(int i = 1; linhaOrigem - i >= 0 && colunaOrigem - i >= 0; i++){//Para ver movimento para noroeste
-                if(linhaDestino == linhaOrigem - i && colunaDestino == colunaOrigem - i){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem - i][colunaOrigem - i] != ' '){
-                    break;
-                }
-            }
-            return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_BISPO);
             
 
         case 'Q':
             /* Código para movimento da rainha */
 
-            //Junção dos movimentos da torre e do bispo
-
-            // Movimento da torre
-            for(int i = 1; i + linhaOrigem < TAMANHO_TABULEIRO; i++){ //verifica se é movimento para baixo
-                if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
-                    break;
+            if(verificarMovimentoDiagonal(tabuleiro, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino) || verificarMovimentoRetilineo(tabuleiro, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino)){
+                if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
+                    return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
                 }
+            } else {
+                return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_RAINHA);
             }
-            for(int i = -1; i + linhaOrigem >= 0; i--){ //verifica se é movimento para cima
-                if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem + i][colunaOrigem] != ' '){
-                    break;
-                }
-            }
-            for(int i = 1; i + colunaOrigem < TAMANHO_TABULEIRO; i++){ //verifica se é movimento para direita
-                if(colunaDestino == colunaOrigem + i && linhaDestino == linhaOrigem){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem][colunaOrigem + i] != ' '){
-                    break;
-                }
-            }
-            for(int i = -1; i + colunaOrigem >= 0; i--){ //verifica se é movimento para esquerda
-                if(colunaDestino == colunaOrigem + i && linhaDestino == linhaOrigem){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem][colunaOrigem + i] != ' '){
-                    break;
-                }
-            }
-
-            // Movimento do bispo
-            for(int i = 1; linhaOrigem + i < TAMANHO_TABULEIRO && colunaOrigem + i < TAMANHO_TABULEIRO; i++){//Para ver movimento para sudeste
-                if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem + i){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem + i][colunaOrigem + i] != ' '){
-                    break;
-                }
-            }
-            for(int i = 1; linhaOrigem - i >= 0 && colunaOrigem + i < TAMANHO_TABULEIRO; i++){//Para ver movimento para nordeste
-                if(linhaDestino == linhaOrigem - i && colunaDestino == colunaOrigem + i){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem - i][colunaOrigem + i] != ' '){
-                    break;
-                }
-            }
-            for(int i = 1; linhaOrigem + i < TAMANHO_TABULEIRO && colunaOrigem - i >= 0; i++){//Para ver movimento para sudoeste
-                if(linhaDestino == linhaOrigem + i && colunaDestino == colunaOrigem - i){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem + i][colunaOrigem - i] != ' '){
-                    break;
-                }
-            }
-            for(int i = 1; linhaOrigem - i >= 0 && colunaOrigem - i >= 0; i++){//Para ver movimento para noroeste
-                if(linhaDestino == linhaOrigem - i && colunaDestino == colunaOrigem - i){
-                    if(movimentoDeixaReiemXeque(tabuleiro, jogadorDaVez, linhaOrigem, colunaOrigem, linhaDestino, colunaDestino, enPassant)) {
-                        return Msg(MSG_JOGADAS_DEIXA_REI_XEQUE);
-                    }
-                    return Msg(MSG_JOGADA_VALIDA);
-                } else if (tabuleiro[linhaOrigem - i][colunaOrigem - i] != ' '){
-                    break;
-                }
-            }
-
-            return Msg(MSG_JOGADAS_MOVIMENTO_INVALIDO_RAINHA);
 
         case 'K':
             /* Código para movimento do rei */

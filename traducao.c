@@ -232,9 +232,21 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "=== AFOGAMENTO ===\n",
         "=== STALEMATE ===\n"
     },
-    [MSG_JOGO_EMPATE_TEXTO] = {
+    [MSG_JOGO_EMPATE_TEXTO_AFOGAMENTO] = {
         "Houve um empate! Nenhum jogador tem movimentos válidos, mas o rei não está em xeque.",
         "It's a draw! Neither player has valid moves, but the king is not in check."
+    },
+    [MSG_JOGO_EMPATE_TEXTO_50MOVIMENTOS] = {
+        "Houve um empate! Não houve movimento de peão ou captura de peças por 50 lances.",
+        "It's a draw! There was not pawn moves or piece captures for 50 moves."
+    },
+    [MSG_JOGO_EMPATE_TEXTO_MATERIALINSUFICIENTE] = {
+        "Houve um empate! Não há material suficiente para fazer xeque-mate.",
+        "It's a draw! There is not enough material to deliver checkmate"
+    },
+    [MSG_JOGO_EMPATE_TEXTO_MOVIMENTOSREPETIDOS] = {
+        "Houve um empate! O mesmo movimento foi repetido três vezes.",
+        "It's a draw! The same move was repeated three times."
     },
     [MSG_JOGO_REPETICAO_TITULO] = {
         "\n=== EMPATE POR REPETIÇÃO DE POSIÇÃO ===\n",

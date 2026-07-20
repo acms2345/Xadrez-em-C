@@ -10,6 +10,8 @@
 
 This code implements a local two-player chess game, inspired by the official rules of chess.
 
+I made this game to practice my programming skills. I wanted to make something in C because I had a school subject where I learned about C language, so I also wanted to test my own comprehension of the subject.
+
 > **Note**: This is an educational project. Some advanced rules are not yet implemented.
 
 > **Developer's note**: Please be aware that the source code, including all variable names, function names, comments, is written in Portuguese. I'm making the translation of certain parts of UI, but it takes time.
@@ -131,53 +133,7 @@ Xadrez-em-C/
 
 ### Example of a Move
 
-```
-  ╔═════════════════╗
-  ║ a b c d e f g h ║
-  ╠═════════════════╣
-8 ║ ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜ ║
-7 ║ ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟ ║
-6 ║                 ║
-5 ║                 ║
-4 ║                 ║
-3 ║                 ║
-2 ║ ♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙ ║
-1 ║ ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖ ║
-  ╚═════════════════╝
-
-Player1, enter your move in algebraic notation (ex: e2e4): e2e4
-
-  ╔═════════════════╗
-  ║ a b c d e f g h ║
-  ╠═════════════════╣
-8 ║ ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜ ║
-7 ║ ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟ ║
-6 ║                 ║
-5 ║                 ║
-4 ║         ♙       ║
-3 ║                 ║
-2 ║ ♙ ♙ ♙ ♙   ♙ ♙ ♙ ║
-1 ║ ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖ ║
-  ╚═════════════════╝
-
-Player2, enter your move in algebraic notation (ex: e2e4): e7e5
-
-  ╔═════════════════╗
-  ║ a b c d e f g h ║
-  ╠═════════════════╣
-8 ║ ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜ ║
-7 ║ ♟ ♟ ♟ ♟   ♟ ♟ ♟ ║
-6 ║                 ║
-5 ║         ♟       ║
-4 ║         ♙       ║
-3 ║                 ║
-2 ║ ♙ ♙ ♙ ♙   ♙ ♙ ♙ ║
-1 ║ ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖ ║
-  ╚═════════════════╝
-
-...
-```
-
+![Game execution GIF](chess-in-c_test.gif)
 ### 💾 About Saving and Loading Games
 
 During the game, when prompted to enter the next move, you can also type "salvar"/"save" to save the current game state to the `salvamento.dat` file.
@@ -201,9 +157,10 @@ This project is under the MIT License. See the `LICENSE` file for more details.
 # Versão em português
 Tal código corresponde a um jogo de dois jogadores local, inspirado nas regras oficiais do xadrez.
 
+Criei esse jogo com o intuito de testar minhas habilidades de programação. Tive uma matéria escolar em que conheci a linguagem C, então esse projeto também foi uma forma de testar meu conhecimento acerca da matéria.
+
 > **Nota**: Este é um projeto educacional. Algumas regras avançadas ainda não estão implementadas.
 
-> **Nota do Desenvolvedor**: O código-fonte, incluindo nomes de variáveis, funções e comentários, está escrito em português. Estou trabalhando na tradução de certas partes.
 
 ### 🔗 Links úteis
 

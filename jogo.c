@@ -533,6 +533,19 @@ static void reiniciarJogo(){
     ReiniciarHistoricoPosicoes();
 }
 
+void exibirEmpate(int ID_MSG_TITULO, int ID_MSG_TEXTO){
+    printf("%s", AMARELO_FOREGROUND);
+    char linhaPlacar[100];
+    snprintf(linhaPlacar, sizeof(linhaPlacar), Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[PECAS_BRANCAS].nome, jogadores[PECAS_BRANCAS].pontos, jogadores[PECAS_PRETAS].nome, jogadores[PECAS_PRETAS].pontos);
+
+    char linhaTotalMovimentos[50];
+    snprintf(linhaTotalMovimentos, sizeof(linhaTotalMovimentos), Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
+
+    printfBox((const char *[]){Msg(ID_MSG_TITULO), Msg(ID_MSG_TEXTO), linhaPlacar, linhaTotalMovimentos}, 4);
+    
+    printfColor(RESET, "\n");
+}
+
 int iniciarJogo(int opcao) {
     
     limpezaBuffer();
@@ -540,6 +553,8 @@ int iniciarJogo(int opcao) {
     reiniciarJogo();
 
     printf(Msg(STR_SEPARACAO));
+
+    //Coleta os nomes dos jogadores, considerando partidas já salvas ou não.
 
     if (opcao == 1){
         for(int i = 0; i < 2; i++){
@@ -656,9 +671,8 @@ int iniciarJogo(int opcao) {
             }
 
             if(movimentosSemCapturaouPiao >= LIMITE_REGRA_50_MOVIMENTOS){
-                printf(Msg(MSG_JOGO_EMPATE_50MOVIMENTOS_TITULO));
-                printf(Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[PECAS_BRANCAS].nome, jogadores[PECAS_BRANCAS].pontos, jogadores[PECAS_PRETAS].nome, jogadores[PECAS_PRETAS].pontos);
-                printf(Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
+
+                exibirEmpate(MSG_JOGO_EMPATE_50MOVIMENTOS_TITULO, MSG_JOGO_EMPATE_TEXTO_50MOVIMENTOS);
                 
                 ganhou = true;
                 
@@ -732,16 +746,7 @@ int iniciarJogo(int opcao) {
             if(repeticoesMovimento >= 2){
                 ganhou = true;
 
-                printf("%s", AMARELO_FOREGROUND);
-                char linhaPlacar[100];
-                snprintf(linhaPlacar, sizeof(linhaPlacar), Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[PECAS_BRANCAS].nome, jogadores[PECAS_BRANCAS].pontos, jogadores[PECAS_PRETAS].nome, jogadores[PECAS_PRETAS].pontos);
-
-                char linhaTotalMovimentos[50];
-                snprintf(linhaTotalMovimentos, sizeof(linhaTotalMovimentos), Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
-
-                printfBox((const char *[]){Msg(MSG_JOGO_REPETICAO_TITULO), Msg(MSG_JOGO_EMPATE_TEXTO), linhaPlacar, linhaTotalMovimentos}, 4);
-                
-                printfColor(RESET, "\n");
+                exibirEmpate(MSG_JOGO_REPETICAO_TITULO, MSG_JOGO_EMPATE_TEXTO_MOVIMENTOSREPETIDOS);
                 
                 pausa();
                 
@@ -755,15 +760,8 @@ int iniciarJogo(int opcao) {
 
 
                 printf("%s", AMARELO_FOREGROUND);
-                char linhaPlacar[100];
-                snprintf(linhaPlacar, sizeof(linhaPlacar), Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[PECAS_BRANCAS].nome, jogadores[PECAS_BRANCAS].pontos, jogadores[PECAS_PRETAS].nome, jogadores[PECAS_PRETAS].pontos);
 
-                char linhaTotalMovimentos[50];
-                snprintf(linhaTotalMovimentos, sizeof(linhaTotalMovimentos), Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
-
-                printfBox((const char *[]){Msg(MSG_JOGO_AFOGAMENTO_TITULO), Msg(MSG_JOGO_EMPATE_TEXTO), linhaPlacar, linhaTotalMovimentos}, 4);
-                
-                printfColor(RESET, "\n");
+                exibirEmpate(MSG_JOGO_AFOGAMENTO_TITULO, MSG_JOGO_EMPATE_TEXTO_AFOGAMENTO);
 
                 pausa();
                 
@@ -773,16 +771,7 @@ int iniciarJogo(int opcao) {
             if(materialInsuficiente(tabuleiro)){
                 ganhou = true;
 
-                printf("%s", AMARELO_FOREGROUND);
-                char linhaPlacar[100];
-                snprintf(linhaPlacar, sizeof(linhaPlacar), Msg(MSG_JOGO_XEQUEMATE_PLACAR), jogadores[PECAS_BRANCAS].nome, jogadores[PECAS_BRANCAS].pontos, jogadores[PECAS_PRETAS].nome, jogadores[PECAS_PRETAS].pontos);
-
-                char linhaTotalMovimentos[50];
-                snprintf(linhaTotalMovimentos, sizeof(linhaTotalMovimentos), Msg(MSG_JOGO_XEQUEMATE_TOTAL_MOVIMENTOS), movimentosFeitos);
-
-                printfBox((const char *[]){Msg(MSG_JOGO_MATERIAL_INSUFICIENTE_TITULO), Msg(MSG_JOGO_EMPATE_TEXTO), linhaPlacar, linhaTotalMovimentos}, 4);
-                
-                printfColor(RESET, "\n");
+                exibirEmpate(MSG_JOGO_MATERIAL_INSUFICIENTE_TITULO, MSG_JOGO_EMPATE_TEXTO_MATERIALINSUFICIENTE);
                 
                 pausa();
 
