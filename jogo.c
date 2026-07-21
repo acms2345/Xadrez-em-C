@@ -82,15 +82,18 @@ void obterHistoricoMovimentos(Movimento* historico, int* count) {
 
 /*A função exibe o tabuleiro:
     - As casas a-h;
-    - Exibe as peças, colocando o backgruond com a coloração do tabuleiro do xadrez;
+    - Exibe as peças, colocando o background com a coloração do tabuleiro do xadrez;
     - E ao lado, os números das linhas.*/
-static void ExibirTabuleiro() {
+static void ExibirTabuleiroBrancas() {
     printf("  ╔═════════════════╗\n");
     printf("  ║ a b c d e f g h ║\n");
     printf("  ╠═════════════════╣\n");
     for (int i = TAMANHO_TABULEIRO; i >= 1; i--) {
         int conversaoLinha = TAMANHO_TABULEIRO - i;
         printf("%d ║ ", i);
+        /*A conversão é feita já que a exibição é a partir do 8, 
+        mas a matriz que contém o tabuleiro tem casas 0-7
+        Então, internamente, o simples valor de i não pode ser usado.*/
         
         for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
             char* backgroundColor = ((conversaoLinha == ultimoMovimento.ultimoMovimentoOrigem[0] && j == ultimoMovimento.ultimoMovimentoOrigem[1]) ||
@@ -106,6 +109,31 @@ static void ExibirTabuleiro() {
     }
     printf("  ╚═════════════════╝\n");
 }
+
+static void ExibirTabuleiroPretas() {
+    printf("  ╔═════════════════╗\n");
+    printf("  ║ h g f e d c b a ║\n");
+    printf("  ╠═════════════════╣\n");
+    for (int i = 0; i < TAMANHO_TABULEIRO; i++) {
+        int conversaoLinha = TAMANHO_TABULEIRO - 1 - i;
+        printf("%d ║ ", i + 1);
+        
+        for (int j = TAMANHO_TABULEIRO - 1; j >= 0; j--) {
+            char* backgroundColor = ((conversaoLinha == ultimoMovimento.ultimoMovimentoOrigem[0] && j == ultimoMovimento.ultimoMovimentoOrigem[1]) ||
+        (conversaoLinha == ultimoMovimento.ultimoMovimentoDestino[0] && j == ultimoMovimento.ultimoMovimentoDestino[1])) ? AMARELO_BACKGROUND :
+            ((conversaoLinha + j) % 2 == 0 ? BRANCO_BACKGROUND : PRETO_BACKGROUND);
+            char* textColor = (islower(tabuleiro[conversaoLinha][j]))  ? AMARELO_FOREGROUND : CIANO_FOREGROUND;
+            
+            printf("%s%s", backgroundColor, textColor);
+            printf("%s ", ObterSimboloPeca(tabuleiro[conversaoLinha][j]));
+            printf("%s", RESET);
+        }
+        printf("║\n");
+    }
+    printf("  ╚═════════════════╝\n");
+
+}
+
 
 /**
  * Solicita ao jogador que insira uma jogada no formato de notação algébrica.
@@ -598,7 +626,10 @@ int iniciarJogo(int opcao) {
        printfBox((const char *[]){ linha1 }, 1);
         
         printf("\n");
-        ExibirTabuleiro();
+
+        if(jogadorDaVez == PECAS_BRANCAS){
+            ExibirTabuleiroBrancas();
+        } else ExibirTabuleiroPretas();
 
         printf(Msg(MSG_JOGO_VEZ_JOGADOR), jogadores[jogadorDaVez].nome, (jogadorDaVez == PECAS_BRANCAS) 
         ? Msg(MSG_JOGO_MAIUSCULAS) : Msg(MSG_JOGO_MINUSCULAS));
