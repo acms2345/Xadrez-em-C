@@ -15,8 +15,8 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
     
     //menu.c
     [MSG_MENU_TITULO] = {
-        "==============================================\n            XADREZ EM C\n==============================================",
-        "==============================================\n            CHESS IN C\n=============================================="
+        "XADREZ EM C",
+        "CHESS IN C"
     },
     [MSG_MENU_OPCAO_NOVA_PARTIDA] = {
         "\n1. Nova Partida\n",
@@ -202,6 +202,11 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
     [MSG_JOGO_PROMOCAO_TITULO] = {
         "PROMOÇÃO DE PEÃO",
         "PAWN PROMOTION"
+    },
+
+    [MSG_JOGO_REIEMXEQUE] = {
+        "\nAtenção: seu rei está em xeque!",
+        "\nAttention: your king os on check!"
     },
 
     [MSG_JOGO_XEQUEMATE_REI_CAPTURADO_TITULO] = {

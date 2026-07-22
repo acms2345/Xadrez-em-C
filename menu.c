@@ -48,6 +48,7 @@ int main(){
 
     printf("%s%s", NEGRITO, AMARELO_FOREGROUND);
     printfBox((const char *[]){Msg(MSG_MENU_TITULO)}, 1);
+    printf("%s", RESET);
 
     while (1){
         printf(Msg(MSG_MENU_OPCAO_NOVA_PARTIDA));

@@ -630,9 +630,11 @@ int iniciarJogo(int opcao) {
         if(jogadorDaVez == PECAS_BRANCAS){
             ExibirTabuleiroBrancas();
         } else ExibirTabuleiroPretas();
-
+        
         printf(Msg(MSG_JOGO_VEZ_JOGADOR), jogadores[jogadorDaVez].nome, (jogadorDaVez == PECAS_BRANCAS) 
         ? Msg(MSG_JOGO_MAIUSCULAS) : Msg(MSG_JOGO_MINUSCULAS));
+
+        if(ReiEmXeque(tabuleiro, jogadorDaVez)) printfColor(AMARELO_FOREGROUND, Msg(MSG_JOGO_REIEMXEQUE));
 
         int linhaOrigem, colunaOrigem, linhaDestino, colunaDestino;
 
