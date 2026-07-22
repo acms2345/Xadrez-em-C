@@ -52,36 +52,36 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
     },
     
     [MSG_MENU_AJUDA_TITULO] = {
-        "\nAJUDA:\n",
-        "\nHELP:\n"
+        "AJUDA:",
+        "HELP:"
     },
     [MSG_MENU_AJUDA_LINHA1] = {
-        "Este é um jogo de xadrez para dois jogadores. Cada jogador controla um conjunto de pecas, uma em MAIÚSCULAS e a outra em minúsculas.\n",
-        "This is a chess game for two players. Each player controls a set of pieces, one in UPPERCASE and the other in lowercase.\n"
+        "Este é um jogo de xadrez para dois jogadores. Cada um controla um conjunto de pecas, uma em brancas (MAIÚSCULAS) e a outra em pretas (minúsculas).",
+        "This is a chess game for two players. Each one controls a set of pieces, one in white (UPPERCASE) and the other in black(lowercase)."
     },
     [MSG_MENU_AJUDA_LINHA2] = {
-        "O objetivo do jogo é capturar o rei do oponente. As peças se movem de acordo com as regras tradicionais do xadrez.\n",
-        "The objective of the game is to capture the opponent's king. The pieces move according to traditional chess rules.\n"
+        "O objetivo: dar xeque-mate ao rei do oponente. As peças se movem de acordo com as regras tradicionais do xadrez.",
+        "The goal: to checkmate the opponent's king. The pieces move according to traditional chess rules."
     },
     [MSG_MENU_AJUDA_LINHA3] = {
-        "Para fazer uma jogada, você precisará inserir as coordenadas de origem e destino no formato de notação algébrica (ex: e2e4, e2-e4).\n",
-        "To make a move, you will need to enter the source and destination coordinates in algebraic notation (e.g., e2e4, e2-e4).\n"
+        "Para fazer uma jogada, você precisará inserir as coordenadas de origem e destino no formato de notação algébrica (ex: e2e4, e2-e4).",
+        "To make a move, you will need to enter the source and destination coordinates in algebraic notation (e.g., e2e4, e2-e4)."
     },
     [MSG_MENU_AJUDA_LINHA4] = {
-        "Você também pode salvar o jogo a qualquer momento digitando 'salvar' quando solicitado a inserir uma jogada.\n",
-        "You can also save the game at any time by typing 'save' when prompted to enter a move.\n"
+        "Você também pode salvar o jogo a qualquer momento digitando 'salvar' quando solicitado a inserir uma jogada.",
+        "You can also save the game at any time by typing 'save' when prompted to enter a move."
     },
     [MSG_MENU_AJUDA_LINHA5] = {
-        "Digite 'desistir' para abandonar o jogo atual e conceder a vitória ao oponente.\n",
-        "Type 'resign' to abandon the current game and concede victory to the opponent.\n"
+        "Digite 'desistir' para abandonar o jogo atual e conceder a vitória ao oponente.",
+        "Type 'resign' to abandon the current game and concede victory to the opponent."
     },
     [MSG_MENU_AJUDA_LINHA6] = {
-        "Digite 'empatar' para sugerir um empate ao seu oponente. Ele responderá sim (Y) ou não (N).\n",
-        "Type 'draw' to sugest a draw to your oponent. He will answer yes (Y) or no (N).\n"
+        "Digite 'empatar' para sugerir um empate ao seu oponente. Ele responderá sim (S) ou não (N).",
+        "Type 'draw' to sugest a draw to your oponent. He will answer yes (Y) or no (N)."
     },
     [MSG_MENU_AJUDA_LINHA7] = {
-        "Boa sorte e divirta-se!\n\n",
-        "Good luck and have fun!\n\n"
+        "Boa sorte e divirta-se! :)",
+        "Good luck and have fun! :)"
     },
 
 

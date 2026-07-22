@@ -9,7 +9,7 @@
 #include "cores.h"
 #include "utils.h"
 
-#define VERSAO_ATUAL_JOGO 311
+#define VERSAO_ATUAL_JOGO 32
 
 
 

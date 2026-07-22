@@ -46,8 +46,8 @@ int main(){
         break;
     }
 
-
-    printfSColor(NEGRITO, AMARELO_FOREGROUND, Msg(MSG_MENU_TITULO));
+    printf("%s%s", NEGRITO, AMARELO_FOREGROUND);
+    printfBox((const char *[]){Msg(MSG_MENU_TITULO)}, 1);
 
     while (1){
         printf(Msg(MSG_MENU_OPCAO_NOVA_PARTIDA));
@@ -75,13 +75,18 @@ int main(){
             return 0;
         } else if (opcao == 3)
         {
-            printf(Msg(MSG_MENU_AJUDA_TITULO));
-            printf(Msg(MSG_MENU_AJUDA_LINHA1));
-            printf(Msg(MSG_MENU_AJUDA_LINHA2));
-            printf(Msg(MSG_MENU_AJUDA_LINHA3));
-            printf(Msg(MSG_MENU_AJUDA_LINHA4));
-            printf(Msg(MSG_MENU_AJUDA_LINHA5));
-            printf(Msg(MSG_MENU_AJUDA_LINHA6));
+            limparTela();
+            printfBox((const char *[]){Msg(MSG_MENU_AJUDA_TITULO), 
+                " ",
+                Msg(MSG_MENU_AJUDA_LINHA1), 
+                Msg(MSG_MENU_AJUDA_LINHA2),
+                Msg(MSG_MENU_AJUDA_LINHA3),
+                Msg(MSG_MENU_AJUDA_LINHA4),
+                Msg(MSG_MENU_AJUDA_LINHA5),
+                Msg(MSG_MENU_AJUDA_LINHA6),
+                Msg(MSG_MENU_AJUDA_LINHA7)}, 9);
+            pausa();
+            limparTela();
         } else if (opcao == 4)
         {
             ExibirReplay();
