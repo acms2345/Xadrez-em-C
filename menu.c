@@ -85,7 +85,8 @@ int main(){
                 Msg(MSG_MENU_AJUDA_LINHA4),
                 Msg(MSG_MENU_AJUDA_LINHA5),
                 Msg(MSG_MENU_AJUDA_LINHA6),
-                Msg(MSG_MENU_AJUDA_LINHA7)}, 9);
+                Msg(MSG_MENU_AJUDA_LINHA7),
+                Msg(MSG_MENU_AJUDA_LINHA8)}, 10);
             pausa();
             limparTela();
         } else if (opcao == 4)

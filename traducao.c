@@ -56,8 +56,8 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "HELP:"
     },
     [MSG_MENU_AJUDA_LINHA1] = {
-        "Este é um jogo de xadrez para dois jogadores. Cada um controla um conjunto de pecas, uma em brancas (MAIÚSCULAS) e a outra em pretas (minúsculas).",
-        "This is a chess game for two players. Each one controls a set of pieces, one in white (UPPERCASE) and the other in black(lowercase)."
+        "Este é um jogo de xadrez para dois jogadores. Cada um controla um conjunto de peças: um em brancas (MAIÚSCULAS) e outro em pretas (minúsculas).",
+        "This is a chess game for two players. Each controls a set of pieces: one with white (UPPERCASE) and the other with black (lowercase)."
     },
     [MSG_MENU_AJUDA_LINHA2] = {
         "O objetivo: dar xeque-mate ao rei do oponente. As peças se movem de acordo com as regras tradicionais do xadrez.",
@@ -80,6 +80,10 @@ static const char* tabela_traducoes [TOTAL_STRINGS][TOTAL_LINGUAS] = {
         "Type 'draw' to sugest a draw to your oponent. He will answer yes (Y) or no (N)."
     },
     [MSG_MENU_AJUDA_LINHA7] = {
+        "Ao ocorrer uma promoção de peão, será solicitada a letra correspondente à peça de troca (Q, C, B, ou T)",
+        "When a pawn promotion occurs, the letter corresponding to the replacement piece (Q, C, B, or T) will be requested"
+    },
+    [MSG_MENU_AJUDA_LINHA8] = {
         "Boa sorte e divirta-se! :)",
         "Good luck and have fun! :)"
     },
