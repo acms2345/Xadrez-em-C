@@ -216,7 +216,7 @@ static bool obterCoordenada(int *linhaOrigem, int *colunaOrigem, int *linhaDesti
             
             fflush(stdout);
 
-            char resposta[4];
+            char resposta[5];
             char *inputResposta = fgets(resposta, sizeof(resposta), stdin);
 
             if(inputResposta){
@@ -354,16 +354,16 @@ static char PromocaoPeao(int linhaDestino, int colunaDestino, int jogadorDaVez) 
         limpezaBuffer();
 
         if ((toupper(escolha) == 'Q' || toupper(escolha) == 'C' || toupper(escolha) == 'B' || toupper(escolha) == 'T')) {
+            if(jogadorDaVez == PECAS_BRANCAS) {
+                escolha = toupper(escolha);
+            } else {
+                escolha = tolower(escolha);
+            }
+            
             return escolha;
         } else {
             printfColor(VERMELHO_FOREGROUND, Msg(MSG_JOGO_PROMOCAO_PEAO_PECA_INVALIDA));
             pausa();
-        }
-
-        if(jogadorDaVez == PECAS_BRANCAS) {
-            escolha = toupper(escolha);
-        } else {
-            escolha = tolower(escolha);
         }
         
     }
