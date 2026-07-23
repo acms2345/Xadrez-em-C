@@ -63,11 +63,12 @@ int main(){
         if(scanf("%d", &opcao) != 1){
             printf(Msg(MSG_MENU_OPCAO_INVALIDA));
             
-            int c;
-            while((c = getchar()) != '\n' && c != EOF); // Limpa o buffer de entrada
-            
+            limpezaBuffer();
+
             continue;
         }
+
+        limpezaBuffer();
 
         if(opcao < 1 || opcao > 5){
             printf(Msg(MSG_MENU_OPCAO_INVALIDA));

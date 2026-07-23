@@ -107,7 +107,6 @@ void limparTela() {
 }
 
 void pausa() {
-    limpezaBuffer();
     printf("\n%s...", Msg(MSG_PAUSA));
     fflush(stdout);
     getchar();
